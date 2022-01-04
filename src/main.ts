@@ -1,6 +1,6 @@
-import parser from "./lib/parser";
+import DB from "./lib/DB";
 
 (async function () {
-	const response = await parser.getSpecialtiesList();
-	console.log(response);
+	await DB.vk.connection.asPromise();
+	console.log(await DB.vk.models.user.findOne({}));
 })();
