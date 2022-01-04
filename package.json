@@ -1,5 +1,19 @@
 {
 	"name": "mpt-assistant",
 	"version": "1.0.0",
-	"license": "MIT"
+	"repository": "https://github.com/MPT-Assistant/mpt-assistant",
+	"author": "rus_anonym <alexandrsemin2033@gmail.com>",
+	"license": "MIT",
+	"scripts": {
+		"build": "tsc --project tsconfig.json",
+		"lint": "eslint ./src"
+	},
+	"devDependencies": {
+		"@types/node": "^16.6.2",
+		"@typescript-eslint/eslint-plugin": "^4.29.2",
+		"@typescript-eslint/parser": "^4.29.2",
+		"eslint": "^7.32.0",
+		"typescript": "^4.3.5",
+		"typescript-eslint": "^0.0.1-alpha.0"
+	}
 }
