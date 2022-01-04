@@ -1,6 +1,6 @@
-import DB from "./lib/DB";
+import parser from "./lib/parser";
 
 (async function () {
-	const response = await DB.api.connection.asPromise();
-	console.log("Connected to DB");
+	const response = await parser.getSpecialtiesList();
+	console.log(response);
 })();
