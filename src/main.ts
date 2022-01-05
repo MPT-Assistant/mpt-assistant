@@ -4,6 +4,7 @@ import DB from "./lib/DB";
 import VK from "./lib/VK";
 
 import "./lib/VK/commands/textLoader";
+import "./lib/VK/commands/eventLoader";
 
 (async function () {
 	await DB.api.connection.asPromise();
