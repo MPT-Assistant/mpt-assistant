@@ -1,8 +1,14 @@
 export default interface IConfig {
-    db: {
-        protocol: string;
-        address: string;
-        login: string;
-        password: string;
-    }
+	db: {
+		protocol: string;
+		address: string;
+		login: string;
+		password: string;
+	};
+	vk: {
+		group: {
+			id: number;
+			token: string;
+		};
+	};
 }
