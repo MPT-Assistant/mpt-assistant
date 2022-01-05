@@ -115,6 +115,7 @@ class UtilsMPT {
 		lessons: MPT.Schedule.ParsedLesson[];
 		replacements: ExtractDoc<typeof DB.api.schemes.replacementSchema>[];
 		timetable: MPT.Timetable.ParsedElement[];
+		toString(): string;
 	}> {
 		const replacements = await DB.api.models.replacement.find({
 			group: group.name,
@@ -198,12 +199,47 @@ class UtilsMPT {
 			});
 		}
 
+		const toString = () => {
+			const selectedDayName = selectedDate
+				.locale("ru")
+				.format("dddd")
+				.split("");
+			selectedDayName[0] = selectedDayName[0].toUpperCase();
+
+			let responseLessonsText = "";
+
+			for (const lesson of lessons) {
+				responseLessonsText += `${
+					lesson.timetable.start.format("HH:mm:ss") +
+					" - " +
+					lesson.timetable.end.format("HH:mm:ss")
+				}\n${lesson.num}. ${lesson.name} (${lesson.teacher})\n\n`;
+			}
+
+			return `расписание на ${selectedDate.format("DD.MM.YYYY")}:
+Группа: ${group.name}
+День: ${selectedDayName.join("")}
+Место: ${schedule.place}
+Неделя: ${week}
+
+${responseLessonsText}
+${
+	replacements.length !== 0
+		? `\nВнимание:\nНа выбранный день есть ${utils.string.declOfNum(
+				replacements.length,
+				["замена", "замены", "замены"],
+		  )}.\nПросмотреть текущие замены можно командой "замены".`
+		: ""
+}`;
+		};
+
 		return {
 			place,
 			week,
 			lessons,
 			replacements,
 			timetable: dayTimetable,
+			toString,
 		};
 	}
 

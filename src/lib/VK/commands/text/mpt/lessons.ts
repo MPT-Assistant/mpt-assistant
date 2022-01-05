@@ -67,36 +67,6 @@ new VKBotTextCommand({
 			});
 		}
 
-		let responseLessonsText = "";
-
-		for (const lesson of schedule.lessons) {
-			responseLessonsText += `${
-				lesson.timetable.start.format("HH:mm:ss") +
-				" - " +
-				lesson.timetable.end.format("HH:mm:ss")
-			}\n${lesson.num}. ${lesson.name} (${lesson.teacher})\n\n`;
-		}
-
-		const selectedDayName = selectedDate.locale("ru").format("dddd").split("");
-		selectedDayName[0] = selectedDayName[0].toUpperCase();
-
-		return await context.reply(
-			`расписание на ${selectedDate.format("DD.MM.YYYY")}:
-Группа: ${groupData.name}
-День: ${selectedDayName.join("")}
-Место: ${schedule.place}
-Неделя: ${schedule.week}
-
-${responseLessonsText}
-${
-	schedule.replacements.length !== 0
-		? `\nВнимание:\nНа выбранный день есть ${rusAnonymUtils.string.declOfNum(
-				schedule.replacements.length,
-				["замена", "замены", "замены"],
-		  )}.\nПросмотреть текущие замены можно командой "замены".`
-		: ""
-}`,
-			{ keyboard },
-		);
+		return await context.reply(schedule.toString(), { keyboard });
 	},
 });
