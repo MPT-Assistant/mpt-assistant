@@ -50,6 +50,10 @@ class UtilsRest {
 			selectedDate = moment();
 		}
 
+		if (!text) {
+			selectedDate.add(1, "day");
+		}
+
 		return selectedDate;
 	}
 

@@ -109,7 +109,13 @@ class UtilsMPT {
 	public async getGroupSchedule(
 		group: ExtractDoc<typeof DB.api.schemes.groupSchema>,
 		selectedDate: moment.Moment,
-	) {
+	): Promise<{
+		place: string;
+		week: MPT.Week;
+		lessons: MPT.Schedule.ParsedLesson[];
+		replacements: ExtractDoc<typeof DB.api.schemes.replacementSchema>[];
+		timetable: MPT.Timetable.ParsedElement[];
+	}> {
 		const replacements = await DB.api.models.replacement.find({
 			group: group.name,
 			date: {
@@ -122,6 +128,7 @@ class UtilsMPT {
 			(day) => day.num === selectedDate.day(),
 		)!;
 
+		const place = schedule.place;
 		const week = this.getWeekLegend(selectedDate);
 		const dayTimetable = this.getTimetable(selectedDate);
 
@@ -192,8 +199,10 @@ class UtilsMPT {
 		}
 
 		return {
+			place,
 			week,
 			lessons,
+			replacements,
 			timetable: dayTimetable,
 		};
 	}
