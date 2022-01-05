@@ -33,6 +33,20 @@ export default async function messageNewHandler(
 				? await utils.vk.getChatData(context.chatId as number)
 				: undefined,
 		};
+
+		const reply = context.reply.bind(context);
+		context.reply = (text, params) => {
+			if (typeof text === "string") {
+				text = `${context.state.user.nickname}, ${text}`;
+				return reply(text, params);
+			} else {
+				if (text.message) {
+					text.message = `${context.state.user.nickname}, ${text.message}`;
+				}
+				return reply(text);
+			}
+		};
+
 		await command.handler(context);
 		await context.state.user.save();
 		if (context.state.chat) {
