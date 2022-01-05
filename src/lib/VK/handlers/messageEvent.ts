@@ -1,4 +1,4 @@
-import { APIError, MessageEventContext } from "vk-io";
+import { APIError, MessageEventContext, getRandomId } from "vk-io";
 import BotVK from "../../utils/vk/types";
 
 import VK from "../index";
@@ -36,21 +36,19 @@ export default async function messageEventHandler(
 				if (error instanceof APIError) {
 					if (error.code === 909) {
 						await VK.api.messages.send({
+							random_id: getRandomId(),
 							peer_id: event.peerId,
 							forward: JSON.stringify({
 								peer_id: event.peerId,
-								conversation_message_id: event.conversationMessageId,
+								conversation_message_ids: event.conversationMessageId,
 								is_reply: true,
 							}),
 							...params,
 						});
-						return 1;
+						return;
 					}
 				}
-				return event.answer({
-					type: "show_snackbar",
-					text: "Ошиб очка",
-				});
+				return;
 			}
 		},
 	};

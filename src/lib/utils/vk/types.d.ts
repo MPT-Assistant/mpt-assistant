@@ -13,7 +13,7 @@ namespace BotVK {
 	interface GroupEventContextState {
 		user: ExtractDoc<typeof DB.bot.schemes.userSchema>;
 		chat?: ExtractDoc<typeof DB.bot.schemes.chatSchema>;
-		editParentMessage(params: MessageEditParams): Promise<BaseBoolInt>;
+		editParentMessage(params: MessageEditParams): Promise<unknown>;
 	}
 }
 
