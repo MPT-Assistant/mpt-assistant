@@ -6,7 +6,7 @@ import utils from "../../utils";
 
 export default async function messageEventHandler(
 	event: MessageEventContext<BotVK.GroupEventContextState>,
-) {
+): Promise<1 | undefined> {
 	if (!event.eventPayload || !event.eventPayload.cmd) {
 		return;
 	}

@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { ExtractDoc } from "ts-mongoose";
 import { Params } from "vk-io";
-import { BaseBoolInt } from "vk-io/lib/api/schemas/objects";
 import DB from "../../DB";
 
 namespace BotVK {

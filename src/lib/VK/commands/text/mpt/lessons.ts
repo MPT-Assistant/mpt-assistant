@@ -1,5 +1,4 @@
 import { Keyboard } from "vk-io";
-import rusAnonymUtils from "rus-anonym-utils";
 
 import VKBotTextCommand from "../../../../utils/vk/TextCommand";
 

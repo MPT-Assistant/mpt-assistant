@@ -125,6 +125,7 @@ class UtilsMPT {
 			},
 		});
 
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		const schedule = group.schedule.find(
 			(day) => day.num === selectedDate.day(),
 		)!;
@@ -136,6 +137,7 @@ class UtilsMPT {
 		const lessons: MPT.Schedule.ParsedLesson[] = [];
 
 		for (const lesson of schedule.lessons) {
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 			const timetable = dayTimetable.find(
 				(x) => x.type === "lesson" && x.num === lesson.num,
 			)!;
@@ -173,6 +175,7 @@ class UtilsMPT {
 				);
 
 				if (!currentLesson) {
+					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 					const timetable = dayTimetable.find(
 						(x) => x.type === "lesson" && x.num === replacement.lessonNum,
 					)!;
@@ -397,7 +400,7 @@ ${
 				ordered: false,
 			})
 			.catch((err) => {
-				if (err.hasOwnProperty("insertedDocs")) {
+				if (Object.prototype.hasOwnProperty.call(err, "insertedDocs")) {
 					(
 						err.insertedDocs as ExtractDoc<
 							typeof DB.api.schemes.replacementSchema
@@ -443,7 +446,7 @@ ${
 				ordered: false,
 			})
 			.catch((err) => {
-				if (err.hasOwnProperty("insertedDocs")) {
+				if (Object.prototype.hasOwnProperty.call(err, "insertedDocs")) {
 					(
 						err.insertedDocs as ExtractDoc<
 							typeof DB.api.schemes.replacementSchema
