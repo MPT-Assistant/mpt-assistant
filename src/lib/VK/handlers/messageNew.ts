@@ -2,6 +2,7 @@ import DB from "../../DB";
 import utils from "../../utils";
 
 import { MessageContext } from "vk-io";
+import BotVK from "../../utils/vk/types";
 
 const mentionRegExp = new RegExp(
 	`([club${DB.config.vk.group.id}|[@a-z_A-ZА-Яа-я0-9]+])`,

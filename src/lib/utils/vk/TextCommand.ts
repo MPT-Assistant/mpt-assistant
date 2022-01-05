@@ -1,6 +1,7 @@
 import { MessageContext } from "vk-io";
 
 import utils from "..";
+import BotVK from "./types";
 
 class VKBotTextCommand {
 	public regexp: RegExp;
