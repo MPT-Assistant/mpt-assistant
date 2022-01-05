@@ -1,5 +1,3 @@
-import utils from "./lib/utils";
-
 import DB from "./lib/DB";
 import VK from "./lib/VK";
 import Telegram from "./lib/Telegram";
@@ -14,8 +12,6 @@ import "./lib/VK/commands/eventLoader";
 	console.log("VK DB connected");
 	await DB.telegram.connection.asPromise();
 	console.log("Telegram DB connected");
-	await utils.cache.update();
-	console.log("Cache updated");
 
 	await VK.updates.start();
 	console.log("VK polling started");
