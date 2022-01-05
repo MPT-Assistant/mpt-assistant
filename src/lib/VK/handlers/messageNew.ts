@@ -7,7 +7,7 @@ import vkUtils from "../utils";
 import BotVK from "../utils/types";
 
 const mentionRegExp = new RegExp(
-	`([club${DB.config.vk.group.id}|[@a-z_A-ZА-Яа-я0-9]+])`,
+	`([club${DB.config.vk.group.pollingGroupId}|[@a-z_A-ZА-Яа-я0-9]+])`,
 	"gi",
 );
 

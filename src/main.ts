@@ -2,6 +2,7 @@ import utils from "./lib/utils";
 
 import DB from "./lib/DB";
 import VK from "./lib/VK";
+import Telegram from "./lib/Telegram";
 
 import "./lib/VK/commands/textLoader";
 import "./lib/VK/commands/eventLoader";
@@ -17,5 +18,7 @@ import "./lib/VK/commands/eventLoader";
 	console.log("Cache updated");
 
 	await VK.updates.start();
-	console.log("VK Polling started");
+	console.log("VK polling started");
+	await Telegram.updates.startPolling();
+	console.log("Telegram polling started");
 })();

@@ -1,3 +1,5 @@
+import { VKOptions } from "vk-io/lib/types";
+import { TelegramOptions } from "./../../node_modules/puregram/lib/interfaces.d";
 export default interface IConfig {
 	db: {
 		protocol: string;
@@ -6,9 +8,7 @@ export default interface IConfig {
 		password: string;
 	};
 	vk: {
-		group: {
-			id: number;
-			token: string;
-		};
+		group: Partial<VKOptions> & { token: string; pollingGroupId: number };
 	};
+	telegram: Partial<TelegramOptions> & { token: string };
 }
