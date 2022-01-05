@@ -6,3 +6,4 @@ import "./text/rest/nick";
 import "./text/rest/mailing";
 
 import "./text/mpt/setGroup";
+import "./text/mpt/regChat";
