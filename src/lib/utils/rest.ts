@@ -52,6 +52,29 @@ class UtilsRest {
 
 		return selectedDate;
 	}
+
+	public getNextSelectDay(
+		day:
+			| "понедельник"
+			| "вторник"
+			| "среда"
+			| "четверг"
+			| "пятница"
+			| "суббота"
+			| "воскресенье",
+	): string {
+		const selectedDay = this.DayTemplates.findIndex((x) => x.test(day));
+		const currentDate = new Date();
+		const targetDay = Number(selectedDay);
+		const targetDate = new Date();
+		const delta = targetDay - currentDate.getDay();
+		if (delta >= 0) {
+			targetDate.setDate(currentDate.getDate() + delta);
+		} else {
+			targetDate.setDate(currentDate.getDate() + 7 + delta);
+		}
+		return moment(targetDate).format("DD.MM.YYYY");
+	}
 }
 
 export default UtilsRest;
