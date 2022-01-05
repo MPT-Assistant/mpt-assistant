@@ -26,7 +26,7 @@ new VKBotTextCommand({
 					label: group[i],
 					color: buttonColors[i],
 					payload: {
-						type: "setGroup",
+						cmd: "setGroup",
 						group: group[i],
 					},
 				});

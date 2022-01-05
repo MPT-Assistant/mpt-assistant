@@ -60,7 +60,7 @@ new VKBotTextCommand({
 			keyboard.callbackButton({
 				label: "Замены",
 				payload: {
-					type: "replacements",
+					cmd: "replacements",
 					date: selectedDate.format("DD.MM.YYYY"),
 				},
 				color: Keyboard.PRIMARY_COLOR,

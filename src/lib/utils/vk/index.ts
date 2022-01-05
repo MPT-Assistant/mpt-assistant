@@ -66,7 +66,7 @@ class UtilsVK {
 		builder.callbackButton({
 			label: "ПН",
 			payload: {
-				type: command,
+				cmd: command,
 				date: utils.rest.getNextSelectDay("понедельник"),
 			},
 			color: Keyboard.SECONDARY_COLOR,
@@ -74,7 +74,7 @@ class UtilsVK {
 		builder.callbackButton({
 			label: "ВТ",
 			payload: {
-				type: command,
+				cmd: command,
 				date: utils.rest.getNextSelectDay("вторник"),
 			},
 			color: Keyboard.SECONDARY_COLOR,
@@ -82,7 +82,7 @@ class UtilsVK {
 		builder.callbackButton({
 			label: "СР",
 			payload: {
-				type: command,
+				cmd: command,
 				date: utils.rest.getNextSelectDay("среда"),
 			},
 			color: Keyboard.SECONDARY_COLOR,
@@ -91,7 +91,7 @@ class UtilsVK {
 		builder.callbackButton({
 			label: "ЧТ",
 			payload: {
-				type: command,
+				cmd: command,
 				date: utils.rest.getNextSelectDay("четверг"),
 			},
 			color: Keyboard.SECONDARY_COLOR,
@@ -99,7 +99,7 @@ class UtilsVK {
 		builder.callbackButton({
 			label: "ПТ",
 			payload: {
-				type: command,
+				cmd: command,
 				date: utils.rest.getNextSelectDay("пятница"),
 			},
 			color: Keyboard.SECONDARY_COLOR,
@@ -107,7 +107,7 @@ class UtilsVK {
 		builder.callbackButton({
 			label: "СБ",
 			payload: {
-				type: command,
+				cmd: command,
 				date: utils.rest.getNextSelectDay("суббота"),
 			},
 			color: Keyboard.SECONDARY_COLOR,
@@ -116,7 +116,7 @@ class UtilsVK {
 		builder.callbackButton({
 			label: "Вчера",
 			payload: {
-				type: command,
+				cmd: command,
 				date: moment().subtract(1, "day").format("DD.MM.YYYY"),
 			},
 			color: Keyboard.NEGATIVE_COLOR,
@@ -124,7 +124,7 @@ class UtilsVK {
 		builder.callbackButton({
 			label: "Завтра",
 			payload: {
-				type: command,
+				cmd: command,
 				date: moment().add(1, "day").format("DD.MM.YYYY"),
 			},
 			color: Keyboard.POSITIVE_COLOR,

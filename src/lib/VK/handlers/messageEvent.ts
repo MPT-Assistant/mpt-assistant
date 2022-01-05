@@ -7,12 +7,12 @@ import utils from "../../utils";
 export default async function messageEventHandler(
 	event: MessageEventContext<BotVK.GroupEventContextState>,
 ) {
-	if (!event.eventPayload || !event.eventPayload.type) {
+	if (!event.eventPayload || !event.eventPayload.cmd) {
 		return;
 	}
 
 	const command = utils.vk.eventCommands.find(
-		(x) => x.event === event.eventPayload.type,
+		(x) => x.event === event.eventPayload.cmd,
 	);
 
 	if (!command) {

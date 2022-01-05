@@ -30,7 +30,7 @@ new VKBotTextCommand({
 					label: group[i],
 					color: buttonColors[i],
 					payload: {
-						type: "regChat",
+						cmd: "regChat",
 						group: group[i],
 					},
 				});
