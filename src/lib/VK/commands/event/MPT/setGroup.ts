@@ -17,10 +17,18 @@ new EventCommand({
 			});
 		} else {
 			event.state.user.group = selectedGroup.name;
-			const keyboard = Keyboard.builder().inline();
+			const keyboard = Keyboard.builder()
+				.inline()
+				.callbackButton({
+					label: "Профиль",
+					payload: {
+						cmd: "profile",
+					},
+				});
+
 			return await Promise.all([
 				event.state.editParentMessage({
-					message: `Вы установили себе группу ${selectedGroup.name}\nОтделение: (${selectedGroup.specialty})`,
+					message: `Вы установили себе группу ${selectedGroup.name}\nОтделение: ${selectedGroup.specialty}`,
 					keyboard,
 				}),
 				event.answer({
