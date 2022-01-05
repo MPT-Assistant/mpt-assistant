@@ -15,7 +15,7 @@ class VKBotTextCommand {
 		templates = [],
 		handler,
 	}: {
-		alias: RegExp | string;
+		alias: RegExp | string | string[];
 		templates?: string[];
 		handler: (
 			message: MessageContext<BotVK.GroupMessageContextState>,
@@ -23,6 +23,9 @@ class VKBotTextCommand {
 	}) {
 		if (typeof alias === "string") {
 			alias = new RegExp(`^(?:${alias})$`, "i");
+		}
+		if (Array.isArray(alias)) {
+			alias = new RegExp(`^(?:${alias.join("|")})$`, "i");
 		}
 		this.regexp = alias;
 		this.templates = templates;
