@@ -11,8 +11,8 @@ namespace BotVK {
 	}
 
 	interface GroupEventContextState {
-		user: ExtractDoc<typeof DB.bot.schemes.userSchema>;
-		chat?: ExtractDoc<typeof DB.bot.schemes.chatSchema>;
+		user: ExtractDoc<typeof DB.vk.schemes.userSchema>;
+		chat?: ExtractDoc<typeof DB.vk.schemes.chatSchema>;
 		editParentMessage(
 			params: Partial<Params.MessagesEditParams>,
 		): Promise<unknown>;
