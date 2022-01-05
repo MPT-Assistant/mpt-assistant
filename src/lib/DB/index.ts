@@ -5,7 +5,7 @@ import config from "../../DB/config";
 import timetable from "../../DB/timetable";
 
 class DBManager {
-	public readonly api = new API("api");
+	public readonly api = new API("API");
 	public readonly vk = new VK("vk");
 
 	public readonly timetable = timetable;
