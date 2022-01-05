@@ -1,6 +1,7 @@
-import DB from "./lib/DB";
+import moment from "moment";
+import utils from "./lib/utils";
 
 (async function () {
-	await DB.vk.connection.asPromise();
-	console.log(await DB.vk.models.user.findOne({}));
+	await utils.cache.update();
+	console.log(utils.mpt);
 })();
