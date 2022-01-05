@@ -1,8 +1,9 @@
 import moment from "moment";
 import { ExtractDoc } from "ts-mongoose";
 import { SHA512 } from "crypto-js";
+import utils from "rus-anonym-utils";
 
-import utils from "..";
+import internalUtils from "..";
 import DB from "../../DB";
 import parser from "../../parser";
 
@@ -45,6 +46,41 @@ class UtilsMPT {
 			});
 		}
 		return response;
+	}
+
+	public async findGroup(
+		groupName: string,
+	): Promise<ExtractDoc<typeof DB.api.schemes.groupSchema> | string[]> {
+		const selectedGroup = await DB.api.models.group.findOne({
+			name: new RegExp(`^${groupName}$`, "i"),
+		});
+
+		if (!selectedGroup) {
+			const diff: { group: string; diff: number }[] = [];
+			for await (const group of DB.api.models.group
+				.find({})
+				.select({ name: 1 })) {
+				diff.push({
+					group: group.name,
+					diff: utils.string.levenshtein(groupName, group.name, {
+						replaceCase: 0,
+					}),
+				});
+			}
+			diff.sort(function (a, b) {
+				if (a.diff > b.diff) {
+					return 1;
+				}
+				if (a.diff < b.diff) {
+					return -1;
+				}
+				return 0;
+			});
+
+			return diff.slice(0, 3).map((x) => x.group);
+		} else {
+			return selectedGroup;
+		}
 	}
 
 	public async getExtendGroupInfo(groupName: string): Promise<{
@@ -165,9 +201,13 @@ class UtilsMPT {
 	public getWeekLegend(selectedDate: moment.Moment): MPT.Week {
 		const currentWeek = moment().week();
 		if (currentWeek % 2 === selectedDate.week() % 2) {
-			return utils.cache.mpt.week === "Числитель" ? "Числитель" : "Знаменатель";
+			return internalUtils.cache.mpt.week === "Числитель"
+				? "Числитель"
+				: "Знаменатель";
 		} else {
-			return utils.cache.mpt.week === "Числитель" ? "Знаменатель" : "Числитель";
+			return internalUtils.cache.mpt.week === "Числитель"
+				? "Знаменатель"
+				: "Числитель";
 		}
 	}
 
@@ -326,7 +366,7 @@ class UtilsMPT {
 	private emitReplacement(
 		replacement: ExtractDoc<typeof DB.api.schemes.replacementSchema>,
 	) {
-		utils.events.emit("new_replacement", replacement);
+		internalUtils.events.emit("new_replacement", replacement);
 	}
 }
 
