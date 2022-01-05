@@ -38,11 +38,12 @@ export default async function messageNewHandler(
 		const reply = context.reply.bind(context);
 		context.reply = (text, params) => {
 			if (typeof text === "string") {
-				text = `${context.state.user.nickname}, ${text}`;
-				return reply(text, params);
+				text = `@id${context.senderId} (${context.state.user.nickname}), ${text}`;
+				return reply(text, { disable_mentions: true, ...params });
 			} else {
 				if (text.message) {
-					text.message = `${context.state.user.nickname}, ${text.message}`;
+					text.message = `@id${context.senderId} (${context.state.user.nickname}), ${text.message}`;
+					text.disable_mentions = true;
 				}
 				return reply(text);
 			}
