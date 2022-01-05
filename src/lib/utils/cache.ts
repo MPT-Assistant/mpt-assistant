@@ -1,6 +1,6 @@
 import parser from "../parser";
 
-class Cache {
+class UtilsCache {
 	public readonly mpt: {
 		week: MPT.Week;
 	} = {
@@ -12,4 +12,4 @@ class Cache {
 	}
 }
 
-export default Cache;
+export default UtilsCache;

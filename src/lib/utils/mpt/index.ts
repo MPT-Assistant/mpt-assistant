@@ -2,11 +2,11 @@ import moment from "moment";
 import { ExtractDoc } from "ts-mongoose";
 import { SHA512 } from "crypto-js";
 
-import utils from ".";
-import DB from "../DB";
-import parser from "../parser";
+import utils from "..";
+import DB from "../../DB";
+import parser from "../../parser";
 
-class MPT {
+class UtilsMPT {
 	public getTimetable(date: moment.Moment): MPT.Timetable.ParsedElement[] {
 		const response: MPT.Timetable.ParsedElement[] = [];
 
@@ -307,4 +307,4 @@ class MPT {
 	}
 }
 
-export default MPT;
+export default UtilsMPT;
