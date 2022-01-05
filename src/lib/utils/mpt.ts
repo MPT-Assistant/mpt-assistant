@@ -1,8 +1,9 @@
 import moment from "moment";
 import { ExtractDoc } from "ts-mongoose";
-import utils from ".";
 
+import utils from ".";
 import DB from "../DB";
+import parser from "../parser";
 
 class MPT {
 	public getTimetable(date: moment.Moment): MPT.Timetable.ParsedElement[] {
@@ -143,6 +144,64 @@ class MPT {
 			return utils.cache.mpt.week === "Числитель" ? "Числитель" : "Знаменатель";
 		} else {
 			return utils.cache.mpt.week === "Числитель" ? "Знаменатель" : "Числитель";
+		}
+	}
+
+	public async updateSchedule(): Promise<void> {
+		const schedule = await parser.getSchedule();
+		const specialties = await parser.getSpecialtiesList();
+
+		for (const specialty of schedule) {
+			for (const group of specialty.groups) {
+				let accurateSpecialty = specialties.find(
+					(x) => x.code === specialty.name,
+				);
+
+				if (!accurateSpecialty) {
+					const [groupSpecialtyCode] = group.name.match(
+						/[А-Я]+/i,
+					) as RegExpMatchArray;
+
+					accurateSpecialty = specialties.find(
+						(x) => x.code === specialty.name + `(${groupSpecialtyCode})`,
+					) as MPT.Specialties.Specialty;
+				}
+
+				const response = await DB.api.models.group.updateOne(
+					{ name: group.name },
+					{
+						name: group.name,
+						specialty: accurateSpecialty.code,
+						schedule: group.days,
+					},
+				);
+
+				if (response.matchedCount === 0) {
+					await DB.api.models.group.insertMany({
+						name: group.name,
+						specialty: accurateSpecialty.code,
+						schedule: group.days,
+					});
+				}
+			}
+		}
+
+		for (const specialty of specialties) {
+			const advancedSpecialtyInfo = await parser.getSpecialtySite(
+				specialty.name,
+				specialties,
+			);
+
+			const response = await DB.api.models.specialty.updateOne(
+				{
+					code: advancedSpecialtyInfo.code,
+				},
+				advancedSpecialtyInfo,
+			);
+
+			if (response.matchedCount === 0) {
+				await DB.api.models.specialty.insertMany(advancedSpecialtyInfo);
+			}
 		}
 	}
 }
