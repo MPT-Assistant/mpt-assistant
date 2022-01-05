@@ -26,16 +26,22 @@ export default async function messageEventHandler(
 				? await utils.vk.getChatData(event.peerId - 2e9)
 				: undefined,
 		editParentMessage: async (params) => {
+			if (params.message) {
+				params.message = `@id${event.senderId} (${event.state.user.nickname}), ${params.message}`;
+			}
+
 			try {
 				return await VK.api.messages.edit({
+					...params,
 					peer_id: event.peerId,
 					conversation_message_id: event.conversationMessageId,
-					...params,
+					disable_mentions: true,
 				});
 			} catch (error) {
 				if (error instanceof APIError) {
 					if (error.code === 909) {
 						await VK.api.messages.send({
+							...params,
 							random_id: getRandomId(),
 							peer_id: event.peerId,
 							forward: JSON.stringify({
@@ -43,7 +49,11 @@ export default async function messageEventHandler(
 								conversation_message_ids: event.conversationMessageId,
 								is_reply: true,
 							}),
-							...params,
+							disable_mentions: true,
+						});
+						await event.answer({
+							type: "show_snackbar",
+							text: "Отправлено в новом сообщении",
 						});
 						return;
 					}
