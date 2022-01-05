@@ -47,6 +47,29 @@ class UtilsMPT {
 		return response;
 	}
 
+	public async getExtendGroupInfo(groupName: string): Promise<{
+		group: ExtractDoc<typeof DB.api.schemes.groupSchema>;
+		specialty: ExtractDoc<typeof DB.api.schemes.specialtySchema>;
+	}> {
+		const group = await DB.api.models.group.findOne({
+			name: groupName,
+		});
+
+		if (!group) {
+			throw new Error(`Group not found: ${groupName}`);
+		}
+
+		const specialty = await DB.api.models.specialty.findOne({
+			code: group.specialty,
+		});
+
+		if (!specialty) {
+			throw new Error(`Specialty not found: ${group.specialty}`);
+		}
+
+		return { group, specialty };
+	}
+
 	public async getGroupSchedule(
 		group: ExtractDoc<typeof DB.api.schemes.groupSchema>,
 		selectedDate: moment.Moment,
