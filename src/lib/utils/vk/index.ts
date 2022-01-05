@@ -1,6 +1,6 @@
 import moment from "moment";
-import { ExtractDoc } from "ts-mongoose";
-import { Keyboard, KeyboardBuilder } from "vk-io";
+import { ExtractDoc, ExtractFromReq, ExtractProps } from "ts-mongoose";
+import { Keyboard, KeyboardBuilder, getRandomId } from "vk-io";
 
 import utils from "..";
 import DB from "../../DB";
@@ -128,6 +128,94 @@ class UtilsVK {
 		});
 
 		return builder;
+	}
+
+	public async onNewReplacement(
+		replacement: ExtractDoc<typeof DB.api.schemes.replacementSchema>,
+	): Promise<void> {
+		const replacementDate = moment(replacement.date).format("DD.MM.YYYY");
+		const message = `Обнаружена новая замена на ${replacementDate}
+Пара: ${replacement.lessonNum}
+Заменяемая пара: ${replacement.oldLessonName}
+Преподаватель: ${replacement.oldLessonTeacher}
+Новая пара: ${replacement.newLessonName}
+Преподаватель на новой паре: ${replacement.newLessonTeacher}
+Добавлена на сайт: ${moment(replacement.addToSite).format(
+			"HH:mm:ss | DD.MM.YYYY",
+		)}
+Обнаружена ботом: ${moment(replacement.detected).format(
+			"HH:mm:ss | DD.MM.YYYY",
+		)}`;
+
+		const keyboard = Keyboard.builder()
+			.inline()
+			.textButton({
+				label: "Расписание",
+				payload: {
+					cmd: `Расписание ${replacementDate}`,
+				},
+				color: Keyboard.SECONDARY_COLOR,
+			})
+			.row()
+			.textButton({
+				label: "Отключить рассылку",
+				payload: {
+					cmd: "Изменения отключить",
+				},
+				color: Keyboard.NEGATIVE_COLOR,
+			});
+
+		const userQuery = {
+			group: replacement.group,
+			inform: true,
+			reportedReplacements: {
+				$nin: [replacement.hash],
+			},
+		};
+
+		for await (const user of DB.vk.models.user.find(userQuery)) {
+			user.reportedReplacements.push(replacement.hash);
+			user.markModified("reportedReplacements");
+
+			try {
+				await VK.api.messages.send({
+					user_id: user.id,
+					random_id: getRandomId(),
+					message,
+					keyboard,
+				});
+			} catch (error) {
+				user.inform = false;
+			}
+
+			await user.save();
+		}
+
+		const chatQuery = {
+			group: replacement.group,
+			inform: true,
+			reportedReplacements: {
+				$nin: [replacement.hash],
+			},
+		};
+
+		for await (const chat of DB.vk.models.chat.find(chatQuery)) {
+			chat.reportedReplacements.push(replacement.hash);
+			chat.markModified("reportedReplacements");
+
+			try {
+				await VK.api.messages.send({
+					chat_id: chat.id,
+					random_id: getRandomId(),
+					message,
+					keyboard,
+				});
+			} catch (error) {
+				chat.inform = false;
+			}
+
+			await chat.save();
+		}
 	}
 }
 
