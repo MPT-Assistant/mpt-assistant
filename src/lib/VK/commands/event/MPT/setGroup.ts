@@ -1,8 +1,8 @@
 import { Keyboard } from "vk-io";
 
-import EventCommand from "../../../utils/vk/EventCommand";
-import DB from "../../../DB";
-import VK from "../../../VK";
+import EventCommand from "../../../../utils/vk/EventCommand";
+import DB from "../../../../DB";
+import VK from "../../..";
 
 new EventCommand({
 	event: "setGroup",
