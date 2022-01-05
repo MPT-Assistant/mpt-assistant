@@ -206,6 +206,54 @@ class MPT {
 		}
 	}
 
+	public async updateReplacementsList(): Promise<void> {
+		const replacements = await parser.getReplacements();
+		const insertedDocuments = [];
+
+		for (const dayReplacements of replacements) {
+			const date = dayReplacements.date;
+			for (const groupReplacements of dayReplacements.groups) {
+				const groupName = groupReplacements.group;
+				for (const replacement of groupReplacements.replacements) {
+					const hash = SHA512(
+						`${date}|${groupName}|${JSON.stringify(replacement)}`,
+					).toString();
+
+					insertedDocuments.push({
+						date: new Date(date),
+						group: groupName,
+						detected: new Date(),
+						addToSite: new Date(replacement.updated),
+						lessonNum: replacement.num,
+						oldLessonName: replacement.old.name,
+						oldLessonTeacher: replacement.old.teacher,
+						newLessonName: replacement.new.name,
+						newLessonTeacher: replacement.new.teacher,
+						hash: hash,
+					});
+				}
+			}
+		}
+
+		const response = await DB.api.models.replacement
+			.insertMany(insertedDocuments, {
+				ordered: false,
+			})
+			.catch((err) => {
+				if (err.hasOwnProperty("insertedDocs")) {
+					(
+						err.insertedDocs as ExtractDoc<
+							typeof DB.api.schemes.replacementSchema
+						>[]
+					).map(this.emitReplacement);
+				}
+			});
+
+		if (response) {
+			response.map(this.emitReplacement);
+		}
+	}
+
 	public async updateReplacementsOnDay(date: Date): Promise<void> {
 		const replacements = await parser.getReplacementsOnDay(date);
 
