@@ -1,5 +1,6 @@
 import moment from "moment";
 import { ExtractDoc } from "ts-mongoose";
+import { SHA512 } from "crypto-js";
 
 import utils from ".";
 import DB from "../DB";
@@ -203,6 +204,58 @@ class MPT {
 				await DB.api.models.specialty.insertMany(advancedSpecialtyInfo);
 			}
 		}
+	}
+
+	public async updateReplacementsOnDay(date: Date): Promise<void> {
+		const replacements = await parser.getReplacementsOnDay(date);
+
+		const insertedDocuments = [];
+
+		for (const groupReplacements of replacements) {
+			const groupName = groupReplacements.group;
+			for (const replacement of groupReplacements.replacements) {
+				const hash = SHA512(
+					`${date}|${groupName}|${JSON.stringify(replacement)}`,
+				).toString();
+
+				insertedDocuments.push({
+					date,
+					group: groupName,
+					detected: new Date(),
+					addToSite: new Date(replacement.updated),
+					lessonNum: replacement.num,
+					oldLessonName: replacement.old.name,
+					oldLessonTeacher: replacement.old.teacher,
+					newLessonName: replacement.new.name,
+					newLessonTeacher: replacement.new.teacher,
+					hash: hash,
+				});
+			}
+		}
+
+		const response = await DB.api.models.replacement
+			.insertMany(insertedDocuments, {
+				ordered: false,
+			})
+			.catch((err) => {
+				if (err.hasOwnProperty("insertedDocs")) {
+					(
+						err.insertedDocs as ExtractDoc<
+							typeof DB.api.schemes.replacementSchema
+						>[]
+					).map(this.emitReplacement);
+				}
+			});
+
+		if (response) {
+			response.map(this.emitReplacement);
+		}
+	}
+
+	private emitReplacement(
+		replacement: ExtractDoc<typeof DB.api.schemes.replacementSchema>,
+	) {
+		utils.events.emit("new_replacement", replacement);
 	}
 }
 
