@@ -1,9 +1,11 @@
 import { Keyboard } from "vk-io";
 
-import VKBotTextCommand from "../../../../utils/vk/TextCommand";
+import VKBotTextCommand from "../../../utils/TextCommand";
 
 import DB from "../../../../DB";
+
 import utils from "../../../../utils";
+import vkUtils from "../../../utils";
 
 new VKBotTextCommand({
 	alias: /^(?:расписание|рп|какие пары)(?:\s(.+))?$/i,
@@ -34,7 +36,7 @@ new VKBotTextCommand({
 		}
 
 		const selectedDate = utils.rest.parseSelectedDate(context.state.args[1]);
-		const keyboard = utils.vk.generateKeyboard("lessons");
+		const keyboard = vkUtils.generateKeyboard("lessons");
 
 		if (selectedDate.day() === 0) {
 			return await context.reply(

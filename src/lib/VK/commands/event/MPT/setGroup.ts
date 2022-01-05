@@ -1,6 +1,6 @@
 import { Keyboard } from "vk-io";
 
-import EventCommand from "../../../../utils/vk/EventCommand";
+import EventCommand from "../../../utils/EventCommand";
 import DB from "../../../../DB";
 
 new EventCommand({

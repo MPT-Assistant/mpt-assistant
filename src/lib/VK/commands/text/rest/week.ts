@@ -1,6 +1,6 @@
 import utils from "../../../../utils";
 
-import VKBotTextCommand from "../../../../utils/vk/TextCommand";
+import VKBotTextCommand from "../../../utils/TextCommand";
 
 new VKBotTextCommand({
 	alias: "чз",

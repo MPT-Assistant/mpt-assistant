@@ -1,6 +1,6 @@
 import { Keyboard } from "vk-io";
 
-import VKBotTextCommand from "../../../../utils/vk/TextCommand";
+import VKBotTextCommand from "../../../utils/TextCommand";
 
 import utils from "../../../../utils";
 

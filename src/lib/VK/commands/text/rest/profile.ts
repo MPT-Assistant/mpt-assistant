@@ -2,7 +2,7 @@ import { Keyboard } from "vk-io";
 
 import utils from "../../../../utils";
 
-import VKBotTextCommand from "../../../../utils/vk/TextCommand";
+import VKBotTextCommand from "../../../utils/TextCommand";
 
 new VKBotTextCommand({
 	alias: ["профиль", "проф"],

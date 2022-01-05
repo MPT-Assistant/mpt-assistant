@@ -2,7 +2,7 @@ import { Keyboard } from "vk-io";
 
 import utils from "../../../../utils";
 
-import EventCommand from "../../../../utils/vk/EventCommand";
+import EventCommand from "../../../utils/EventCommand";
 
 new EventCommand({
 	event: "profile",

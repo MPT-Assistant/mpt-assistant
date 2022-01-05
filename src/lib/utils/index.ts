@@ -1,7 +1,6 @@
 import UtilsMPT from "./mpt/index";
 import UtilsCache from "./cache";
 import UtilsEventEmitter from "./events";
-import UtilsVK from "./vk/index";
 import UtilsRest from "./rest";
 
 class Utils {
@@ -9,7 +8,6 @@ class Utils {
 	public readonly mpt = new UtilsMPT();
 	public readonly events = new UtilsEventEmitter();
 
-	public readonly vk = new UtilsVK();
 	public readonly rest = new UtilsRest();
 }
 

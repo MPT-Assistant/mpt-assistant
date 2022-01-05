@@ -1,4 +1,4 @@
-import VKBotTextCommand from "../../../../utils/vk/TextCommand";
+import VKBotTextCommand from "../../../utils/TextCommand";
 
 new VKBotTextCommand({
 	alias: /^(?:изменения)(?:\s(включить|отключить))$/i,

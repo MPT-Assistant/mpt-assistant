@@ -1,8 +1,10 @@
-import DB from "../../DB";
-import utils from "../../utils";
-
 import { MessageContext } from "vk-io";
-import BotVK from "../../utils/vk/types";
+
+import DB from "../../DB";
+
+import vkUtils from "../utils";
+
+import BotVK from "../utils/types";
 
 const mentionRegExp = new RegExp(
 	`([club${DB.config.vk.group.id}|[@a-z_A-ZА-Яа-я0-9]+])`,
@@ -22,16 +24,16 @@ export default async function messageNewHandler(
 		context.text = context.messagePayload.cmd;
 	}
 
-	const command = utils.vk.textCommands.find((x) =>
+	const command = vkUtils.textCommands.find((x) =>
 		x.check(context.text as string),
 	);
 
 	if (command) {
 		context.state = {
 			args: command.regexp.exec(context.text as string) as RegExpExecArray,
-			user: await utils.vk.getUserData(context.senderId),
+			user: await vkUtils.getUserData(context.senderId),
 			chat: context.isChat
-				? await utils.vk.getChatData(context.chatId as number)
+				? await vkUtils.getChatData(context.chatId as number)
 				: undefined,
 		};
 

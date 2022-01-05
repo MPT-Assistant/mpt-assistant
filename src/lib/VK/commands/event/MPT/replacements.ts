@@ -1,7 +1,9 @@
 import moment from "moment";
 
-import EventCommand from "../../../../utils/vk/EventCommand";
+import EventCommand from "../../../utils/EventCommand";
+
 import utils from "../../../../utils";
+import vkUtils from "../../../utils";
 
 new EventCommand({
 	event: "replacements",
@@ -49,7 +51,7 @@ new EventCommand({
 
 		await event.state.editParentMessage({
 			message: replacements.toString(),
-			keyboard: utils.vk.generateKeyboard("replacements"),
+			keyboard: vkUtils.generateKeyboard("replacements"),
 		});
 
 		return;

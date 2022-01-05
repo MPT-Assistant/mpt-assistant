@@ -1,8 +1,10 @@
 import moment from "moment";
 
-import EventCommand from "../../../../utils/vk/EventCommand";
+import EventCommand from "../../../utils/EventCommand";
 import DB from "../../../../DB";
+
 import utils from "../../../../utils";
+import vkUtils from "../../../utils";
 
 new EventCommand({
 	event: "lessons",
@@ -45,7 +47,7 @@ new EventCommand({
 			});
 		}
 
-		const keyboard = utils.vk.generateKeyboard("lessons");
+		const keyboard = vkUtils.generateKeyboard("lessons");
 		const schedule = await utils.mpt.getGroupSchedule(group, selectedDate);
 
 		await event.state.editParentMessage({

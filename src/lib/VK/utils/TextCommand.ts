@@ -1,6 +1,6 @@
 import { MessageContext } from "vk-io";
 
-import utils from "..";
+import vkUtils from ".";
 import BotVK from "./types";
 
 class VKBotTextCommand {
@@ -31,7 +31,7 @@ class VKBotTextCommand {
 		this.templates = templates;
 		this.handler = handler;
 
-		utils.vk.textCommands.push(this);
+		vkUtils.textCommands.push(this);
 	}
 
 	public check(input: string): boolean {

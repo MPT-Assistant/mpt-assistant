@@ -1,8 +1,8 @@
 import { APIError, MessageEventContext, getRandomId } from "vk-io";
-import BotVK from "../../utils/vk/types";
+import BotVK from "../utils/types";
 
 import VK from "../index";
-import utils from "../../utils";
+import vkUtils from "../utils";
 
 export default async function messageEventHandler(
 	event: MessageEventContext<BotVK.GroupEventContextState>,
@@ -11,7 +11,7 @@ export default async function messageEventHandler(
 		return;
 	}
 
-	const command = utils.vk.eventCommands.find(
+	const command = vkUtils.eventCommands.find(
 		(x) => x.event === event.eventPayload.cmd,
 	);
 
@@ -20,10 +20,10 @@ export default async function messageEventHandler(
 	}
 
 	event.state = {
-		user: await utils.vk.getUserData(event.userId),
+		user: await vkUtils.getUserData(event.userId),
 		chat:
 			event.peerId > 2e9
-				? await utils.vk.getChatData(event.peerId - 2e9)
+				? await vkUtils.getChatData(event.peerId - 2e9)
 				: undefined,
 		editParentMessage: async (params) => {
 			if (params.message) {

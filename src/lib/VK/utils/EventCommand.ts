@@ -1,7 +1,7 @@
 import { MessageEventContext } from "vk-io";
 
 import BotVK from "./types";
-import utils from "..";
+import vkUtils from ".";
 
 class VKBotEventCommand {
 	public readonly event: string;
@@ -20,7 +20,7 @@ class VKBotEventCommand {
 	}) {
 		this.event = event;
 		this.handler = handler;
-		utils.vk.eventCommands.push(this);
+		vkUtils.eventCommands.push(this);
 	}
 }
 
