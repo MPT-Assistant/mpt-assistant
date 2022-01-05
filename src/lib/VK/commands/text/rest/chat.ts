@@ -5,32 +5,35 @@ import utils from "../../../../utils";
 import VKBotTextCommand from "../../../../utils/vk/TextCommand";
 
 new VKBotTextCommand({
-	alias: ["профиль", "проф"],
+	alias: "чат",
 	handler: async (context) => {
-		if (!context.state.user.group) {
+		if (!context.state.chat) {
+			return context.reply("доступно только в беседах.");
+		}
+
+		if (!context.state.chat.group) {
 			return context.reply(
-				`Ваш профиль:
-ID: ${context.senderId}
+				`беседа #${context.chatId}
 Группа: Не установлена`,
 			);
 		}
 
 		const keyboard = Keyboard.builder().textButton({
 			label: `${
-				context.state.user.inform ? "Отключить" : "Включить"
+				context.state.chat.inform ? "Отключить" : "Включить"
 			} уведомления`,
 			payload: {
 				cmd: `изменения ${
-					context.state.user.inform ? "отключить" : "включить"
+					context.state.chat.inform ? "отключить" : "включить"
 				}`,
 			},
-			color: context.state.user.inform
+			color: context.state.chat.inform
 				? Keyboard.NEGATIVE_COLOR
 				: Keyboard.POSITIVE_COLOR,
 		});
 
 		const { group, specialty } = await utils.mpt.getExtendGroupInfo(
-			context.state.user.group,
+			context.state.chat.group,
 		);
 
 		const groupLeaders = specialty.groupsLeaders.find(
@@ -43,9 +46,8 @@ ID: ${context.senderId}
 		});
 
 		return context.reply(
-			`Ваш профиль:
-ID: ${context.senderId}
-Группа: ${context.state.user.group}
+			`беседа #${context.chatId}
+Группа: ${context.state.chat.group}
 Отделение: ${specialty.name}
 ${
 	groupLeaders
@@ -57,7 +59,7 @@ ${
 }
 
 Информирование о заменах: ${
-				context.state.user.inform ? "Включено" : "Отключено"
+				context.state.chat.inform ? "Включено" : "Отключено"
 			}`,
 			{
 				keyboard: keyboard.inline(),
