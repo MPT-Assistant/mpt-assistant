@@ -2,7 +2,6 @@ import { Keyboard } from "vk-io";
 
 import EventCommand from "../../../../utils/vk/EventCommand";
 import DB from "../../../../DB";
-import VK from "../../..";
 
 new EventCommand({
 	event: "setGroup",
@@ -20,9 +19,7 @@ new EventCommand({
 			event.state.user.group = selectedGroup.name;
 			const keyboard = Keyboard.builder().inline();
 			return await Promise.all([
-				VK.api.messages.edit({
-					conversation_message_id: event.conversationMessageId,
-					peer_id: event.peerId,
+				event.state.editParentMessage({
 					message: `Вы установили себе группу ${selectedGroup.name}\nОтделение: (${selectedGroup.specialty})`,
 					keyboard,
 				}),
