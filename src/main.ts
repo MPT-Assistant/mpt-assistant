@@ -1,7 +1,9 @@
 import utils from "./lib/utils";
-import DB from "./lib/DB";
 
+import DB from "./lib/DB";
 import VK from "./lib/VK";
+
+import "./lib/VK/commands/textLoader";
 
 (async function () {
 	await DB.api.connection.asPromise();
