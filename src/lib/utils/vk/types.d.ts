@@ -7,6 +7,11 @@ namespace BotVK {
 		user: ExtractDoc<typeof DB.vk.schemes.userSchema>;
 		chat?: ExtractDoc<typeof DB.vk.schemes.chatSchema>;
 	}
+
+	interface GroupEventContextState {
+		user: ExtractDoc<typeof DB.bot.schemes.userSchema>;
+		chat?: ExtractDoc<typeof DB.bot.schemes.chatSchema>;
+	}
 }
 
 export default BotVK;

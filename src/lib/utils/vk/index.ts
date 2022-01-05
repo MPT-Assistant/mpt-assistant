@@ -1,5 +1,5 @@
 import moment from "moment";
-import { ExtractDoc, ExtractFromReq, ExtractProps } from "ts-mongoose";
+import { ExtractDoc } from "ts-mongoose";
 import { Keyboard, KeyboardBuilder, getRandomId } from "vk-io";
 
 import utils from "..";
@@ -7,9 +7,12 @@ import DB from "../../DB";
 import VK from "../../VK";
 
 import VKBotTextCommand from "./TextCommand";
+import VKBotEventCommand from "./EventCommand";
+
 
 class UtilsVK {
 	public textCommands: VKBotTextCommand[] = [];
+	public eventCommands: VKBotEventCommand[] = [];
 
 	public async getUserData(
 		id: number,

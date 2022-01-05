@@ -4,9 +4,9 @@ import utils from "..";
 import BotVK from "./types";
 
 class VKBotTextCommand {
-	public regexp: RegExp;
-	public templates: string[];
-	public handler: (
+	public readonly regexp: RegExp;
+	public readonly templates: string[];
+	public readonly handler: (
 		message: MessageContext<BotVK.GroupMessageContextState>,
 	) => Promise<unknown>;
 
