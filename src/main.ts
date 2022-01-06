@@ -16,11 +16,13 @@ import "./lib/Telegram/commands/callbackLoader";
 	console.log("VK DB connected");
 	await DB.telegram.connection.asPromise();
 	console.log("Telegram DB connected");
+	await DB.discord.connection.asPromise();
+	console.log("Discord DB connected");
 
 	await VK.updates.start();
 	console.log("VK polling started");
 	await Telegram.updates.startPolling();
 	console.log("Telegram polling started");
 	await Discord.login();
-	console.log("Discord connected");
+	console.log("Discord polling started");
 })();
