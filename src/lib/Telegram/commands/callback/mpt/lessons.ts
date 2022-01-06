@@ -1,4 +1,3 @@
-import moment from "moment";
 import { InlineKeyboard } from "puregram";
 
 import utils from "../../../../utils";
@@ -11,9 +10,8 @@ import CallbackCommand from "../../../utils/CallbackCommand";
 new CallbackCommand({
 	event: "lessons",
 	handler: async (context) => {
-		const selectedDate = moment(
-			context.queryPayload.date || moment(),
-			"DD.MM.YYYY",
+		const selectedDate = utils.rest.parseSelectedDate(
+			context.queryPayload.date,
 		);
 
 		if (!selectedDate.isValid()) {
