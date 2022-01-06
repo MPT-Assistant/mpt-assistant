@@ -5,6 +5,8 @@ import Telegram from "./lib/Telegram";
 import "./lib/VK/commands/textLoader";
 import "./lib/VK/commands/eventLoader";
 
+import "./lib/Telegram/commands/textLoader";
+
 (async function () {
 	await DB.api.connection.asPromise();
 	console.log("API DB connected");
