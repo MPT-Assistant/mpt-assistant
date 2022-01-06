@@ -37,7 +37,7 @@ export default async function messageNewHandler(
 
 	if (command) {
 		context.state = {
-			args: command.regexp.exec(context.text as string) as RegExpExecArray,
+			args: command.regexp.exec(cmd) as RegExpExecArray,
 			user: await telegramUtils.getUserData(context.from.id),
 			chat:
 				!context.isPM && context.chatId
