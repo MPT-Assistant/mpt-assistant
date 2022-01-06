@@ -25,6 +25,24 @@ class UtilsTelegram {
 		}
 		return data;
 	}
+
+	public async getChatData(
+		id: number,
+	): Promise<ExtractDoc<typeof DB.telegram.schemes.chatSchema>> {
+		let data = await DB.telegram.models.chat.findOne({
+			id,
+		});
+		if (!data) {
+			data = new DB.telegram.models.chat({
+				id,
+				group: "",
+				inform: true,
+				reportedReplacements: [],
+			});
+			await data.save();
+		}
+		return data;
+	}
 }
 
 export default new UtilsTelegram();
