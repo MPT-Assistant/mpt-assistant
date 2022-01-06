@@ -2,3 +2,5 @@ import "./text/rest/profile";
 import "./text/rest/chat";
 import "./text/rest/week";
 import "./text/rest/mailing";
+
+import "./text/mpt/lessons";
