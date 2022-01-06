@@ -11,7 +11,10 @@ import CallbackCommand from "../../../utils/CallbackCommand";
 new CallbackCommand({
 	event: "lessons",
 	handler: async (context) => {
-		const selectedDate = moment(context.queryPayload.date, "DD.MM.YYYY");
+		const selectedDate = moment(
+			context.queryPayload.date || moment(),
+			"DD.MM.YYYY",
+		);
 
 		if (!selectedDate.isValid()) {
 			return await context.answerCallbackQuery({

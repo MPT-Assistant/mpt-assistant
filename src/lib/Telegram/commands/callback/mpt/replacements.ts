@@ -10,7 +10,10 @@ import CallbackCommand from "../../../utils/CallbackCommand";
 new CallbackCommand({
 	event: "replacements",
 	handler: async (context) => {
-		const selectedDate = moment(context.queryPayload.date, "DD.MM.YYYY");
+		const selectedDate = moment(
+			context.queryPayload.date || moment(),
+			"DD.MM.YYYY",
+		);
 
 		if (!selectedDate.isValid()) {
 			return await context.answerCallbackQuery({
@@ -51,6 +54,13 @@ new CallbackCommand({
 				)} замен у группы ${groupName} не найдено`,
 			});
 		}
+
+		keyboard.push([
+			InlineKeyboard.textButton({
+				text: "Расписание",
+				payload: { cmd: "lessons", date: selectedDate.format("DD.MM.YYYY") },
+			}),
+		]);
 
 		await context.message
 			?.editMessageText(
