@@ -24,21 +24,39 @@ ID: ${context.senderId}
 		);
 
 		const keyboard = InlineKeyboard.keyboard([
-			[
-				InlineKeyboard.textButton({
-					text: `${
-						context.state.user.inform ? "Отключить" : "Включить"
-					} уведомления`,
-					payload: {
-						cmd: "notify",
-						status: !context.state.user.inform,
-					},
-				}),
-			],
+			!context.state.chat
+				? [
+						InlineKeyboard.textButton({
+							text: `${
+								context.state.user.inform ? "Отключить" : "Включить"
+							} уведомления`,
+							payload: {
+								cmd: "notify",
+								status: !context.state.user.inform,
+							},
+						}),
+				  ]
+				: [],
 			[
 				InlineKeyboard.urlButton({
 					text: "Сайт отделения",
 					url: specialty.url,
+				}),
+			],
+			[
+				InlineKeyboard.textButton({
+					text: "Расписание",
+					payload: {
+						cmd: "lessons",
+					},
+				}),
+			],
+			[
+				InlineKeyboard.textButton({
+					text: "Замены",
+					payload: {
+						cmd: "replacements",
+					},
 				}),
 			],
 		]);

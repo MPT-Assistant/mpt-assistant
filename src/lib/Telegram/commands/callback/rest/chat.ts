@@ -46,6 +46,22 @@ new CallbackCommand({
 					url: specialty.url,
 				}),
 			],
+			[
+				InlineKeyboard.textButton({
+					text: "Расписание",
+					payload: {
+						cmd: "lessons",
+					},
+				}),
+			],
+			[
+				InlineKeyboard.textButton({
+					text: "Замены",
+					payload: {
+						cmd: "replacements",
+					},
+				}),
+			],
 		]);
 
 		return await context.message?.editMessageText(

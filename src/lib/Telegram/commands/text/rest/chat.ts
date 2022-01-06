@@ -5,7 +5,7 @@ import utils from "../../../../utils";
 import TextCommand from "../../../utils/TextCommand";
 
 new TextCommand({
-	alias: ["чат", "беседа"],
+	alias: ["чат", "беседа", "chat"],
 	handler: async (context) => {
 		if (!context.state.chat) {
 			return await context.reply(`доступно только в беседах`);
@@ -42,6 +42,22 @@ new TextCommand({
 				InlineKeyboard.urlButton({
 					text: "Сайт отделения",
 					url: specialty.url,
+				}),
+			],
+			[
+				InlineKeyboard.textButton({
+					text: "Расписание",
+					payload: {
+						cmd: "lessons",
+					},
+				}),
+			],
+			[
+				InlineKeyboard.textButton({
+					text: "Замены",
+					payload: {
+						cmd: "replacements",
+					},
 				}),
 			],
 		]);
