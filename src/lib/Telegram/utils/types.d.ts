@@ -8,8 +8,8 @@ namespace BotTelegram {
 	interface ModernMessageContext extends MessageContext {
 		state: {
 			args: RegExpExecArray;
-			user: ExtractDoc<typeof DB.vk.schemes.userSchema>;
-			chat?: ExtractDoc<typeof DB.vk.schemes.chatSchema>;
+			user: ExtractDoc<typeof DB.telegram.schemes.userSchema>;
+			chat?: ExtractDoc<typeof DB.telegram.schemes.chatSchema>;
 		};
 	}
 }
