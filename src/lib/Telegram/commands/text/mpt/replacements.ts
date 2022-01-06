@@ -8,7 +8,7 @@ import telegramUtils from "../../../utils";
 import TextCommand from "../../../utils/TextCommand";
 
 new TextCommand({
-	alias: /^(?:расписание|рп|какие пары|schedule)(?:\s(.+))?$/i,
+	alias: /^(?:замены на|замены|replacements)(?:\s(.+))?$/i,
 	handler: async (context) => {
 		const groupName =
 			context.state.user.group ||
@@ -36,7 +36,7 @@ new TextCommand({
 		}
 
 		const selectedDate = utils.rest.parseSelectedDate(context.state.args[1]);
-		const keyboard = telegramUtils.generateKeyboard("lessons");
+		const keyboard = telegramUtils.generateKeyboard("replacements");
 
 		if (selectedDate.day() === 0) {
 			return await context.reply(
@@ -45,31 +45,22 @@ new TextCommand({
 			);
 		}
 
-		const schedule = await utils.mpt.getGroupSchedule(groupData, selectedDate);
+		const replacements = await utils.mpt.getGroupReplacements(
+			groupData.name,
+			selectedDate,
+		);
 
-		if (schedule.lessons.length === 0) {
+		if (replacements.list.length === 0) {
 			return await context.reply(
-				`на ${selectedDate.format("DD.MM.YYYY")} пар у группы ${
+				`на ${selectedDate.format("DD.MM.YYYY")} замен у группы ${
 					groupData.name
 				} не найдено`,
 				{ reply_markup: InlineKeyboard.keyboard(keyboard) },
 			);
+		} else {
+			return await context.reply(replacements.toString(), {
+				reply_markup: InlineKeyboard.keyboard(keyboard),
+			});
 		}
-
-		if (schedule.replacements.length !== 0) {
-			keyboard.push([
-				InlineKeyboard.textButton({
-					text: "Замены",
-					payload: {
-						cmd: "replacements",
-						date: selectedDate.format("DD.MM.YYYY"),
-					},
-				}),
-			]);
-		}
-
-		return await context.reply(schedule.toString(), {
-			reply_markup: InlineKeyboard.keyboard(keyboard),
-		});
 	},
 });

@@ -4,3 +4,4 @@ import "./text/rest/week";
 import "./text/rest/mailing";
 
 import "./text/mpt/lessons";
+import "./text/mpt/replacements";
