@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 
 import config from "../../DB/config";
 
+mongoose.Schema.Types.String.checkRequired((v) => typeof v === "string");
+
 abstract class DB {
 	public readonly connection: mongoose.Connection;
 
