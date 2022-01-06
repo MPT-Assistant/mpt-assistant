@@ -35,7 +35,7 @@ new CallbackCommand({
 						InlineKeyboard.textButton({
 							text: "Профиль",
 							payload: {
-								cmd: "chat",
+								cmd: "profile",
 							},
 						}),
 					]),
