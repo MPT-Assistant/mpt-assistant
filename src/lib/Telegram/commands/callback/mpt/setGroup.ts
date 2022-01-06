@@ -1,3 +1,5 @@
+import { InlineKeyboard } from "puregram";
+
 import DB from "../../../../DB";
 
 import CallbackCommand from "../../../utils/CallbackCommand";
@@ -24,6 +26,16 @@ new CallbackCommand({
 
 			return await context.message?.editMessageText(
 				`${context.from?.username}, Вы установили себе группу ${selectedGroup.name}\nОтделение: ${selectedGroup.specialty}`,
+				{
+					reply_markup: InlineKeyboard.keyboard([
+						InlineKeyboard.textButton({
+							text: "Профиль",
+							payload: {
+								cmd: "profile",
+							},
+						}),
+					]),
+				},
 			);
 		}
 	},
