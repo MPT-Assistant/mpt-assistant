@@ -6,3 +6,4 @@ import "./text/rest/mailing";
 import "./text/mpt/lessons";
 import "./text/mpt/replacements";
 import "./text/mpt/setGroup";
+import "./text/mpt/regChat";
