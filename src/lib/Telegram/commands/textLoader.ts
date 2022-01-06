@@ -2,6 +2,7 @@ import "./text/rest/profile";
 import "./text/rest/chat";
 import "./text/rest/week";
 import "./text/rest/mailing";
+import "./text/rest/start";
 
 import "./text/mpt/lessons";
 import "./text/mpt/replacements";
