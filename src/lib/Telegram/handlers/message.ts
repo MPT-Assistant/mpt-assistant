@@ -5,10 +5,16 @@ import BotTelegram from "../utils/types";
 export default async function messageNewHandler(
 	context: BotTelegram.ModernMessageContext,
 ): Promise<void> {
+	const reply = context.reply.bind(context);
+	context.reply = (text, params) => {
+		text = `${context.from?.username}, ${text}`;
+		return reply(text, params);
+	};
+
 	if (!context.text || !context.from || context.from.isBot) {
 		if (context.isPM) {
 			await context.reply(
-				"Такой команды не существует\nСписок команд: https://vk.com/@mpt_assistant-helps",
+				"такой команды не существует\nСписок команд: https://vk.com/@mpt_assistant-helps",
 			);
 		}
 		return;
@@ -22,9 +28,10 @@ export default async function messageNewHandler(
 		context.state = {
 			args: command.regexp.exec(context.text as string) as RegExpExecArray,
 			user: await telegramUtils.getUserData(context.from.id),
-			chat: context.chatId
-				? await telegramUtils.getChatData(context.chatId)
-				: undefined,
+			chat:
+				!context.isPM && context.chatId
+					? await telegramUtils.getChatData(context.chatId)
+					: undefined,
 		};
 
 		await command.handler(context);
@@ -34,7 +41,7 @@ export default async function messageNewHandler(
 		}
 	} else if (context.isPM) {
 		await context.reply(
-			"Такой команды не существует\nСписок команд: https://vk.com/@mpt_assistant-helps",
+			"такой команды не существует\nСписок команд: https://vk.com/@mpt_assistant-helps",
 		);
 	}
 }
