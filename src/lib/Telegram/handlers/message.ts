@@ -22,7 +22,10 @@ export default async function messageNewHandler(
 
 	let cmd: string;
 
-	if (context.entities[0].type === "bot_command") {
+	if (
+		context.entities.length === 1 &&
+		context.entities[0].type === "bot_command"
+	) {
 		cmd = context.text.replace("@mpt_assistant_bot", "").substring(1);
 	} else {
 		cmd = context.text.startsWith("/")
