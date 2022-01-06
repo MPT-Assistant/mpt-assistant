@@ -34,6 +34,18 @@ new CallbackCommand({
 								cmd: "profile",
 							},
 						}),
+						InlineKeyboard.textButton({
+							text: "Расписание",
+							payload: {
+								cmd: "lessons",
+							},
+						}),
+						InlineKeyboard.textButton({
+							text: "Замены",
+							payload: {
+								cmd: "replacements",
+							},
+						}),
 					]),
 				},
 			);

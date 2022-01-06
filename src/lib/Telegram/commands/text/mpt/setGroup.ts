@@ -44,6 +44,28 @@ ${group.map((name, index) => `${index + 1}. ${name}`).join("\n")}`;
 			context.state.user.group = group.name;
 			return await context.reply(
 				`Вы установили себе группу ${group.name}\n(${group.specialty})`,
+				{
+					reply_markup: InlineKeyboard.keyboard([
+						InlineKeyboard.textButton({
+							text: "Профиль",
+							payload: {
+								cmd: "profile",
+							},
+						}),
+						InlineKeyboard.textButton({
+							text: "Расписание",
+							payload: {
+								cmd: "lessons",
+							},
+						}),
+						InlineKeyboard.textButton({
+							text: "Замены",
+							payload: {
+								cmd: "replacements",
+							},
+						}),
+					]),
+				},
 			);
 		}
 	},
