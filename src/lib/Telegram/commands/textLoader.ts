@@ -1,1 +1,1 @@
-import "./textCommands/rest/profile";
+import "./text/rest/profile";
