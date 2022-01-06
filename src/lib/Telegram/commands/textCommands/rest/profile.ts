@@ -29,7 +29,10 @@ ID: ${context.senderId}
 					text: `${
 						context.state.user.inform ? "Отключить" : "Включить"
 					} уведомления`,
-					payload: "Such payload",
+					payload: {
+						cmd: "notify",
+						status: !context.state.user.inform,
+					},
 				}),
 			],
 			[
