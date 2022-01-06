@@ -3,7 +3,7 @@ import utils from "../../../../utils";
 import TextCommand from "../../../utils/TextCommand";
 
 new TextCommand({
-	alias: "чз",
+	alias: ["чз", "week"],
 	handler: (context) => {
 		let response = `сейчас ${
 			utils.cache.mpt.isNumerator ? "числитель" : "знаменатель"

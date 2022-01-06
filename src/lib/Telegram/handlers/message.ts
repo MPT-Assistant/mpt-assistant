@@ -20,9 +20,17 @@ export default async function messageNewHandler(
 		return;
 	}
 
-	const command = telegramUtils.textCommands.find((x) =>
-		x.check(context.text as string),
-	);
+	let cmd: string;
+
+	if (context.entities[0].type === "bot_command") {
+		cmd = context.text.replace("@mpt_assistant_bot", "").substring(1);
+	} else {
+		cmd = context.text.startsWith("/")
+			? context.text.substring(1)
+			: context.text;
+	}
+
+	const command = telegramUtils.textCommands.find((x) => x.check(cmd));
 
 	if (command) {
 		context.state = {

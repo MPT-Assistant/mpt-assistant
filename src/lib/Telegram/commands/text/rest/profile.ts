@@ -5,7 +5,7 @@ import utils from "../../../../utils";
 import TextCommand from "../../../utils/TextCommand";
 
 new TextCommand({
-	alias: ["профиль", "проф"],
+	alias: ["профиль", "проф", "profile"],
 	handler: async (context) => {
 		if (!context.state.user.group) {
 			return context.reply(
