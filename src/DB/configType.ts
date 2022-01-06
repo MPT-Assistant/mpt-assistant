@@ -10,5 +10,9 @@ export default interface IConfig {
 	vk: {
 		group: Partial<VKOptions> & { token: string; pollingGroupId: number };
 	};
+	discord: {
+		id: string;
+		token: string;
+	};
 	telegram: Partial<TelegramOptions> & { token: string };
 }
