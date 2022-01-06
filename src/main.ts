@@ -6,6 +6,7 @@ import "./lib/VK/commands/textLoader";
 import "./lib/VK/commands/eventLoader";
 
 import "./lib/Telegram/commands/textLoader";
+import "./lib/Telegram/commands/callbackLoader";
 
 (async function () {
 	await DB.api.connection.asPromise();
