@@ -2,9 +2,11 @@ import { ExtractDoc } from "ts-mongoose";
 import DB from "../../DB";
 
 import TextCommand from "./TextCommand";
+import CallbackCommand from "./CallbackCommand";
 
 class UtilsTelegram {
 	public textCommands: TextCommand[] = [];
+	public callbackCommands: CallbackCommand[] = [];
 
 	public async getUserData(
 		id: number,
