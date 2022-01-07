@@ -1,5 +1,7 @@
-import { Interaction } from "discord.js";
+import { CommandInteraction, Interaction } from "discord.js";
 import discordUtils from "../utils";
+
+import BotDiscord from "../utils/types";
 
 async function interactionCreateHandler(
 	interaction: Interaction,
@@ -11,7 +13,17 @@ async function interactionCreateHandler(
 	);
 
 	if (command) {
-		await command.handler(interaction);
+		(
+			interaction as CommandInteraction & { state: BotDiscord.IStateInfo }
+		).state = {
+			user: await discordUtils.getUserData(interaction.user.id),
+			channel: interaction.channel
+				? await discordUtils.getChannelData(interaction.channel.id)
+				: undefined,
+		};
+		await command.handler(
+			interaction as CommandInteraction & { state: BotDiscord.IStateInfo },
+		);
 	}
 }
 

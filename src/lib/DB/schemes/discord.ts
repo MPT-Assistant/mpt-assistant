@@ -2,7 +2,7 @@ import { createSchema, Type } from "ts-mongoose";
 
 const userSchema = createSchema(
 	{
-		id: Type.number({ required: true, unique: true }),
+		id: Type.string({ required: true, unique: true }),
 		ban: Type.boolean({ required: true }),
 		group: Type.string({ required: true }),
 		inform: Type.boolean({ required: true }),
@@ -16,7 +16,7 @@ const userSchema = createSchema(
 
 const channelSchema = createSchema(
 	{
-		id: Type.number({ required: true, unique: true }),
+		id: Type.string({ required: true, unique: true }),
 		group: Type.string({ required: true }),
 		inform: Type.boolean({ required: true }),
 		reportedReplacements: Type.array({ required: true }).of(

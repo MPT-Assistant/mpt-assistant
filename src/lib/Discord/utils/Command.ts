@@ -1,20 +1,12 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction } from "discord.js";
 
 import discordUtils from "./index";
-
-type TCommandHandler = (interaction: CommandInteraction) => unknown;
-
-interface ICommandParams {
-	name: string;
-	description: string;
-	handler: TCommandHandler;
-}
+import BotDiscord from "./types";
 
 class Command extends SlashCommandBuilder {
-	public readonly handler: TCommandHandler;
+	public readonly handler: BotDiscord.TCommandHandler;
 
-	constructor({ name, description, handler }: ICommandParams) {
+	constructor({ name, description, handler }: BotDiscord.ICommandParams) {
 		super();
 		this.handler = handler;
 		this.setName(name);
