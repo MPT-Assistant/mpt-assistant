@@ -36,6 +36,7 @@ new TextCommand({
 						customId: JSON.stringify({
 							cmd: "notify",
 							status: !interaction.state.channel.inform,
+							target: "channel",
 						}),
 						style: interaction.state.channel.inform ? "DANGER" : "SUCCESS",
 					}),

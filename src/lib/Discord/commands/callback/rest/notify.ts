@@ -5,13 +5,15 @@ new CallbackCommand({
 	trigger: "notify",
 	handler: async (interaction) => {
 		const status = Boolean(interaction.payload.status);
-		if (interaction.state.channel) {
+		const target = interaction.payload.target as "user" | "channel";
+
+		if (target === "channel" && interaction.state.channel) {
 			interaction.state.channel.inform = status;
 			return interaction.editReply({
 				content: `Рассылка замен в канале ${status ? "включена" : "отключена"}`,
 				embeds: [],
 			});
-		} else {
+		} else if (target === "user") {
 			interaction.state.user.inform = status;
 			return interaction.editReply({
 				embeds: [],
@@ -27,6 +29,11 @@ new CallbackCommand({
 						],
 					}),
 				],
+			});
+		} else {
+			return interaction.editReply({
+				embeds: [],
+				content: `Доступно только в каналах, перейдите в канал и вызовите команду там`,
 			});
 		}
 	},

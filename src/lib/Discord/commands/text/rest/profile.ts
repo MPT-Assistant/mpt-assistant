@@ -32,6 +32,7 @@ ID: ${interaction.user.id}
 						customId: JSON.stringify({
 							cmd: "notify",
 							status: !interaction.state.user.inform,
+							target: "user",
 						}),
 						style: interaction.state.user.inform ? "DANGER" : "SUCCESS",
 					}),
