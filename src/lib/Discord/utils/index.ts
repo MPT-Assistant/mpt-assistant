@@ -1,11 +1,11 @@
-import Command from "./Command";
+import TextCommand from "./TextCommand";
 
 import { ExtractDoc } from "ts-mongoose";
 
 import DB from "../../DB";
 
 class UtilsDiscord {
-	public readonly commandsList: Command[] = [];
+	public readonly commandsList: TextCommand[] = [];
 
 	public async getUserData(
 		id: string,

@@ -3,7 +3,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import discordUtils from "./index";
 import BotDiscord from "./types";
 
-class Command extends SlashCommandBuilder {
+class TextCommand extends SlashCommandBuilder {
 	public readonly handler: BotDiscord.TCommandHandler;
 
 	constructor({ name, description, handler }: BotDiscord.ICommandParams) {
@@ -15,4 +15,4 @@ class Command extends SlashCommandBuilder {
 	}
 }
 
-export default Command;
+export default TextCommand;

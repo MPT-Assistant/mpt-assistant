@@ -9,7 +9,7 @@ import "./lib/VK/commands/eventLoader";
 import "./lib/Telegram/commands/textLoader";
 import "./lib/Telegram/commands/callbackLoader";
 
-import "./lib/Discord/commands/loader";
+import "./lib/Discord/commands/textLoader";
 
 (async function () {
 	await DB.api.connection.asPromise();

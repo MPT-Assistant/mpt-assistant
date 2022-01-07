@@ -1,8 +1,8 @@
-import utils from "../../../utils";
+import utils from "../../../../utils";
 
-import Command from "../../utils/Command";
+import TextCommand from "../../../utils/TextCommand";
 
-new Command({
+new TextCommand({
 	name: "неделя",
 	description: "Показывает какая сейчас неделя, числитель или знаменатель",
 	handler: (interaction) => {
