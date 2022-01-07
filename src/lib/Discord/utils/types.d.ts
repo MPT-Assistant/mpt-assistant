@@ -11,9 +11,9 @@ declare namespace BotDiscord {
 	}
 
 	namespace TextCommand {
-		type TCommandHandler = (
-			interaction: CommandInteraction & { state: IStateInfo },
-		) => unknown;
+		type Context = CommandInteraction & { state: IStateInfo };
+
+		type TCommandHandler = (interaction: Context) => unknown;
 
 		interface ICommandParams {
 			name: string;
@@ -24,9 +24,10 @@ declare namespace BotDiscord {
 	}
 
 	namespace CallbackCommand {
-		type TCommandHandler = (
-			interaction: ButtonInteraction & { state: IStateInfo },
-		) => unknown;
+		type Payload = Record<string, unknown>;
+		type Context = ButtonInteraction & { state: IStateInfo; payload: Payload };
+
+		type TCommandHandler = (interaction: Context) => unknown;
 
 		interface ICommandParams {
 			trigger: string;
