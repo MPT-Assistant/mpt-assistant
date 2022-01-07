@@ -16,6 +16,6 @@ new TextCommand({
 			}.`;
 		}
 
-		return interaction.reply(response);
+		return interaction.editReply(response);
 	},
 });

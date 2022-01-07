@@ -6,9 +6,10 @@ import TextCommand from "../../../utils/TextCommand";
 new TextCommand({
 	name: "профиль",
 	description: "Ваш профиль",
+	isPrivate: true,
 	handler: async (interaction) => {
 		if (!interaction.state.user.group) {
-			return interaction.reply({
+			return interaction.editReply({
 				content: `Ваш профиль:
 ID: ${interaction.user.id}
 Группа: Не установлена`,
@@ -78,7 +79,7 @@ ID: ${interaction.user.id}
 			}),
 		];
 
-		return interaction.reply({
+		return interaction.editReply({
 			content: `Ваш профиль:
 ID: ${interaction.user.id}
 Группа: ${interaction.state.user.group}

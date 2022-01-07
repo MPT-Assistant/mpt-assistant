@@ -8,11 +8,11 @@ new TextCommand({
 	description: "Информация о канале",
 	handler: async (interaction) => {
 		if (!interaction.state.channel) {
-			return await interaction.reply(`Доступно только в каналах`);
+			return await interaction.editReply(`Доступно только в каналах`);
 		}
 
 		if (!interaction.state.channel.group) {
-			return interaction.reply({
+			return interaction.editReply({
 				content: `канал #${interaction.state.channel.id}
 Группа: Не установлена`,
 				components: [
@@ -81,7 +81,7 @@ new TextCommand({
 			}),
 		];
 
-		return interaction.reply({
+		return interaction.editReply({
 			content: `канал #${interaction.state.channel.id}
 Группа: ${interaction.state.user.group}
 Отделение: ${specialty.name}

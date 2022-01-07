@@ -24,6 +24,7 @@ async function interactionCreateHandler(
 				? await discordUtils.getGuildData(interaction.guild.id)
 				: undefined,
 		};
+		await interaction.deferReply({ ephemeral: command.isPrivate });
 		await command.handler(
 			interaction as CommandInteraction & { state: BotDiscord.IStateInfo },
 		);

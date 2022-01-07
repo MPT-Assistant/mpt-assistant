@@ -18,6 +18,7 @@ declare namespace BotDiscord {
 		name: string;
 		description: string;
 		handler: TCommandHandler;
+		isPrivate?: boolean;
 	}
 }
 

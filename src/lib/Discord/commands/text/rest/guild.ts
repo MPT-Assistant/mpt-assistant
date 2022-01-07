@@ -8,11 +8,11 @@ new TextCommand({
 	description: "Информация о сервере",
 	handler: async (interaction) => {
 		if (!interaction.state.guild) {
-			return await interaction.reply(`Доступно только на сервере`);
+			return await interaction.editReply(`Доступно только на сервере`);
 		}
 
 		if (!interaction.state.guild.group) {
-			return interaction.reply({
+			return interaction.editReply({
 				content: `сервер #${interaction.state.guild.id}
 Группа: Не установлена`,
 				components: [
@@ -67,7 +67,7 @@ new TextCommand({
 			}),
 		];
 
-		return interaction.reply({
+		return interaction.editReply({
 			content: `сервер #${interaction.state.guild.id}
 Группа: ${interaction.state.user.group}
 Отделение: ${specialty.name}
