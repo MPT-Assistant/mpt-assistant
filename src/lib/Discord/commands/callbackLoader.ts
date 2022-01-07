@@ -3,3 +3,4 @@ import "./callback/mpt/lessons";
 import "./callback/mpt/replacements";
 
 import "./callback/rest/profile";
+import "./callback/rest/notify";

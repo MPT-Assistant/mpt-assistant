@@ -23,7 +23,7 @@ new TextCommand({
 						components: [
 							new MessageButton({
 								label: "Профиль",
-								customId: "profile",
+								customId: JSON.stringify({ cmd: "profile" }),
 								style: "SECONDARY",
 							}),
 						],
