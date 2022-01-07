@@ -39,7 +39,7 @@ async function interactionCreateHandler(
 			(x) => x.trigger === payload.cmd,
 		);
 
-			if (command) {
+		if (command) {
 			(interaction as BotDiscord.CallbackCommand.Context).payload = payload;
 			(interaction as BotDiscord.CallbackCommand.Context).state = {
 				user: await discordUtils.getUserData(interaction.user.id),

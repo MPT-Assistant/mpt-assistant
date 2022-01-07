@@ -7,14 +7,18 @@ new TextCommand({
 		"Позволяет включить или отключить рассылку замен в канал или профиль",
 	handler: (interaction) => {
 		const isEnable = interaction.options.getBoolean("статус", true);
-		if (interaction.state.channel) {
+		const target = interaction.options.getString("кому", true) as
+			| "user"
+			| "channel";
+
+		if (target === "channel" && interaction.state.channel) {
 			interaction.state.channel.inform = isEnable;
 			return interaction.editReply({
 				content: `Рассылка замен в канале ${
 					isEnable ? "включена" : "отключена"
 				}`,
 			});
-		} else {
+		} else if (target === "user") {
 			interaction.state.user.inform = isEnable;
 			return interaction.editReply({
 				content: `Рассылка замен ${isEnable ? "включена" : "отключена"}`,
@@ -30,11 +34,26 @@ new TextCommand({
 					}),
 				],
 			});
+		} else {
+			return interaction.editReply({
+				content: `Доступно только в каналах, перейдите в канал и вызовите команду там`,
+			});
 		}
 	},
-}).addBooleanOption((option) =>
-	option
-		.setName("статус")
-		.setDescription("Выберите включена рассылка, либо нет")
-		.setRequired(true),
-);
+})
+	.addBooleanOption((option) =>
+		option
+			.setName("статус")
+			.setDescription("Выберите включена рассылка, либо нет")
+			.setRequired(true),
+	)
+	.addStringOption((option) =>
+		option
+			.setName("кому")
+			.setDescription("Для кого")
+			.setRequired(true)
+			.setChoices([
+				["Себе", "user"],
+				["Каналу", "channel"],
+			]),
+	);
