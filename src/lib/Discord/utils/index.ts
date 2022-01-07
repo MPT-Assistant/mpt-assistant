@@ -84,23 +84,22 @@ class UtilsDiscord {
 			(x) => x.name === group.name,
 		);
 
-		const embedMessage = new MessageEmbed();
-		embedMessage.setAuthor({
+		const profileEmbedMessage = new MessageEmbed();
+		profileEmbedMessage.setAuthor({
 			name: interaction.user.username,
 			iconURL: interaction.user.avatarURL() || undefined,
 		});
-		embedMessage.setTitle(
+		profileEmbedMessage.setTitle(
 			`Группа: ${interaction.state.user.group}
 Отделение: ${specialty.name}`,
 		);
-		embedMessage.setDescription(
+		profileEmbedMessage.setDescription(
 			`Информирование о заменах: ${
 				interaction.state.user.inform ? "Включено" : "Отключено"
 			}`,
 		);
 		if (groupLeaders) {
-			embedMessage.addField("Актив группы:", "\u200b");
-			embedMessage.addFields(
+			profileEmbedMessage.addFields(
 				...groupLeaders.roles.map((x) => {
 					return {
 						name: x.role,
@@ -110,10 +109,10 @@ class UtilsDiscord {
 				}),
 			);
 		}
-		embedMessage.setFooter({ text: "Дата регистрации" });
-		embedMessage.setTimestamp(interaction.state.user.regDate);
+		profileEmbedMessage.setFooter({ text: "Дата регистрации" });
+		profileEmbedMessage.setTimestamp(interaction.state.user.regDate);
 
-		return embedMessage;
+		return profileEmbedMessage;
 	}
 
 	public scheduleToEmbed(
