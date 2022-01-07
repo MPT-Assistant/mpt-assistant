@@ -4,20 +4,23 @@ import { MessageButton, MessageActionRow } from "discord.js";
 import TextCommand from "../../../utils/TextCommand";
 
 new TextCommand({
-	name: "профиль",
-	description: "Ваш профиль",
+	name: "сервер",
+	description: "Информация о сервере",
 	handler: async (interaction) => {
-		if (!interaction.state.user.group) {
+		if (!interaction.state.guild) {
+			return await interaction.reply(`Доступно только на сервере`);
+		}
+
+		if (!interaction.state.guild.group) {
 			return interaction.reply({
-				content: `Ваш профиль:
-ID: ${interaction.user.id}
+				content: `сервер #${interaction.state.guild.id}
 Группа: Не установлена`,
 				components: [
 					new MessageActionRow({
 						components: [
 							new MessageButton({
-								label: `Установить группу`,
-								customId: JSON.stringify({ cmd: "setGroup" }),
+								label: `Установить группу для сервера`,
+								customId: JSON.stringify({ cmd: "regGuild" }),
 								style: "SUCCESS",
 							}),
 						],
@@ -27,7 +30,7 @@ ID: ${interaction.user.id}
 		}
 
 		const { group, specialty } = await utils.mpt.getExtendGroupInfo(
-			interaction.state.user.group,
+			interaction.state.guild.group,
 		);
 
 		const groupLeaders = specialty.groupsLeaders.find(
@@ -35,20 +38,6 @@ ID: ${interaction.user.id}
 		);
 
 		const keyboard = [
-			new MessageActionRow({
-				components: [
-					new MessageButton({
-						label: `${
-							interaction.state.user.inform ? "Отключить" : "Включить"
-						} уведомления`,
-						customId: JSON.stringify({
-							cmd: "notify",
-							status: !interaction.state.user.inform,
-						}),
-						style: interaction.state.user.inform ? "DANGER" : "SUCCESS",
-					}),
-				],
-			}),
 			new MessageActionRow({
 				components: [
 					new MessageButton({
@@ -79,8 +68,7 @@ ID: ${interaction.user.id}
 		];
 
 		return interaction.reply({
-			content: `Ваш профиль:
-ID: ${interaction.user.id}
+			content: `сервер #${interaction.state.guild.id}
 Группа: ${interaction.state.user.group}
 Отделение: ${specialty.name}
 		${
@@ -90,11 +78,7 @@ ID: ${interaction.user.id}
 						.map((item, index) => `${index + 1}. ${item.role} - ${item.name}`)
 						.join("\n")
 				: ""
-		}
-
-Информирование о заменах: ${
-				interaction.state.user.inform ? "Включено" : "Отключено"
-			}`,
+		}`,
 			components: keyboard,
 		});
 	},

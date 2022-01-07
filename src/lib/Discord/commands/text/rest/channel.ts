@@ -4,20 +4,23 @@ import { MessageButton, MessageActionRow } from "discord.js";
 import TextCommand from "../../../utils/TextCommand";
 
 new TextCommand({
-	name: "профиль",
-	description: "Ваш профиль",
+	name: "канал",
+	description: "Информация о канале",
 	handler: async (interaction) => {
-		if (!interaction.state.user.group) {
+		if (!interaction.state.channel) {
+			return await interaction.reply(`Доступно только в каналах`);
+		}
+
+		if (!interaction.state.channel.group) {
 			return interaction.reply({
-				content: `Ваш профиль:
-ID: ${interaction.user.id}
+				content: `канал #${interaction.state.channel.id}
 Группа: Не установлена`,
 				components: [
 					new MessageActionRow({
 						components: [
 							new MessageButton({
-								label: `Установить группу`,
-								customId: JSON.stringify({ cmd: "setGroup" }),
+								label: `Установить группу для канала`,
+								customId: JSON.stringify({ cmd: "regChannel" }),
 								style: "SUCCESS",
 							}),
 						],
@@ -27,7 +30,7 @@ ID: ${interaction.user.id}
 		}
 
 		const { group, specialty } = await utils.mpt.getExtendGroupInfo(
-			interaction.state.user.group,
+			interaction.state.channel.group,
 		);
 
 		const groupLeaders = specialty.groupsLeaders.find(
@@ -39,13 +42,13 @@ ID: ${interaction.user.id}
 				components: [
 					new MessageButton({
 						label: `${
-							interaction.state.user.inform ? "Отключить" : "Включить"
+							interaction.state.channel.inform ? "Отключить" : "Включить"
 						} уведомления`,
 						customId: JSON.stringify({
 							cmd: "notify",
-							status: !interaction.state.user.inform,
+							status: !interaction.state.channel.inform,
 						}),
-						style: interaction.state.user.inform ? "DANGER" : "SUCCESS",
+						style: interaction.state.channel.inform ? "DANGER" : "SUCCESS",
 					}),
 				],
 			}),
@@ -79,8 +82,7 @@ ID: ${interaction.user.id}
 		];
 
 		return interaction.reply({
-			content: `Ваш профиль:
-ID: ${interaction.user.id}
+			content: `канал #${interaction.state.channel.id}
 Группа: ${interaction.state.user.group}
 Отделение: ${specialty.name}
 		${
@@ -93,7 +95,7 @@ ID: ${interaction.user.id}
 		}
 
 Информирование о заменах: ${
-				interaction.state.user.inform ? "Включено" : "Отключено"
+				interaction.state.channel.inform ? "Включено" : "Отключено"
 			}`,
 			components: keyboard,
 		});
