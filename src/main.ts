@@ -10,6 +10,7 @@ import "./lib/Telegram/commands/textLoader";
 import "./lib/Telegram/commands/callbackLoader";
 
 import "./lib/Discord/commands/textLoader";
+import "./lib/Discord/commands/callbackLoader";
 
 (async function () {
 	await DB.api.connection.asPromise();
