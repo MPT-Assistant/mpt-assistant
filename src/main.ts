@@ -9,6 +9,8 @@ import "./lib/VK/commands/eventLoader";
 import "./lib/Telegram/commands/textLoader";
 import "./lib/Telegram/commands/callbackLoader";
 
+import "./lib/Discord/commands/loader";
+
 (async function () {
 	await DB.api.connection.asPromise();
 	console.log("API DB connected");
@@ -23,6 +25,7 @@ import "./lib/Telegram/commands/callbackLoader";
 	console.log("VK polling started");
 	await Telegram.updates.startPolling();
 	console.log("Telegram polling started");
-	await Discord.login();
+	await Discord.publishHints();
+	await Discord.client.login();
 	console.log("Discord polling started");
 })();
