@@ -42,6 +42,7 @@ ${group.map((name, index) => `${index + 1}. ${name}`).join("\n")}`;
 			return await interaction.editReply({
 				content: `группы ${groupName} не найдено, попробуйте ещё раз.${responseText}`,
 				components: keyboard,
+				embeds: [],
 			});
 		} else {
 			const targetDocument =
@@ -91,6 +92,7 @@ ${group.map((name, index) => `${index + 1}. ${name}`).join("\n")}`;
 						],
 					}),
 				],
+				embeds: [],
 			});
 		}
 	},
