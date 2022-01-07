@@ -8,7 +8,7 @@ async function interactionCreateHandler(
 ): Promise<void> {
 	if (!interaction.isCommand()) return;
 
-	const command = discordUtils.commandsList.find(
+	const command = discordUtils.textCommands.find(
 		(x) => x.name === interaction.commandName,
 	);
 

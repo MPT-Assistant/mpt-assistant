@@ -17,7 +17,7 @@ const publishHints = (): Promise<unknown> => {
 	const rest = new REST({ version: "9" }).setToken(DB.config.discord.token);
 
 	return rest.put(Routes.applicationCommands(DB.config.discord.id), {
-		body: discordUtils.commandsList.map((x) => x.toJSON()),
+		body: discordUtils.textCommands.map((x) => x.toJSON()),
 	});
 };
 

@@ -4,12 +4,14 @@ import { MessageButton, MessageActionRow, MessageEmbed } from "discord.js";
 import { ExtractDoc } from "ts-mongoose";
 
 import TextCommand from "./TextCommand";
+import CallbackCommand from "./CallbackCommand";
 
 import DB from "../../DB";
 import utils from "../../utils";
 
 class UtilsDiscord {
-	public readonly commandsList: TextCommand[] = [];
+	public readonly textCommands: TextCommand[] = [];
+	public readonly callbackCommands: CallbackCommand[] = [];
 
 	public async getUserData(
 		id: string,
