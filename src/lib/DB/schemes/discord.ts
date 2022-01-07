@@ -26,4 +26,12 @@ const channelSchema = createSchema(
 	{ versionKey: false },
 );
 
-export default { userSchema, channelSchema };
+const guildSchema = createSchema(
+	{
+		id: Type.string({ required: true, unique: true }),
+		group: Type.string({ required: true }),
+	},
+	{ versionKey: false },
+);
+
+export default { userSchema, channelSchema, guildSchema };

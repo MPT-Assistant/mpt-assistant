@@ -22,6 +22,14 @@ class Discord extends DB {
 			undefined,
 			this.connection,
 		),
+		guild: typedModel(
+			"guild",
+			schemes.guildSchema,
+			"guilds",
+			undefined,
+			undefined,
+			this.connection,
+		),
 	};
 }
 

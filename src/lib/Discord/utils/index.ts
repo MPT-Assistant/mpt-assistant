@@ -27,7 +27,7 @@ class UtilsDiscord {
 		return data;
 	}
 
-	public async getChannelData(
+	public async getChatData(
 		id: string,
 	): Promise<ExtractDoc<typeof DB.discord.schemes.channelSchema>> {
 		let data = await DB.discord.models.channel.findOne({
@@ -39,6 +39,22 @@ class UtilsDiscord {
 				group: "",
 				inform: true,
 				reportedReplacements: [],
+			});
+			await data.save();
+		}
+		return data;
+	}
+
+	public async getGuildData(
+		id: string,
+	): Promise<ExtractDoc<typeof DB.discord.schemes.guildSchema>> {
+		let data = await DB.discord.models.guild.findOne({
+			id,
+		});
+		if (!data) {
+			data = new DB.discord.models.guild({
+				id,
+				group: "",
 			});
 			await data.save();
 		}

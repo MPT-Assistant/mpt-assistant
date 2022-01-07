@@ -18,7 +18,10 @@ async function interactionCreateHandler(
 		).state = {
 			user: await discordUtils.getUserData(interaction.user.id),
 			channel: interaction.channel
-				? await discordUtils.getChannelData(interaction.channel.id)
+				? await discordUtils.getChatData(interaction.channel.id)
+				: undefined,
+			guild: interaction.guild
+				? await discordUtils.getGuildData(interaction.guild.id)
 				: undefined,
 		};
 		await command.handler(
