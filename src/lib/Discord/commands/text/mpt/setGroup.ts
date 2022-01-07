@@ -31,7 +31,7 @@ ${group.map((name, index) => `${index + 1}. ${name}`).join("\n")}`;
 								label: group[i],
 								customId: JSON.stringify({
 									cmd: "setGroup",
-									name: group[i],
+									group: group[i],
 									target,
 								}),
 								style: styles[i],

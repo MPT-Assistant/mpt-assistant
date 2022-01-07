@@ -13,17 +13,6 @@ new TextCommand({
 				content: `Ваш профиль:
 ID: ${interaction.user.id}
 Группа: Не установлена`,
-				components: [
-					new MessageActionRow({
-						components: [
-							new MessageButton({
-								label: `Установить группу`,
-								customId: JSON.stringify({ cmd: "setGroup" }),
-								style: "SUCCESS",
-							}),
-						],
-					}),
-				],
 			});
 		}
 

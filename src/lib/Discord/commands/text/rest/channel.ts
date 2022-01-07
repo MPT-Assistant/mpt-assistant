@@ -15,17 +15,6 @@ new TextCommand({
 			return interaction.editReply({
 				content: `канал #${interaction.state.channel.id}
 Группа: Не установлена`,
-				components: [
-					new MessageActionRow({
-						components: [
-							new MessageButton({
-								label: `Установить группу для канала`,
-								customId: JSON.stringify({ cmd: "regChannel" }),
-								style: "SUCCESS",
-							}),
-						],
-					}),
-				],
 			});
 		}
 

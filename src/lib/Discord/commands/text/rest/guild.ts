@@ -15,17 +15,6 @@ new TextCommand({
 			return interaction.editReply({
 				content: `сервер #${interaction.state.guild.id}
 Группа: Не установлена`,
-				components: [
-					new MessageActionRow({
-						components: [
-							new MessageButton({
-								label: `Установить группу для сервера`,
-								customId: JSON.stringify({ cmd: "regGuild" }),
-								style: "SUCCESS",
-							}),
-						],
-					}),
-				],
 			});
 		}
 
