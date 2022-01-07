@@ -77,7 +77,7 @@ ${group.map((name, index) => `${index + 1}. ${name}`).join("\n")}`;
 						components: [
 							new MessageButton({
 								label: `Расписание`,
-								customId: JSON.stringify({ cmd: "schedule" }),
+								customId: JSON.stringify({ cmd: "lessons" }),
 								style: "SECONDARY",
 							}),
 						],

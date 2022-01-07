@@ -33,13 +33,13 @@ async function interactionCreateHandler(
 	}
 
 	if (interaction.isButton()) {
-		const payload = JSON.parse(interaction.customId);
+		const payload = JSON.parse(interaction.customId) || {};
 
 		const command = discordUtils.callbackCommands.find(
 			(x) => x.trigger === payload.cmd,
 		);
 
-		if (command) {
+			if (command) {
 			(interaction as BotDiscord.CallbackCommand.Context).payload = payload;
 			(interaction as BotDiscord.CallbackCommand.Context).state = {
 				user: await discordUtils.getUserData(interaction.user.id),

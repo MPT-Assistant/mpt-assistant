@@ -52,7 +52,7 @@ ID: ${interaction.user.id}
 				components: [
 					new MessageButton({
 						label: `Расписание`,
-						customId: JSON.stringify({ cmd: "schedule" }),
+						customId: JSON.stringify({ cmd: "lessons" }),
 						style: "SECONDARY",
 					}),
 				],
