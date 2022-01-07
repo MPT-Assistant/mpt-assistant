@@ -4,38 +4,21 @@ import { Routes } from "discord-api-types/v9";
 
 import DB from "../DB";
 
-const commands = [
-	{
-		name: "ping",
-		description: "Replies with Pong!",
-	},
-];
+import discordUtils from "./utils";
 
-const rest = new REST({ version: "9" }).setToken(DB.config.discord.token);
+import interactionCreateHandler from "./handlers/interactionCreate";
 
-(async () => {
-	try {
-		console.log("Started refreshing application (/) commands.");
+const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+client.token = DB.config.discord.token;
 
-		await rest.put(Routes.applicationCommands(DB.config.discord.id), {
-			body: commands,
-		});
+client.on("interactionCreate", interactionCreateHandler);
 
-		console.log("Successfully reloaded application (/) commands.");
-	} catch (error) {
-		console.error(error);
-	}
-})();
+const publishHints = (): Promise<unknown> => {
+	const rest = new REST({ version: "9" }).setToken(DB.config.discord.token);
 
-const discordClient = new Client({ intents: [Intents.FLAGS.GUILDS] });
-discordClient.token = DB.config.discord.token;
+	return rest.put(Routes.applicationCommands(DB.config.discord.id), {
+		body: discordUtils.commandsList.map((x) => x.toJSON()),
+	});
+};
 
-discordClient.on("interactionCreate", async (interaction) => {
-	if (!interaction.isCommand()) return;
-
-	if (interaction.commandName === "ping") {
-		await interaction.reply("Pong!");
-	}
-});
-
-export default discordClient;
+export default { publishHints, client };
