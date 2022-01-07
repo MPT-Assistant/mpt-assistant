@@ -1,5 +1,7 @@
 import utils from "../../../../utils";
-import { MessageButton, MessageActionRow, MessageEmbed } from "discord.js";
+import { MessageButton, MessageActionRow } from "discord.js";
+
+import discordUtils from "../../../utils/";
 
 import TextCommand from "../../../utils/TextCommand";
 
@@ -18,10 +20,6 @@ ID: ${interaction.user.id}
 
 		const { group, specialty } = await utils.mpt.getExtendGroupInfo(
 			interaction.state.user.group,
-		);
-
-		const groupLeaders = specialty.groupsLeaders.find(
-			(x) => x.name === group.name,
 		);
 
 		const keyboard = [
@@ -68,35 +66,12 @@ ID: ${interaction.user.id}
 			}),
 		];
 
-		const embedProfile = new MessageEmbed();
-		embedProfile.setAuthor({
-			name: interaction.user.username,
-			iconURL: interaction.user.avatarURL() || undefined,
+		const embedProfile = discordUtils.profileToEmbed(interaction, {
+			group,
+			specialty,
 		});
-		embedProfile.setTitle(
-			`Группа: ${interaction.state.user.group}
-Отделение: ${specialty.name}`,
-		);
-		if (groupLeaders) {
-			embedProfile.setDescription("Актив группы:");
-			embedProfile.addFields(
-				...groupLeaders.roles.map((x) => {
-					return {
-						name: x.role,
-						value: x.name,
-						inline: true,
-					};
-				}),
-			);
-		}
-		embedProfile.setFooter({ text: "Дата регистрации" });
-		embedProfile.setTimestamp(interaction.state.user.regDate);
 
 		return interaction.editReply({
-			content: `Ваш профиль:
-Информирование о заменах: ${
-				interaction.state.user.inform ? "Включено" : "Отключено"
-			}`,
 			components: keyboard,
 			embeds: [embedProfile],
 		});

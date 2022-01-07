@@ -1,10 +1,17 @@
 import moment from "moment";
 import rusAnonymUtils from "rus-anonym-utils";
-import { MessageButton, MessageActionRow, MessageEmbed } from "discord.js";
+import {
+	MessageButton,
+	MessageActionRow,
+	MessageEmbed,
+	Interaction,
+} from "discord.js";
 import { ExtractDoc } from "ts-mongoose";
 
 import TextCommand from "./TextCommand";
 import CallbackCommand from "./CallbackCommand";
+
+import BotDiscord from "./types";
 
 import DB from "../../DB";
 import utils from "../../utils";
@@ -65,6 +72,48 @@ class UtilsDiscord {
 			await data.save();
 		}
 		return data;
+	}
+
+	public profileToEmbed(
+		interaction: Interaction & { state: BotDiscord.IStateInfo },
+		groupData: Awaited<ReturnType<typeof utils.mpt.getExtendGroupInfo>>,
+	): MessageEmbed {
+		const { group, specialty } = groupData;
+
+		const groupLeaders = specialty.groupsLeaders.find(
+			(x) => x.name === group.name,
+		);
+
+		const embedMessage = new MessageEmbed();
+		embedMessage.setAuthor({
+			name: interaction.user.username,
+			iconURL: interaction.user.avatarURL() || undefined,
+		});
+		embedMessage.setTitle(
+			`Группа: ${interaction.state.user.group}
+Отделение: ${specialty.name}`,
+		);
+		embedMessage.setDescription(
+			`Информирование о заменах: ${
+				interaction.state.user.inform ? "Включено" : "Отключено"
+			}`,
+		);
+		if (groupLeaders) {
+			embedMessage.addField("Актив группы:", "\u200b");
+			embedMessage.addFields(
+				...groupLeaders.roles.map((x) => {
+					return {
+						name: x.role,
+						value: x.name,
+						inline: true,
+					};
+				}),
+			);
+		}
+		embedMessage.setFooter({ text: "Дата регистрации" });
+		embedMessage.setTimestamp(interaction.state.user.regDate);
+
+		return embedMessage;
 	}
 
 	public scheduleToEmbed(
