@@ -1,5 +1,5 @@
 import utils from "../../../../utils";
-import { MessageButton, MessageActionRow } from "discord.js";
+import { MessageButton, MessageActionRow, MessageEmbed } from "discord.js";
 
 import TextCommand from "../../../utils/TextCommand";
 
@@ -79,24 +79,37 @@ ID: ${interaction.user.id}
 			}),
 		];
 
+		const embedProfile = new MessageEmbed();
+		embedProfile.setAuthor({
+			name: interaction.user.username,
+			iconURL: interaction.user.avatarURL() || undefined,
+		});
+		embedProfile.setTitle(
+			`Группа: ${interaction.state.user.group}
+Отделение: ${specialty.name}`,
+		);
+		if (groupLeaders) {
+			embedProfile.setDescription("Актив группы:");
+			embedProfile.addFields(
+				...groupLeaders.roles.map((x) => {
+					return {
+						name: x.role,
+						value: x.name,
+						inline: true,
+					};
+				}),
+			);
+		}
+		embedProfile.setFooter({ text: "Дата регистрации" });
+		embedProfile.setTimestamp(interaction.state.user.regDate);
+
 		return interaction.editReply({
 			content: `Ваш профиль:
-ID: ${interaction.user.id}
-Группа: ${interaction.state.user.group}
-Отделение: ${specialty.name}
-		${
-			groupLeaders
-				? `\nАктив группы:\n` +
-				  groupLeaders.roles
-						.map((item, index) => `${index + 1}. ${item.role} - ${item.name}`)
-						.join("\n")
-				: ""
-		}
-
 Информирование о заменах: ${
 				interaction.state.user.inform ? "Включено" : "Отключено"
 			}`,
 			components: keyboard,
+			embeds: [embedProfile],
 		});
 	},
 });
