@@ -28,6 +28,14 @@ async function interactionCreateHandler(
 		await command.handler(
 			interaction as CommandInteraction & { state: BotDiscord.IStateInfo },
 		);
+
+		const state = (
+			interaction as CommandInteraction & { state: BotDiscord.IStateInfo }
+		).state;
+
+		await state.user.save();
+		state.channel ? await state.channel.save() : null;
+		state.guild ? await state.guild.save() : null;
 	}
 }
 
