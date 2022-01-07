@@ -1,0 +1,1 @@
+import "./callback/mpt/setGroup";
