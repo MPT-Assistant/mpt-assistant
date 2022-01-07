@@ -103,6 +103,55 @@ class UtilsDiscord {
 		return embedMessage;
 	}
 
+	public replacementsToEmbed(
+		replacements: Awaited<ReturnType<typeof utils.mpt.getGroupReplacements>>,
+		selectedDate: moment.Moment,
+		group: ExtractDoc<typeof DB.api.schemes.groupSchema>,
+	): MessageEmbed {
+		const selectedDayName = selectedDate.locale("ru").format("dddd");
+
+		const embedMessage = new MessageEmbed();
+		embedMessage.setTitle(
+			`Замены на ${selectedDate.format("DD.MM.YYYY")} (${selectedDayName})`,
+		);
+		embedMessage.setDescription(`Группа: ${group.name}`);
+		if (replacements.list.length === 0) {
+			embedMessage.addField(`Замен на выбранный день не найдено`, "\u200b");
+		} else {
+			embedMessage.addField(
+				`${rusAnonymUtils.string.declOfNum(replacements.list.length, [
+					"Обнаружена",
+					"Обнаружено",
+					"Обнаружено",
+				])} ${replacements.list.length} ${rusAnonymUtils.string.declOfNum(
+					replacements.list.length,
+					["замена", "замены", "замен"],
+				)}`,
+				"\u200b",
+			);
+			embedMessage.addFields(
+				...replacements.list.map((replacement, index) => {
+					return {
+						name: `Замена #${index + 1}`,
+						value: `Пара: ${replacement.lessonNum}
+Заменяемая пара: ${replacement.oldLessonName}
+Преподаватель: ${replacement.oldLessonTeacher}
+Новая пара: ${replacement.newLessonName}
+Преподаватель на новой паре: ${replacement.newLessonTeacher}
+Добавлена на сайт: ${moment(replacement.addToSite).format(
+							"HH:mm:ss | DD.MM.YYYY",
+						)}
+Обнаружена ботом: ${moment(replacement.detected).format(
+							"HH:mm:ss | DD.MM.YYYY",
+						)}`,
+					};
+				}),
+			);
+		}
+
+		return embedMessage;
+	}
+
 	public generateKeyboard(cmd: "lessons" | "replacements"): MessageActionRow[] {
 		return [
 			new MessageActionRow({
