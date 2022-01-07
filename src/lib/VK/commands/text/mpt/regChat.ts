@@ -5,7 +5,7 @@ import VKBotTextCommand from "../../../utils/TextCommand";
 import utils from "../../../../utils";
 
 new VKBotTextCommand({
-	alias: /(?:regchat|привязать)(?:\s(.*))?$/i,
+	alias: /^(?:regchat|привязать)(?:\s(.*))?$/i,
 	handler: async (context) => {
 		if (context.isDM || !context.state.chat) {
 			return await context.reply("команда доступна только в беседах.");

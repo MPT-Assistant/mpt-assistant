@@ -6,7 +6,7 @@ import utils from "../../../../utils";
 import TextCommand from "../../../utils/TextCommand";
 
 new TextCommand({
-	alias: /(?:regchat|привязать)(?:\s(.*))?$/i,
+	alias: /^(?:regchat|привязать)(?:\s(.*))?$/i,
 	handler: async (context) => {
 		if (!context.state.chat) {
 			return await context.reply("команда доступна только в беседах");

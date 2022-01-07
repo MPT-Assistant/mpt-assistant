@@ -6,7 +6,7 @@ import utils from "../../../../utils";
 import TextCommand from "../../../utils/TextCommand";
 
 new TextCommand({
-	alias: /(?:установить группу|уг|setGroup)(?:\s(.*))?$/i,
+	alias: /^(?:установить группу|уг|setGroup)(?:\s(.*))?$/i,
 	handler: async (context) => {
 		if (!context.state.args[1]) {
 			let groupAnswer: PromptAnswer | undefined;

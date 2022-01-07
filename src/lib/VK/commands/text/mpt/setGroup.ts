@@ -5,7 +5,7 @@ import VKBotTextCommand from "../../../utils/TextCommand";
 import utils from "../../../../utils";
 
 new VKBotTextCommand({
-	alias: /(?:установить группу|уг)(?:\s(.*))?$/i,
+	alias: /^(?:установить группу|уг)(?:\s(.*))?$/i,
 	handler: async (context) => {
 		if (!context.state.args[1]) {
 			return await context.reply("укажите название группы");
