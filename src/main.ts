@@ -13,14 +13,14 @@ import "./lib/Discord/commands/textLoader";
 import "./lib/Discord/commands/callbackLoader";
 
 (async function () {
-	await DB.api.connection.asPromise();
-	console.log("API DB connected");
-	await DB.vk.connection.asPromise();
-	console.log("VK DB connected");
-	await DB.telegram.connection.asPromise();
-	console.log("Telegram DB connected");
-	await DB.discord.connection.asPromise();
-	console.log("Discord DB connected");
+	await Promise.all([
+		DB.api.connection.asPromise(),
+		DB.vk.connection.asPromise(),
+		DB.telegram.connection.asPromise(),
+		DB.discord.connection.asPromise(),
+	]);
+
+	console.log("DB connected");
 
 	await VK.updates.start();
 	console.log("VK polling started");
