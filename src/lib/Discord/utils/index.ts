@@ -78,11 +78,7 @@ class UtilsDiscord {
 		interaction: Interaction & { state: BotDiscord.IStateInfo },
 		groupData: Awaited<ReturnType<typeof utils.mpt.getExtendGroupInfo>>,
 	): MessageEmbed {
-		const { group, specialty } = groupData;
-
-		const groupLeaders = specialty.groupsLeaders.find(
-			(x) => x.name === group.name,
-		);
+		const { specialty } = groupData;
 
 		const profileEmbedMessage = new MessageEmbed();
 		profileEmbedMessage.setAuthor({
@@ -98,17 +94,6 @@ class UtilsDiscord {
 				interaction.state.user.inform ? "Включено" : "Отключено"
 			}`,
 		);
-		if (groupLeaders) {
-			profileEmbedMessage.addFields(
-				...groupLeaders.roles.map((x) => {
-					return {
-						name: x.role,
-						value: x.name,
-						inline: true,
-					};
-				}),
-			);
-		}
 		profileEmbedMessage.setFooter({ text: "Дата регистрации" });
 		profileEmbedMessage.setTimestamp(interaction.state.user.regDate);
 
