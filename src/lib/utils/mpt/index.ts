@@ -376,7 +376,9 @@ ${
 				const groupName = groupReplacements.group;
 				for (const replacement of groupReplacements.replacements) {
 					const hash = SHA512(
-						`${date}|${groupName}|${JSON.stringify(replacement)}`,
+						`${moment(date).format("DD.MM.YYYY")}|${groupName}|${JSON.stringify(
+							replacement,
+						)}`,
 					).toString();
 
 					insertedDocuments.push({
@@ -423,7 +425,9 @@ ${
 			const groupName = groupReplacements.group;
 			for (const replacement of groupReplacements.replacements) {
 				const hash = SHA512(
-					`${date}|${groupName}|${JSON.stringify(replacement)}`,
+					`${moment(date).format("DD.MM.YYYY")}|${groupName}|${JSON.stringify(
+						replacement,
+					)}`,
 				).toString();
 
 				insertedDocuments.push({
