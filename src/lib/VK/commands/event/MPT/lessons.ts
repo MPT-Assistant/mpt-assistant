@@ -1,4 +1,5 @@
 import moment from "moment";
+import { Keyboard } from "vk-io";
 
 import EventCommand from "../../../utils/EventCommand";
 import DB from "../../../../DB";
@@ -49,6 +50,27 @@ new EventCommand({
 
 		const keyboard = vkUtils.generateKeyboard("lessons");
 		const schedule = await utils.mpt.getGroupSchedule(group, selectedDate);
+
+		if (schedule.lessons.length === 0) {
+			return await event.state.editParentMessage({
+				message: `на ${selectedDate.format(
+					"DD.MM.YYYY",
+				)} пар у группы ${groupName} не найдено`,
+				keyboard,
+			});
+		}
+
+		if (schedule.replacements.length !== 0) {
+			keyboard.row();
+			keyboard.callbackButton({
+				label: "Замены",
+				payload: {
+					cmd: "replacements",
+					date: selectedDate.format("DD.MM.YYYY"),
+				},
+				color: Keyboard.PRIMARY_COLOR,
+			});
+		}
 
 		await event.state.editParentMessage({
 			message: schedule.toString(),
