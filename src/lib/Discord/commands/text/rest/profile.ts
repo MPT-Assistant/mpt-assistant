@@ -50,6 +50,15 @@ ID: ${interaction.user.id}
 			new MessageActionRow({
 				components: [
 					new MessageButton({
+						label: `Подробнее о группе`,
+						customId: JSON.stringify({ cmd: "group" }),
+						style: "SECONDARY",
+					}),
+				],
+			}),
+			new MessageActionRow({
+				components: [
+					new MessageButton({
 						label: `Расписание`,
 						customId: JSON.stringify({ cmd: "lessons" }),
 						style: "SECONDARY",

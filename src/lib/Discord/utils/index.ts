@@ -138,6 +138,40 @@ class UtilsDiscord {
 		return embedMessage;
 	}
 
+	public groupToEmbed(
+		groupData: Awaited<ReturnType<typeof utils.mpt.getExtendGroupInfo>>,
+	): MessageEmbed[] {
+		const { group, specialty } = groupData;
+
+		const response: MessageEmbed[] = [];
+
+		const groupTitleEmbedMessage = new MessageEmbed();
+		groupTitleEmbedMessage.setTitle(
+			`Группа: ${group.name}
+Отделение: ${specialty.name}`,
+		);
+
+		response.push(groupTitleEmbedMessage);
+
+		const groupLeaders = specialty.groupsLeaders.find(
+			(x) => x.name === group.name,
+		);
+
+		if (groupLeaders) {
+			for (const user of groupLeaders.roles) {
+				const profileEmbedMessage = new MessageEmbed();
+				profileEmbedMessage.setAuthor({
+					name: user.name,
+					iconURL: user.photo || undefined,
+				});
+				profileEmbedMessage.setTitle(user.role);
+				response.push(profileEmbedMessage);
+			}
+		}
+
+		return response;
+	}
+
 	public replacementsToEmbed(
 		replacements: Awaited<ReturnType<typeof utils.mpt.getGroupReplacements>>,
 		selectedDate: moment.Moment,
