@@ -265,7 +265,7 @@ class Parser {
 	}
 
 	public async getReplacementsOnDay(
-		date: Date = new Date(),
+		date: moment.MomentInput = new Date(),
 	): Promise<MPT.Replacements.Group[]> {
 		const $ = await this.loadPage(
 			`https://www.mpt.ru/rasp-management/print-replaces.php?date=${moment(
@@ -440,6 +440,15 @@ class Parser {
 		});
 
 		return response;
+	}
+
+	public async *loadReplacements(minimalDate: Date, maximumDate = new Date()) {
+		const selectedDate = moment(minimalDate);
+		selectedDate.isBefore(maximumDate);
+
+		while (selectedDate.isBefore(maximumDate)) {
+			yield await this.getReplacementsOnDay(selectedDate);
+		}
 	}
 
 	private generateCookie(): string {
