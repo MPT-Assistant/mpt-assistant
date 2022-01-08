@@ -372,7 +372,8 @@ class Parser {
 			const news = elem.find("a");
 			const date = elem.find("div").text().trim();
 			const name = news.text().trim();
-			const url = "https://mpt.ru" + (news.attr("href") as string).trim();
+			const link = (news.attr("href") as string).trim();
+			const url = link ? `https://mpt.ru/${link}` : "";
 			response.importantInformation.push({
 				name,
 				url,
@@ -395,9 +396,9 @@ class Parser {
 			elem.find("table").map((_index, element) => {
 				const elem = $(element);
 				const [photo, role, name] = elem.find("tr").children();
+				const photoSrc = $(photo).find("img").attr("src") as string;
 				groupInfo.roles.push({
-					photo: ("https://mpt.ru" +
-						$(photo).find("img").attr("src")) as string,
+					photo: photoSrc ? `https://mpt.ru/${photoSrc}` : "",
 					role: $(role).text().trim(),
 					name: $(name).text().trim(),
 				});
@@ -414,7 +415,8 @@ class Parser {
 			const news = elem.find("a");
 			const date = elem.find("div").text().trim();
 			const name = news.text().trim();
-			const url = "https://mpt.ru" + (news.attr("href") as string).trim();
+			const link = (news.attr("href") as string).trim();
+			const url = link ? `https://mpt.ru/${link}` : "";
 			response.news.push({
 				name,
 				url,
@@ -427,7 +429,8 @@ class Parser {
 			const elem = $(element);
 			const document = elem.find("a");
 			const name = document.text().trim();
-			const url = "https://mpt.ru" + (document.attr("href") as string).trim();
+			const link = (document.attr("href") as string).trim();
+			const url = link ? `https://mpt.ru/${link}` : "";
 			const date = elem.find("td:nth-child(2)").text().trim();
 			response.examQuestions.push({
 				name,
