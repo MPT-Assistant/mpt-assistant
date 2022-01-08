@@ -53,6 +53,31 @@ new CallbackCommand({
 		const keyboard = telegramUtils.generateKeyboard("lessons");
 		const schedule = await utils.mpt.getGroupSchedule(group, selectedDate);
 
+		if (schedule.lessons.length === 0) {
+			return context.message
+				?.editMessageText(
+					`${context.from?.username}, на ${selectedDate.format(
+						"DD.MM.YYYY",
+					)} пар у группы ${groupName} не найдено`,
+					{
+						reply_markup: InlineKeyboard.keyboard(keyboard),
+					},
+				)
+				.catch(() => null);
+		}
+
+		if (schedule.replacements.length !== 0) {
+			keyboard.push([
+				InlineKeyboard.textButton({
+					text: "Замены",
+					payload: {
+						cmd: "replacements",
+						date: selectedDate.format("DD.MM.YYYY"),
+					},
+				}),
+			]);
+		}
+
 		await context.message
 			?.editMessageText(`${context.from?.username}, ${schedule.toString()}`, {
 				reply_markup: InlineKeyboard.keyboard(keyboard),
