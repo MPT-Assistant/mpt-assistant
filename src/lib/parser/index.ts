@@ -209,7 +209,7 @@ class Parser {
 						name: tempReplacement.oldLessonName,
 						teacher: tempReplacement.oldLessonTeacher,
 					},
-					updated: tempReplacement.updated,
+					created: tempReplacement.updated,
 				});
 			}
 		};
@@ -302,7 +302,7 @@ class Parser {
 					new: newLesson,
 					old: oldLesson,
 					num,
-					updated: 0,
+					created: 0,
 				});
 			});
 

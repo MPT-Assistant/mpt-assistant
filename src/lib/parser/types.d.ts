@@ -36,7 +36,7 @@ declare namespace MPT {
 				name: string;
 				teacher: string;
 			};
-			updated: number;
+			created: number;
 		}
 
 		interface Group {
