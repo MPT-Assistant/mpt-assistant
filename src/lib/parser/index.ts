@@ -448,7 +448,7 @@ class Parser {
 		return response;
 	}
 
-	public async *loadReplacements(minimalDate: Date, maximumDate = new Date()) {
+	public async *loadReplacements(minimalDate: Date, maximumDate = new Date()): AsyncGenerator<MPT.Replacements.Group[], void, unknown> {
 		const selectedDate = moment(minimalDate);
 		selectedDate.isBefore(maximumDate);
 

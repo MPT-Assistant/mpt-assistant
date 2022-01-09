@@ -503,7 +503,7 @@ ${
 
 	private emitReplacement(
 		replacement: ExtractDoc<typeof DB.api.schemes.replacementSchema>,
-	) {
+	): void {
 		internalUtils.events.emit("new_replacement", replacement);
 	}
 }
