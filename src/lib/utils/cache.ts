@@ -3,11 +3,11 @@ import parser from "../parser";
 class UtilsCacheMPT {
 	public week: MPT.Week = "Числитель";
 
-	get isNumerator(): boolean {
+	public get isNumerator(): boolean {
 		return this.week === "Числитель";
 	}
 
-	get isDenominator(): boolean {
+	public get isDenominator(): boolean {
 		return this.week === "Знаменатель";
 	}
 }

@@ -22,6 +22,7 @@ export default async function callbackQueryHandler(
 		};
 
 		await command.handler(context);
+		await context.answerCallbackQuery();
 		await context.state.user.save();
 		if (context.state.chat) {
 			await context.state.chat.save();

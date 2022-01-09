@@ -209,7 +209,7 @@ class Parser {
 						name: tempReplacement.oldLessonName,
 						teacher: tempReplacement.oldLessonTeacher,
 					},
-					updated: tempReplacement.updated,
+					created: tempReplacement.updated,
 				});
 			}
 		};
@@ -267,6 +267,12 @@ class Parser {
 	public async getReplacementsOnDay(
 		date: moment.MomentInput = new Date(),
 	): Promise<MPT.Replacements.Group[]> {
+		const selectedDate = moment(date);
+		selectedDate.set("milliseconds", 0);
+		selectedDate.set("seconds", 0);
+		selectedDate.set("minutes", 0);
+		selectedDate.set("hours", 0);
+
 		const $ = await this.loadPage(
 			`https://www.mpt.ru/rasp-management/print-replaces.php?date=${moment(
 				date,
@@ -302,7 +308,7 @@ class Parser {
 					new: newLesson,
 					old: oldLesson,
 					num,
-					updated: 0,
+					created: selectedDate.valueOf(),
 				});
 			});
 
@@ -442,7 +448,7 @@ class Parser {
 		return response;
 	}
 
-	public async *loadReplacements(minimalDate: Date, maximumDate = new Date()) {
+	public async *loadReplacements(minimalDate: Date, maximumDate = new Date()): AsyncGenerator<MPT.Replacements.Group[], void, unknown> {
 		const selectedDate = moment(minimalDate);
 		selectedDate.isBefore(maximumDate);
 

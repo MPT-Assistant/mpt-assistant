@@ -50,7 +50,7 @@ class UtilsRest {
 			selectedDate = moment();
 		}
 
-		if (!text) {
+		if (text === undefined) {
 			selectedDate.add(1, "day");
 		}
 
