@@ -267,6 +267,12 @@ class Parser {
 	public async getReplacementsOnDay(
 		date: moment.MomentInput = new Date(),
 	): Promise<MPT.Replacements.Group[]> {
+		const selectedDate = moment(date);
+		selectedDate.set("milliseconds", 0);
+		selectedDate.set("seconds", 0);
+		selectedDate.set("minutes", 0);
+		selectedDate.set("hours", 0);
+
 		const $ = await this.loadPage(
 			`https://www.mpt.ru/rasp-management/print-replaces.php?date=${moment(
 				date,
@@ -302,7 +308,7 @@ class Parser {
 					new: newLesson,
 					old: oldLesson,
 					num,
-					created: 0,
+					created: selectedDate.valueOf(),
 				});
 			});
 
