@@ -375,11 +375,15 @@ ${
 			for (const groupReplacements of dayReplacements.groups) {
 				const groupName = groupReplacements.group;
 				for (const replacement of groupReplacements.replacements) {
-					const hash = SHA512(
-						`${moment(date).format("DD.MM.YYYY")}|${groupName}|${JSON.stringify(
-							replacement,
-						)}`,
-					).toString();
+					const hash = this.createReplacementHash({
+						date,
+						group: groupName,
+						lessonNum: replacement.num,
+						oldLessonName: replacement.old.name,
+						oldLessonTeacher: replacement.old.teacher,
+						newLessonName: replacement.new.name,
+						newLessonTeacher: replacement.new.teacher,
+					});
 
 					insertedDocuments.push({
 						date: new Date(date),
@@ -424,11 +428,15 @@ ${
 		for (const groupReplacements of replacements) {
 			const groupName = groupReplacements.group;
 			for (const replacement of groupReplacements.replacements) {
-				const hash = SHA512(
-					`${moment(date).format("DD.MM.YYYY")}|${groupName}|${JSON.stringify(
-						replacement,
-					)}`,
-				).toString();
+				const hash = this.createReplacementHash({
+					date,
+					group: groupName,
+					lessonNum: replacement.num,
+					oldLessonName: replacement.old.name,
+					oldLessonTeacher: replacement.old.teacher,
+					newLessonName: replacement.new.name,
+					newLessonTeacher: replacement.new.teacher,
+				});
 
 				insertedDocuments.push({
 					date,
@@ -462,6 +470,35 @@ ${
 		if (response) {
 			response.map(this.emitReplacement);
 		}
+	}
+
+	private createReplacementHash({
+		date,
+		group,
+		lessonNum,
+		oldLessonName,
+		oldLessonTeacher,
+		newLessonName,
+		newLessonTeacher,
+	}: {
+		date: moment.MomentInput;
+		group: string;
+		lessonNum: number;
+		oldLessonName: string;
+		oldLessonTeacher: string;
+		newLessonName: string;
+		newLessonTeacher: string;
+	}): string {
+		const props = [
+			moment(date).format("DD.MM.YYYY"),
+			group,
+			lessonNum,
+			oldLessonName,
+			oldLessonTeacher,
+			newLessonName,
+			newLessonTeacher,
+		];
+		return SHA512(props.join("|")).toString();
 	}
 
 	private emitReplacement(
