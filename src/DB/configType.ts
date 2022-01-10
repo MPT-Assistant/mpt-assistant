@@ -15,4 +15,8 @@ export default interface IConfig {
 		token: string;
 	};
 	telegram: Partial<TelegramOptions> & { token: string };
+	server: {
+		key: string;
+		cert: string;
+	};
 }

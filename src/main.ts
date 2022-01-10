@@ -2,6 +2,7 @@ import DB from "./lib/DB";
 import VK from "./lib/VK";
 import Telegram from "./lib/Telegram";
 import Discord from "./lib/Discord";
+import server from "./lib/API";
 
 import "./lib/VK/commands/textLoader";
 import "./lib/VK/commands/eventLoader";
@@ -29,4 +30,7 @@ import "./lib/Discord/commands/callbackLoader";
 	await Discord.publishHints();
 	await Discord.client.login();
 	console.log("Discord polling started");
+
+	await server.listen(443, "0.0.0.0");
+	console.log("Server listening on port 443");
 })();
