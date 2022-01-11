@@ -41,7 +41,7 @@ new VKBotTextCommand({
 		} else {
 			context.state.user.group = group.name;
 			return await context.reply(
-				`Вы установили себе группу ${group.name}\n(${group.specialty})`,
+				`Вы установили себе группу ${group.name}\n${group.specialty}`,
 			);
 		}
 	},
