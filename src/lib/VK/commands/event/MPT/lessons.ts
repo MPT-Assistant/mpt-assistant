@@ -10,6 +10,12 @@ import vkUtils from "../../../utils";
 new EventCommand({
 	event: "lessons",
 	handler: async (event) => {
+		if (utils.cache.mpt.isScheduleNotAvailable) {
+			return await event.answer({
+				type: "show_snackbar",
+				text: `Расписание будет доступно, когда оно появится на сайте`,
+			});
+		}
 		const selectedDate = moment(event.eventPayload.date, "DD.MM.YYYY");
 
 		if (!selectedDate.isValid()) {

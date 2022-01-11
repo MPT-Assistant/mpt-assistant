@@ -10,6 +10,11 @@ import vkUtils from "../../../utils";
 new VKBotTextCommand({
 	alias: /^(?:расписание|рп|какие пары)(?:\s(.+))?$/i,
 	handler: async (context) => {
+		if (utils.cache.mpt.isScheduleNotAvailable) {
+			return await context.reply(
+				`Расписание будет доступно, когда оно появится на сайте`,
+			);
+		}
 		const groupName =
 			context.state.user.group ||
 			(context.state.chat ? context.state.chat?.group : "");

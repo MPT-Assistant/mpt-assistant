@@ -47,7 +47,7 @@ ${group.map((name, index) => `${index + 1}. ${name}`).join("\n")}`;
 		} else {
 			context.state.chat.group = group.name;
 			return await context.reply(
-				`Вы установили для беседы группу по умолчанию ${group.name} (${group.specialty})`,
+				`Вы установили для беседы группу по умолчанию ${group.name} ${group.specialty}`,
 			);
 		}
 	},
