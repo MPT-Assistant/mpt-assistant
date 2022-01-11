@@ -2,6 +2,7 @@ import parser from "../parser";
 
 class UtilsCacheMPT {
 	public week: MPT.Week = "Числитель";
+	public isScheduleNotAvailable = true;
 
 	public get isNumerator(): boolean {
 		return this.week === "Числитель";

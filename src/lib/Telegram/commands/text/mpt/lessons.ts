@@ -10,6 +10,11 @@ import TextCommand from "../../../utils/TextCommand";
 new TextCommand({
 	alias: /^(?:расписание|рп|какие пары|schedule)(?:\s(.+))?$/i,
 	handler: async (context) => {
+		if (utils.cache.mpt.isScheduleNotAvailable) {
+			return await context.reply(
+				`Расписание будет доступно, когда оно появится на сайте`,
+			);
+		}
 		const groupName =
 			context.state.user.group ||
 			(context.state.chat ? context.state.chat?.group : "");
