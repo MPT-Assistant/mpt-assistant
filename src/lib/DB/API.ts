@@ -30,6 +30,14 @@ class API extends DB {
 			undefined,
 			this.connection,
 		),
+		cache: typedModel(
+			"cache",
+			schemes.cacheSchema,
+			"cache",
+			undefined,
+			undefined,
+			this.connection,
+		),
 	};
 }
 
