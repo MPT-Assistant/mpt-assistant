@@ -86,7 +86,21 @@ const replacementSchema = createSchema(
 	{ versionKey: false },
 );
 
+const cacheSchema = createSchema(
+	{
+		week: Type.string({
+			required: true,
+			enum: ["Числитель", "Знаменатель"] as MPT.Week[],
+		}),
+		lastUpdate: Type.date({ required: true }),
+	},
+	{
+		versionKey: false,
+	},
+);
+
 export default {
+	cacheSchema,
 	specialtySchema,
 	groupSchema,
 	replacementSchema,
