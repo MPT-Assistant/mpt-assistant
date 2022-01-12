@@ -13,6 +13,8 @@ import "./lib/Telegram/commands/callbackLoader";
 import "./lib/Discord/commands/textLoader";
 import "./lib/Discord/commands/callbackLoader";
 
+import "./lib/API/methods/loader";
+
 (async function () {
 	await Promise.all([
 		DB.api.connection.asPromise(),
