@@ -149,23 +149,22 @@ class UtilsVK {
 			"HH:mm:ss | DD.MM.YYYY",
 		)}`;
 
-		const keyboard = Keyboard.builder()
-			.inline()
-			.textButton({
-				label: "Расписание",
-				payload: {
-					cmd: `Расписание ${replacementDate}`,
-				},
-				color: Keyboard.SECONDARY_COLOR,
-			})
-			.row()
-			.textButton({
-				label: "Отключить рассылку",
-				payload: {
-					cmd: "Изменения отключить",
-				},
-				color: Keyboard.NEGATIVE_COLOR,
-			});
+		const keyboard = Keyboard.builder().inline();
+		keyboard.textButton({
+			label: "Расписание",
+			payload: {
+				cmd: `Расписание ${replacementDate}`,
+			},
+			color: Keyboard.SECONDARY_COLOR,
+		});
+		keyboard.row();
+		keyboard.textButton({
+			label: "Отключить рассылку",
+			payload: {
+				cmd: "Изменения отключить",
+			},
+			color: Keyboard.NEGATIVE_COLOR,
+		});
 
 		const userQuery = {
 			group: replacement.group,
