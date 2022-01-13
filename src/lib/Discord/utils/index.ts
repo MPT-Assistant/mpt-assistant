@@ -326,7 +326,7 @@ class UtilsDiscord {
 		keyboard[0] = new MessageActionRow({
 			components: [
 				new MessageButton({
-					label: "ПН",
+					label: "Расписание",
 					customId: JSON.stringify({
 						cmd: "lessons",
 						date: replacementDate,
