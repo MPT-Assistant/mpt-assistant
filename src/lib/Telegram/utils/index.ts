@@ -3,6 +3,7 @@ import moment from "moment";
 
 import DB from "../../DB";
 import utils from "../../utils";
+import telegram from "../index";
 
 import TextCommand from "./TextCommand";
 import CallbackCommand from "./CallbackCommand";
@@ -119,6 +120,94 @@ class UtilsTelegram {
 				}),
 			],
 		];
+	}
+
+	public async onNewReplacement(
+		replacement: ExtractDoc<typeof DB.api.schemes.replacementSchema>,
+	): Promise<void> {
+		const replacementDate = moment(replacement.date).format("DD.MM.YYYY");
+		const message = `Обнаружена новая замена на ${replacementDate}
+Пара: ${replacement.lessonNum}
+Заменяемая пара: ${replacement.oldLessonName}
+Преподаватель: ${replacement.oldLessonTeacher}
+Новая пара: ${replacement.newLessonName}
+Преподаватель на новой паре: ${replacement.newLessonTeacher}
+Добавлена на сайт: ${moment(replacement.addToSite).format(
+			"HH:mm:ss | DD.MM.YYYY",
+		)}
+Обнаружена ботом: ${moment(replacement.detected).format(
+			"HH:mm:ss | DD.MM.YYYY",
+		)}`;
+
+		const keyboard: TelegramInlineKeyboardButton[][] = [];
+		keyboard[0] = [
+			InlineKeyboard.textButton({
+				text: "Расписание",
+				payload: {
+					cmd: "lessons",
+					date: replacementDate,
+				},
+			}),
+		];
+		keyboard[1] = [
+			InlineKeyboard.textButton({
+				text: "Отключить уведомления",
+				payload: {
+					cmd: "notify",
+					status: false,
+				},
+			}),
+		];
+
+		const userQuery = {
+			group: replacement.group,
+			inform: true,
+			reportedReplacements: {
+				$nin: [replacement.hash],
+			},
+		};
+
+		for await (const user of DB.telegram.models.user.find(userQuery)) {
+			user.reportedReplacements.push(replacement.hash);
+			user.markModified("reportedReplacements");
+
+			try {
+				await telegram.api.sendMessage({
+					chat_id: user.id,
+					text: message,
+					reply_markup: InlineKeyboard.keyboard(keyboard),
+				});
+			} catch (error) {
+				user.inform = false;
+			}
+
+			await user.save();
+		}
+
+		const chatQuery = {
+			group: replacement.group,
+			inform: true,
+			reportedReplacements: {
+				$nin: [replacement.hash],
+			},
+		};
+
+		for await (const chat of DB.vk.models.chat.find(chatQuery)) {
+			chat.reportedReplacements.push(replacement.hash);
+			chat.markModified("reportedReplacements");
+
+			try {
+				await telegram.api.sendMessage({
+					chat_id: chat.id,
+					text: message,
+					reply_markup: InlineKeyboard.keyboard(keyboard),
+				});
+			} catch (error) {
+				chat.inform = false;
+			}
+
+			await chat.save();
+		}
 	}
 }
 

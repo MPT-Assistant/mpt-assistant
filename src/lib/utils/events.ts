@@ -3,6 +3,10 @@ import { ExtractDoc } from "ts-mongoose";
 
 import DB from "../DB";
 
+import vkUtils from "../VK/utils/index";
+import telegramUtils from "../Telegram/utils/index";
+import discordUtils from "../Discord/utils/index";
+
 interface UtilsEventEmitter {
 	on(
 		event: "new_replacement",
@@ -17,6 +21,12 @@ interface UtilsEventEmitter {
 	): boolean;
 }
 
-class UtilsEventEmitter extends EventEmitter {}
+class UtilsEventEmitter extends EventEmitter {
+	public bindHandlers(): void {
+		this.on("new_replacement", vkUtils.onNewReplacement);
+		this.on("new_replacement", telegramUtils.onNewReplacement);
+		this.on("new_replacement", discordUtils.onNewReplacement);
+	}
+}
 
 export default UtilsEventEmitter;

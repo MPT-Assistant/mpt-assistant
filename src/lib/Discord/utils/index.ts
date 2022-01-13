@@ -15,6 +15,7 @@ import BotDiscord from "./types";
 
 import DB from "../../DB";
 import utils from "../../utils";
+import discord from "../index";
 
 class UtilsDiscord {
 	public readonly textCommands: TextCommand[] = [];
@@ -302,6 +303,117 @@ class UtilsDiscord {
 				],
 			}),
 		];
+	}
+
+	public async onNewReplacement(
+		replacement: ExtractDoc<typeof DB.api.schemes.replacementSchema>,
+	): Promise<void> {
+		const replacementDate = moment(replacement.date).format("DD.MM.YYYY");
+		const message = `Обнаружена новая замена на ${replacementDate}
+Пара: ${replacement.lessonNum}
+Заменяемая пара: ${replacement.oldLessonName}
+Преподаватель: ${replacement.oldLessonTeacher}
+Новая пара: ${replacement.newLessonName}
+Преподаватель на новой паре: ${replacement.newLessonTeacher}
+Добавлена на сайт: ${moment(replacement.addToSite).format(
+			"HH:mm:ss | DD.MM.YYYY",
+		)}
+Обнаружена ботом: ${moment(replacement.detected).format(
+			"HH:mm:ss | DD.MM.YYYY",
+		)}`;
+
+		const keyboard: MessageActionRow[] = [];
+		keyboard[0] = new MessageActionRow({
+			components: [
+				new MessageButton({
+					label: "ПН",
+					customId: JSON.stringify({
+						cmd: "lessons",
+						date: replacementDate,
+					}),
+					style: "SECONDARY",
+				}),
+			],
+		});
+
+		const userQuery = {
+			group: replacement.group,
+			inform: true,
+			reportedReplacements: {
+				$nin: [replacement.hash],
+			},
+		};
+
+		keyboard[1] = new MessageActionRow({
+			components: [
+				new MessageButton({
+					label: "Отключить уведомления",
+					customId: JSON.stringify({
+						cmd: "notify",
+						target: "user",
+						status: false,
+					}),
+					style: "DANGER",
+				}),
+			],
+		});
+
+		for await (const user of DB.discord.models.user.find(userQuery)) {
+			user.reportedReplacements.push(replacement.hash);
+			user.markModified("reportedReplacements");
+
+			try {
+				await discord.client.users.send(user.id, {
+					content: message,
+					components: keyboard,
+				});
+			} catch (error) {
+				user.inform = false;
+			}
+
+			await user.save();
+		}
+
+		const channelQuery = {
+			group: replacement.group,
+			inform: true,
+			reportedReplacements: {
+				$nin: [replacement.hash],
+			},
+		};
+
+		keyboard[1] = new MessageActionRow({
+			components: [
+				new MessageButton({
+					label: "Отключить уведомления",
+					customId: JSON.stringify({
+						cmd: "notify",
+						target: "channel",
+						status: false,
+					}),
+					style: "DANGER",
+				}),
+			],
+		});
+
+		for await (const channel of DB.discord.models.channel.find(channelQuery)) {
+			channel.reportedReplacements.push(replacement.hash);
+			channel.markModified("reportedReplacements");
+
+			try {
+				const channelInfo = await discord.client.channels.fetch(channel.id);
+				if (channelInfo?.isText()) {
+					await channelInfo.send({
+						content: message,
+						components: keyboard,
+					});
+				}
+			} catch (error) {
+				channel.inform = false;
+			}
+
+			await channel.save();
+		}
 	}
 }
 

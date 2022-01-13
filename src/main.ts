@@ -3,6 +3,9 @@ import VK from "./lib/VK";
 import Telegram from "./lib/Telegram";
 import Discord from "./lib/Discord";
 import server from "./lib/API";
+import utils from "./lib/utils";
+
+import "./lib/scheduler";
 
 import "./lib/VK/commands/textLoader";
 import "./lib/VK/commands/eventLoader";
@@ -13,7 +16,12 @@ import "./lib/Telegram/commands/callbackLoader";
 import "./lib/Discord/commands/textLoader";
 import "./lib/Discord/commands/callbackLoader";
 
+import "./lib/API/methods/loader";
+
 (async function () {
+	utils.events.bindHandlers();
+	console.log("Event handlers are bound");
+
 	await Promise.all([
 		DB.api.connection.asPromise(),
 		DB.vk.connection.asPromise(),

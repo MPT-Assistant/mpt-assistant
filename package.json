@@ -21,6 +21,7 @@
 		"@discordjs/builders": "^0.11.0",
 		"@discordjs/rest": "^0.2.0-canary.0",
 		"@puregram/prompt": "^1.2.0",
+		"@sinclair/typebox": "^0.23.2",
 		"@types/crypto-js": "^4.1.0",
 		"axios": "^0.24.0",
 		"cheerio": "^1.0.0-rc.10",
@@ -31,6 +32,7 @@
 		"fastify-cors": "^6.0.2",
 		"fastify-formbody": "^5.2.0",
 		"fastify-helmet": "^6.0.0",
+		"fastify-http-proxy": "^6.2.1",
 		"fastify-https-redirect": "^1.0.4",
 		"fastify-multipart": "^5.2.1",
 		"moment": "^2.29.1",
@@ -38,6 +40,7 @@
 		"mongoose": "^6.1.6",
 		"puregram": "^2.3.2",
 		"rus-anonym-utils": "^2.6.1",
+		"simple-scheduler-task": "^5.0.1",
 		"ts-mongoose": "^0.0.24",
 		"vk-io": "^4.4.0"
 	}
