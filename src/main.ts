@@ -5,6 +5,8 @@ import Discord from "./lib/Discord";
 import server from "./lib/API";
 import utils from "./lib/utils";
 
+import "./lib/scheduler";
+
 import "./lib/VK/commands/textLoader";
 import "./lib/VK/commands/eventLoader";
 
