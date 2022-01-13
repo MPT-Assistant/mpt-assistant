@@ -151,7 +151,7 @@ class UtilsTelegram {
 		];
 		keyboard[1] = [
 			InlineKeyboard.textButton({
-				text: "Расписание",
+				text: "Отключить уведомления",
 				payload: {
 					cmd: "notify",
 					status: false,
