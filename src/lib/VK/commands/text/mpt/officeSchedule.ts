@@ -1,5 +1,6 @@
 import moment from "moment";
 
+import utils from "../../../../utils";
 import VKBotTextCommand from "../../../utils/TextCommand";
 
 new VKBotTextCommand({
@@ -19,7 +20,7 @@ new VKBotTextCommand({
 			};
 
 			return await context.reply(
-				`На ${date.format(
+				`на ${date.format(
 					"DD.MM.YYYY",
 				)} установлено расписание кабинетов\nПросмотреть кабинеты в течении этого дня можно командой: кабинеты`,
 				{
@@ -35,8 +36,22 @@ new VKBotTextCommand({
 		if (
 			moment(context.state.chat.officeSchedule.date).isSame(new Date(), "day")
 		) {
+			const timetable = utils.mpt.getTimetable(new Date());
+			console.log(timetable);
+			const response = `Сейчас ${
+				timetable.current.type === "lesson" ? "пара" : "перемена"
+			}, до её конца осталось ${timetable.current.diffEnd.hours}:${
+				timetable.current.diffEnd.minutes
+			}:${timetable.current.diffEnd.seconds}
+До начала ${timetable.next.num} ${
+				timetable.next.type === "lesson" ? "пары" : "перемены"
+			} осталось ${timetable.next.diffEnd.hours}:${
+				timetable.next.diffEnd.minutes
+			}:${timetable.next.diffEnd.seconds}`;
+
 			return await context.reply(
-				`Кабинеты на сегодня установленные пользователем @id${context.state.chat.officeSchedule.user}`,
+				`кабинеты на сегодня установленные пользователем @id${context.state.chat.officeSchedule.user}
+${response}`,
 				{
 					attachment: context.state.chat.officeSchedule.image,
 				},
