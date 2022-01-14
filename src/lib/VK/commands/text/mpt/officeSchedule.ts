@@ -37,7 +37,6 @@ new VKBotTextCommand({
 			moment(context.state.chat.officeSchedule.date).isSame(new Date(), "day")
 		) {
 			const timetable = utils.mpt.getTimetable(new Date());
-			console.log(timetable);
 			const response = `Сейчас ${
 				timetable.current.type === "lesson" ? "пара" : "перемена"
 			}, до её конца осталось ${timetable.current.diffEnd.hours}:${
