@@ -36,17 +36,26 @@ new VKBotTextCommand({
 		if (
 			moment(context.state.chat.officeSchedule.date).isSame(new Date(), "day")
 		) {
+			const addZero = (num: number): string => {
+				if (num < 10) {
+					return "0" + num.toString();
+				} else {
+					return num.toString();
+				}
+			};
 			const timetable = utils.mpt.getTimetable(new Date());
 			const response = `Сейчас ${
 				timetable.current.type === "lesson" ? "пара" : "перемена"
-			}, до её конца осталось ${timetable.current.diffEnd.hours}:${
-				timetable.current.diffEnd.minutes
-			}:${timetable.current.diffEnd.seconds}
+			}, до её конца осталось ${addZero(
+				timetable.current.diffEnd.hours,
+			)}:${addZero(timetable.current.diffEnd.minutes)}:${addZero(
+				timetable.current.diffEnd.seconds,
+			)}
 До начала ${timetable.next.num} ${
 				timetable.next.type === "lesson" ? "пары" : "перемены"
-			} осталось ${timetable.next.diffEnd.hours}:${
-				timetable.next.diffEnd.minutes
-			}:${timetable.next.diffEnd.seconds}`;
+			} осталось ${addZero(timetable.next.diffEnd.hours)}:${addZero(
+				timetable.next.diffEnd.minutes,
+			)}:${addZero(timetable.next.diffEnd.seconds)}`;
 
 			return await context.reply(
 				`кабинеты на сегодня установленные пользователем @id${context.state.chat.officeSchedule.user}
