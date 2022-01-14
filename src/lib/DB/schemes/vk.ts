@@ -19,6 +19,11 @@ const chatSchema = createSchema(
 		group: Type.string({ required: true }),
 		inform: Type.boolean({ required: true }),
 		reportedReplacements: Type.array({ required: true }).of(Type.string({})),
+		officeSchedule: Type.object().of({
+			date: Type.date({ required: true }),
+			image: Type.string({ required: true }),
+			user: Type.number({ required: true }),
+		}),
 	},
 	{ versionKey: false },
 );
