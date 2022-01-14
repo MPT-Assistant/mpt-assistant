@@ -9,3 +9,4 @@ import "./text/mpt/setGroup";
 import "./text/mpt/regChat";
 import "./text/mpt/lessons";
 import "./text/mpt/replacements";
+import "./text/mpt/officeSchedule";
