@@ -52,13 +52,20 @@ class UtilsCache {
 	}
 
 	public async save(): Promise<void> {
-		await DB.api.models.cache.updateOne(
-			{},
-			{
+		if ((await DB.api.models.cache.countDocuments()) === 0) {
+			await DB.api.models.cache.insertMany({
 				week: this.mpt.week,
 				lastUpdate: this.mpt.lastUpdate,
-			},
-		);
+			});
+		} else {
+			await DB.api.models.cache.updateOne(
+				{},
+				{
+					week: this.mpt.week,
+					lastUpdate: this.mpt.lastUpdate,
+				},
+			);
+		}
 	}
 }
 
