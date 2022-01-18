@@ -11,9 +11,33 @@ new VKBotTextCommand({
 	alias: /^(?:расписание|рп|какие пары)(?:\s(.+))?$/i,
 	handler: async (context) => {
 		if (utils.cache.mpt.isScheduleNotAvailable) {
-			return await context.reply(
-				`Расписание будет доступно, когда оно появится на сайте`,
-			);
+			if (context.state.chat?.schedule) {
+				return await context.reply(
+					`временное расписание
+Установил: @id${context.state.chat.schedule.user}
+Сейчас ${utils.cache.mpt.week} (${
+						utils.cache.mpt.isNumerator ? "Сверху" : "Снизу"
+					})`,
+					{
+						attachment: context.state.chat.schedule.image,
+					},
+				);
+			} else if (context.state.user.schedule) {
+				return await context.reply(
+					`временное расписание
+Сейчас ${utils.cache.mpt.week} (${
+						utils.cache.mpt.isNumerator ? "Сверху" : "Снизу"
+					})`,
+					{
+						attachment: context.state.user.schedule.image,
+					},
+				);
+			} else {
+				return await context.reply(
+					`Расписание будет доступно, когда оно появится на сайте
+Вы можете установить временное расписание командой set lessons`,
+				);
+			}
 		}
 		const groupName =
 			context.state.user.group ||
