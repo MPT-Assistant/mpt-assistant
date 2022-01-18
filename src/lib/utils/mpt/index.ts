@@ -8,8 +8,9 @@ import DB from "../../DB";
 import parser from "../../parser";
 
 class UtilsMPT {
-	public getTimetable(date: moment.Moment): MPT.Timetable.ParsedElement[] {
-		const response: MPT.Timetable.ParsedElement[] = [];
+	public getTimetable(date: moment.MomentInput): MPT.Timetable.Parsed {
+		const list: MPT.Timetable.ParsedElement[] = [];
+		date = moment(date);
 
 		for (const element of DB.timetable) {
 			let status: "await" | "process" | "finished";
@@ -35,16 +36,27 @@ class UtilsMPT {
 				status = "await";
 			}
 
-			response.push({
+			const diffStart = moment.preciseDiff(date, start, true);
+			const diffEnd = moment.preciseDiff(date, end, true);
+
+			list.push({
 				status,
 				type: element.type,
 				num: element.num,
 				start,
 				end,
-				diffStart: moment.preciseDiff(date, start, true),
-				diffEnd: moment.preciseDiff(date, end, true),
+				diffStart,
+				diffEnd,
 			});
 		}
+
+		const nowIndex = list.findIndex((x) => x.status === "process");
+		const response: MPT.Timetable.Parsed = {
+			current: list[nowIndex],
+			next: list[nowIndex + 1],
+			list,
+		};
+
 		return response;
 	}
 
@@ -132,7 +144,7 @@ class UtilsMPT {
 
 		const place = schedule.place;
 		const week = this.getWeekLegend(selectedDate);
-		const dayTimetable = this.getTimetable(selectedDate);
+		const { list: dayTimetable } = this.getTimetable(selectedDate);
 
 		const lessons: MPT.Schedule.ParsedLesson[] = [];
 

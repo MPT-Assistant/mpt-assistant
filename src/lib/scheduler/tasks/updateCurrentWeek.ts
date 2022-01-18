@@ -3,9 +3,9 @@ import { Interval } from "simple-scheduler-task";
 import utils from "../../utils";
 
 export default new Interval({
-	cron: "*/5 * * * *",
+	cron: "*/30 * * * *",
 	source: async () => {
-		return await utils.mpt.updateReplacementsList();
+		return await utils.cache.updateWeek();
 	},
 	type: path.parse(__filename).name,
 });

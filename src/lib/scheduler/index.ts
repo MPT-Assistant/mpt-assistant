@@ -1,3 +1,4 @@
 import updateReplacementsList from "./tasks/updateReplacementsList";
+import updateCurrentWeek from "./tasks/updateCurrentWeek";
 
-export default { updateReplacementsList };
+export default { updateReplacementsList, updateCurrentWeek };
