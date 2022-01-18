@@ -40,6 +40,7 @@ class UtilsCache {
 
 	public async updateWeek(): Promise<void> {
 		this.mpt.week = await parser.getCurrentWeek();
+		await this.save();
 	}
 
 	public async load(): Promise<void> {
