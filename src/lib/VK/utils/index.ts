@@ -151,9 +151,17 @@ class UtilsVK {
 
 		const keyboard = Keyboard.builder().inline();
 		keyboard.textButton({
-			label: "Расписание",
+			label: `Расписание ${replacementDate}`,
 			payload: {
 				cmd: `Расписание ${replacementDate}`,
+			},
+			color: Keyboard.SECONDARY_COLOR,
+		});
+		keyboard.row();
+		keyboard.textButton({
+			label: `Замены ${replacementDate}`,
+			payload: {
+				cmd: `Замены ${replacementDate}`,
 			},
 			color: Keyboard.SECONDARY_COLOR,
 		});

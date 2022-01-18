@@ -142,7 +142,7 @@ class UtilsTelegram {
 		const keyboard: TelegramInlineKeyboardButton[][] = [];
 		keyboard[0] = [
 			InlineKeyboard.textButton({
-				text: "Расписание",
+				text: `Расписание ${replacementDate}`,
 				payload: {
 					cmd: "lessons",
 					date: replacementDate,
@@ -150,6 +150,15 @@ class UtilsTelegram {
 			}),
 		];
 		keyboard[1] = [
+			InlineKeyboard.textButton({
+				text: `Замены ${replacementDate}`,
+				payload: {
+					cmd: "replacements",
+					date: replacementDate,
+				},
+			}),
+		];
+		keyboard[2] = [
 			InlineKeyboard.textButton({
 				text: "Отключить уведомления",
 				payload: {

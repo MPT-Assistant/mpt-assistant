@@ -326,9 +326,22 @@ class UtilsDiscord {
 		keyboard[0] = new MessageActionRow({
 			components: [
 				new MessageButton({
-					label: "Расписание",
+					label: `Расписание ${replacementDate}`,
 					customId: JSON.stringify({
 						cmd: "lessons",
+						date: replacementDate,
+					}),
+					style: "SECONDARY",
+				}),
+			],
+		});
+
+		keyboard[1] = new MessageActionRow({
+			components: [
+				new MessageButton({
+					label: `Замены ${replacementDate}`,
+					customId: JSON.stringify({
+						cmd: "replacements",
 						date: replacementDate,
 					}),
 					style: "SECONDARY",
@@ -344,7 +357,7 @@ class UtilsDiscord {
 			},
 		};
 
-		keyboard[1] = new MessageActionRow({
+		keyboard[2] = new MessageActionRow({
 			components: [
 				new MessageButton({
 					label: "Отключить уведомления",
@@ -382,7 +395,7 @@ class UtilsDiscord {
 			},
 		};
 
-		keyboard[1] = new MessageActionRow({
+		keyboard[2] = new MessageActionRow({
 			components: [
 				new MessageButton({
 					label: "Отключить уведомления",
