@@ -31,6 +31,9 @@ import "./lib/API/methods/loader";
 
 	console.log("DB connected");
 
+	await utils.cache.load();
+	console.log("Cache loaded");
+
 	await VK.updates.start();
 	console.log("VK polling started");
 	await Telegram.updates.startPolling();
