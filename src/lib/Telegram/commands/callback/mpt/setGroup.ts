@@ -25,7 +25,8 @@ new CallbackCommand({
 			});
 
 			return await context.message?.editMessageText(
-				`${context.from?.username}, Вы установили себе группу ${selectedGroup.name}\nОтделение: ${selectedGroup.specialty}`,
+				`${context.from?.username}, Вы установили себе группу ${selectedGroup.name}
+Отделение: ${selectedGroup.specialty}`,
 				{
 					reply_markup: InlineKeyboard.keyboard([
 						InlineKeyboard.textButton({
