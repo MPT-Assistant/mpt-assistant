@@ -3,16 +3,6 @@ import moment from "moment";
 import cheerio, { CheerioAPI } from "cheerio";
 
 class Parser {
-	private readonly days = [
-		"Воскресенье",
-		"Понедельник",
-		"Вторник",
-		"Среда",
-		"Четверг",
-		"Пятница",
-		"Суббота",
-	] as const;
-
 	public async getCurrentWeek(): Promise<MPT.Week> {
 		const $ = await this.loadPage(
 			"https://www.mpt.ru/studentu/raspisanie-zanyatiy/",
@@ -446,7 +436,9 @@ class Parser {
 	}
 
 	private getDayNum(dayName: string): number {
-		return this.days.findIndex((x) => new RegExp(x, "gi").test(dayName));
+		moment.locale("ru");
+		const days = moment.weekdays().map((x) => new RegExp(x, "gi"));
+		return days.findIndex((x) => x.test(dayName));
 	}
 
 	private parseLesson(lessonString: string): {
