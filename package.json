@@ -20,6 +20,7 @@
 	"dependencies": {
 		"@discordjs/builders": "^0.11.0",
 		"@discordjs/rest": "^0.2.0-canary.0",
+		"@mpt-assistant/parser": "^1.0.2",
 		"@puregram/prompt": "^1.2.0",
 		"@sinclair/typebox": "^0.23.2",
 		"@types/crypto-js": "^4.1.0",
