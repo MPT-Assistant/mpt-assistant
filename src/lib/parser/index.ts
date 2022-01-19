@@ -3,16 +3,6 @@ import moment from "moment";
 import cheerio, { CheerioAPI } from "cheerio";
 
 class Parser {
-	private readonly days = [
-		"Воскресенье",
-		"Понедельник",
-		"Вторник",
-		"Среда",
-		"Четверг",
-		"Пятница",
-		"Суббота",
-	] as const;
-
 	public async getCurrentWeek(): Promise<MPT.Week> {
 		const $ = await this.loadPage(
 			"https://www.mpt.ru/studentu/raspisanie-zanyatiy/",
@@ -133,135 +123,93 @@ class Parser {
 		return specialtyList;
 	}
 
-	/**
-	 * Переписать
-	 */
 	public async getReplacements(): Promise<MPT.Replacements.Day[]> {
 		const $ = await this.loadPage(
 			"https://www.mpt.ru/studentu/izmeneniya-v-raspisanii/",
 		);
-		const replacementsParsedList = $(
-			$("body > div.page > main > div > div > div:nth-child(3)").children(),
-		);
 
-		const replacementsList: MPT.Replacements.Day[] = [];
+		const list = $(".container-fluid > div:nth-child(1) > div:nth-child(3)");
+		const response: MPT.Replacements.Day[] = [];
 
-		const tempReplacementsOnDay: {
-			date: Date;
-			replacements: Array<{
-				group: string;
-				num: number;
-				oldLesson: string;
-				newLesson: string;
-				updated: Date;
-			}>;
-		} = {
-			date: new Date(0),
-			replacements: [],
-		};
+		list.children().map((_index, element) => {
+			if (_index === 0) {
+				return;
+			}
 
-		const processReplacementsOnDay = () => {
-			const replacementsOnThisDay = tempReplacementsOnDay.replacements.map(
-				(tempReplacement) => {
-					const oldLessonData = this.parseLesson(tempReplacement.oldLesson);
-					const newLessonData = this.parseLesson(tempReplacement.newLesson);
-					return {
-						group: tempReplacement.group,
-						num: tempReplacement.num,
-						oldLessonTeacher: oldLessonData.teacher,
-						oldLessonName: oldLessonData.name,
-						newLessonTeacher: newLessonData.teacher,
-						newLessonName: newLessonData.name,
-						updated: tempReplacement.updated.valueOf(),
-					};
-				},
+			const elem = $(element);
+
+			if (elem[0].name === "h4") {
+				const sourceDate = elem.text();
+				const parsedDate = sourceDate.match(/((?:\d{2}).(?:\d{2}).(?:\d{4}))/g);
+				if (parsedDate === null) {
+					throw new Error("Date not found");
+				}
+				const date = moment(parsedDate[0], "DD.MM.YYYY").toDate();
+				response.push({
+					date,
+					groups: [],
+				});
+				return;
+			}
+
+			if (elem[0].name !== "div") {
+				return;
+			}
+
+			const sourceGroupNames = elem.find(
+				"table:nth-child(1) > caption:nth-child(1) > b:nth-child(1)",
+			);
+			const groupNames = sourceGroupNames.text().split(", ");
+
+			const replacements: MPT.Replacements.Replacement[] = [];
+
+			const replacementsList = elem.find(
+				"table:nth-child(1) > tbody:nth-child(2) > tr:not(:first-child)",
 			);
 
-			for (const tempReplacement of replacementsOnThisDay) {
-				const replacementDay =
-					replacementsList.find(
-						(x: { date: number }) =>
-							x.date === tempReplacementsOnDay.date.valueOf(),
-					) ||
-					replacementsList[
-						replacementsList.push({
-							date: tempReplacementsOnDay.date.valueOf(),
-							groups: [],
-						}) - 1
-					];
-				const groupWithReplacements =
-					replacementDay.groups.find(
-						(x: { group: string }) => x.group === tempReplacement.group,
-					) ||
-					replacementDay.groups[
-						replacementDay.groups.push({
-							group: tempReplacement.group,
-							replacements: [],
-						}) - 1
-					];
-				groupWithReplacements.replacements.push({
-					num: tempReplacement.num,
-					new: {
-						name: tempReplacement.newLessonName,
-						teacher: tempReplacement.newLessonTeacher,
+			for (const element of replacementsList) {
+				const elem = $(element);
+
+				const sourceLessonNum = elem.find("td:nth-child(1)").text();
+				const sourceOldLesson = elem.find("td:nth-child(3)").text();
+				const sourceNewLesson = elem.find("td:nth-child(2)").text();
+				const sourceAddToSite = elem.find("td:nth-child(4)").text();
+
+				const [lessonNum, newLesson, oldLesson, addToSite]: [
+					number,
+					{
+						name: string;
+						teacher: string;
 					},
-					old: {
-						name: tempReplacement.oldLessonName,
-						teacher: tempReplacement.oldLessonTeacher,
+					{
+						name: string;
+						teacher: string;
 					},
-					created: tempReplacement.updated,
+					Date,
+				] = [
+					parseInt(sourceLessonNum),
+					this.parseLesson(sourceOldLesson),
+					this.parseLesson(sourceNewLesson),
+					moment(sourceAddToSite, "DD.MM.YYYY HH:mm:ss").toDate(),
+				];
+
+				replacements.push({
+					num: lessonNum,
+					new: newLesson,
+					old: oldLesson,
+					created: addToSite,
 				});
 			}
-		};
 
-		replacementsParsedList.each((_elementIndex, element) => {
-			const selectedElement = $(element);
-			if (selectedElement.get()[0].name === "h4") {
-				let parsedDate = $($(selectedElement).children()[0]).text();
-				parsedDate = parsedDate.split(".").reverse().join("-");
-				if (Number(tempReplacementsOnDay.date) !== 0) {
-					processReplacementsOnDay();
-					tempReplacementsOnDay.replacements = [];
-				}
-				tempReplacementsOnDay.date = new Date(parsedDate);
-			} else if (
-				selectedElement.get()[0].name === "div" &&
-				selectedElement.attr("class") === "table-responsive"
-			) {
-				const PreParsedData = selectedElement.children().children();
-				const GroupsNames = this.fixNonDecodeString(
-					$($(PreParsedData[0]).children()[0]).text(),
-				).split(", ");
-				for (const group of GroupsNames) {
-					const replacementsTable = $(PreParsedData[1]).children();
-					for (let i = 1; i < replacementsTable.length; i++) {
-						const tempReplacement = $(replacementsTable[i]);
-
-						const lessonNumber = tempReplacement
-							.find("td.lesson-number")
-							.text();
-						const oldLesson = tempReplacement.find("td.replace-from").text();
-						const newLesson = tempReplacement.find("td.replace-to").text();
-						const updatedAt = tempReplacement.find("td.updated-at").text();
-
-						tempReplacementsOnDay.replacements.push({
-							group: group,
-							num: Number(lessonNumber),
-							oldLesson: oldLesson.trim(),
-							newLesson: newLesson.trim(),
-							updated: new Date(
-								updatedAt.split(` `)[0].split(`.`).reverse().join(`-`) +
-									` ` +
-									updatedAt.split(` `)[1],
-							),
-						});
-					}
-				}
-			}
+			groupNames.map((group) => {
+				response[response.length - 1].groups.push({
+					group,
+					replacements,
+				});
+			});
 		});
-		processReplacementsOnDay();
 
-		return replacementsList;
+		return response;
 	}
 
 	public async getReplacementsOnDay(
@@ -308,7 +256,7 @@ class Parser {
 					new: newLesson,
 					old: oldLesson,
 					num,
-					created: selectedDate.valueOf(),
+					created: selectedDate.toDate(),
 				});
 			});
 
@@ -448,7 +396,10 @@ class Parser {
 		return response;
 	}
 
-	public async *loadReplacements(minimalDate: Date, maximumDate = new Date()): AsyncGenerator<MPT.Replacements.Group[], void, unknown> {
+	public async *loadReplacements(
+		minimalDate: Date,
+		maximumDate = new Date(),
+	): AsyncGenerator<MPT.Replacements.Group[], void, unknown> {
 		const selectedDate = moment(minimalDate);
 		selectedDate.isBefore(maximumDate);
 
@@ -485,48 +436,21 @@ class Parser {
 	}
 
 	private getDayNum(dayName: string): number {
-		return this.days.findIndex((x) => new RegExp(x, "gi").test(dayName));
+		moment.locale("ru");
+		const days = moment.weekdays().map((x) => new RegExp(x, "gi"));
+		return days.findIndex((x) => x.test(dayName));
 	}
 
 	private parseLesson(lessonString: string): {
 		name: string;
 		teacher: string;
 	} {
-		if (
-			/(([А-Я]\.[А-Я]\. [А-Я][а-я]+)?( \(.*\)))?(?:, )?(([А-Я]\.[А-Я]\. [А-Я][а-я]+)?( \(.*\)))/g.test(
-				lessonString,
-			)
-		) {
-			const execResult =
-				/(([А-Я]\.[А-Я]\. [А-Я][а-я]+)?( \(.*\)))?(?:, )?(([А-Я]\.[А-Я]\. [А-Я][а-я]+)?( \(.*\)))/g.exec(
-					lessonString,
-				);
-			if (!execResult) {
-				return {
-					name: lessonString,
-					teacher: "Отсутствует",
-				};
-			}
-			return {
-				name: execResult.input.substring(0, execResult.index).trim(),
-				teacher: [execResult[1], execResult[4]].join(", "),
-			};
-		} else {
-			const execResult =
-				/([А-Я]\.[А-Я]\. [А-Я][а-я]+)?(?:, )?([А-Я]\.[А-Я]\. [А-Я][а-я]+)/g.exec(
-					lessonString,
-				);
-			if (!execResult) {
-				return {
-					name: lessonString,
-					teacher: "Отсутствует",
-				};
-			}
-			return {
-				name: execResult.input.substring(0, execResult.index).trim(),
-				teacher: execResult[0],
-			};
-		}
+		const teacher = lessonString.match(/((?:[А-Я].){2} [А-Яа-я]*)/g);
+
+		return {
+			name: lessonString.replace(teacher ? teacher[0] : "", "").trim(),
+			teacher: teacher ? teacher[0] : "Отсутствует",
+		};
 	}
 }
 

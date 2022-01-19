@@ -45,7 +45,8 @@ new VKBotTextCommand({
 		} else {
 			context.state.chat.group = group.name;
 			return await context.reply(
-				`Вы установили для беседы группу по умолчанию ${group.name}\n${group.specialty}`,
+				`Вы установили для беседы группу по умолчанию ${group.name}
+Отделение: ${group.specialty}`,
 			);
 		}
 	},

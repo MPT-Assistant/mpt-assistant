@@ -43,7 +43,8 @@ ${group.map((name, index) => `${index + 1}. ${name}`).join("\n")}`;
 		} else {
 			context.state.user.group = group.name;
 			return await context.reply(
-				`Вы установили себе группу ${group.name}\n${group.specialty}`,
+				`Вы установили себе группу ${group.name}
+Отделение: ${group.specialty}`,
 				{
 					reply_markup: InlineKeyboard.keyboard([
 						InlineKeyboard.textButton({

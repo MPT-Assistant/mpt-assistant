@@ -54,7 +54,8 @@ ${group.map((name, index) => `${index + 1}. ${name}`).join("\n")}`;
 					return await interaction.editReply({
 						content: `Вы установили группу для ${
 							target === "guild" ? "сервера" : "канала"
-						} по умолчанию ${group.name}\n${group.specialty}`,
+						} по умолчанию ${group.name}
+Отделение: ${group.specialty}`,
 					});
 				}
 			} else {
@@ -62,7 +63,8 @@ ${group.map((name, index) => `${index + 1}. ${name}`).join("\n")}`;
 			}
 
 			return await interaction.editReply({
-				content: `Вы установили себе группу ${group.name}\n${group.specialty}`,
+				content: `Вы установили себе группу ${group.name}
+Отделение: ${group.specialty}`,
 				components: [
 					new MessageActionRow({
 						components: [
