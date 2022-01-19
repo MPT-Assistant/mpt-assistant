@@ -36,7 +36,7 @@ declare namespace MPT {
 				name: string;
 				teacher: string;
 			};
-			created: number;
+			created: Date;
 		}
 
 		interface Group {
@@ -45,7 +45,7 @@ declare namespace MPT {
 		}
 
 		interface Day {
-			date: number;
+			date: Date;
 			groups: Group[];
 		}
 	}
