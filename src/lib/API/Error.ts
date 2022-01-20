@@ -3,6 +3,7 @@ const ERRORS = {
 	1: "Method not found",
 	2: "Group not found",
 	3: "Invalid date",
+	4: "Rate limit exceeded, retry in 1 minute",
 } as const;
 
 type TAPIErrorCode = keyof typeof ERRORS;

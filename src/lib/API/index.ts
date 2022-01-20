@@ -1,11 +1,12 @@
 import fastify from "fastify";
 
+import rateLimit from "fastify-rate-limit";
 import httpsRedirect from "fastify-https-redirect";
-import fastifyFormBody from "fastify-formbody";
-import fastifyMultiPart from "fastify-multipart";
-import fastifyCors from "fastify-cors";
-import fastifyHelmet from "fastify-helmet";
-import fastifyHttpProxy from "fastify-http-proxy";
+import formBody from "fastify-formbody";
+import multiPart from "fastify-multipart";
+import cors from "fastify-cors";
+import helmet from "fastify-helmet";
+import httpProxy from "fastify-http-proxy";
 
 import DB from "../DB";
 import APIError from "./Error";
@@ -17,12 +18,16 @@ const server = fastify({
 	},
 });
 
+server.register(rateLimit, {
+	max: 25,
+	ban: 3,
+});
 server.register(httpsRedirect);
-server.register(fastifyFormBody);
-server.register(fastifyMultiPart);
-server.register(fastifyCors, { origin: "*" });
-server.register(fastifyHelmet);
-server.register(fastifyHttpProxy, {
+server.register(formBody);
+server.register(multiPart);
+server.register(cors, { origin: "*" });
+server.register(helmet);
+server.register(httpProxy, {
 	upstream: "https://mpt.ru",
 	prefix: "/mpt",
 });
@@ -39,7 +44,11 @@ server.setErrorHandler((err, req, reply) => {
 	if (err instanceof APIError) {
 		reply.status(200).send({ error: err.toJSON() });
 	} else {
-		reply.status(200).send({ error: new APIError(0).toJSON() });
+		if (reply.statusCode === 429) {
+			reply.status(200).send({ error: new APIError(4).toJSON() });
+		} else {
+			reply.status(200).send({ error: new APIError(0).toJSON() });
+		}
 	}
 });
 
