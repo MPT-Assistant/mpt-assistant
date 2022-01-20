@@ -8,6 +8,7 @@ import fastifyHelmet from "fastify-helmet";
 import fastifyHttpProxy from "fastify-http-proxy";
 
 import DB from "../DB";
+import APIError from "./Error";
 
 const server = fastify({
 	https: {
@@ -28,6 +29,18 @@ server.register(fastifyHttpProxy, {
 
 server.get("/ping", (_req, reply) => {
 	reply.send("pong");
+});
+
+server.setNotFoundHandler(() => {
+	throw new APIError(1);
+});
+
+server.setErrorHandler((err, req, reply) => {
+	if (err instanceof APIError) {
+		reply.status(200).send({ error: err.toJSON() });
+	} else {
+		reply.status(200).send({ error: new APIError(0).toJSON() });
+	}
 });
 
 export default server;

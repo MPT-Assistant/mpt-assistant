@@ -1,5 +1,6 @@
 import server from "../../index";
 import DB from "../../../DB";
+import APIError from "../../Error";
 
 import {
 	Group,
@@ -30,7 +31,7 @@ server.route<{ Querystring: TGroupsGetQueryParams; Reply: TGroup }>({
 				specialty: group.specialty,
 			});
 		} else {
-			throw new Error(`Group ${groupName} not found`);
+			throw new APIError(2);
 		}
 	},
 });

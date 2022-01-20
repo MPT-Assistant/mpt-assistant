@@ -2,6 +2,7 @@ import moment from "moment";
 
 import server from "../../index";
 import utils from "../../../utils";
+import APIError from "../../Error";
 
 import {
 	Week,
@@ -22,7 +23,7 @@ server.route<{ Querystring: TScheduleGetWeekQueryParams; Reply: TWeek }>({
 	handler: async function (request, reply) {
 		const selectedDate = moment(request.query.date);
 		if (!selectedDate.isValid()) {
-			throw new Error("Invalid date");
+			throw new APIError(3);
 		}
 
 		let week: MPT.Week;
