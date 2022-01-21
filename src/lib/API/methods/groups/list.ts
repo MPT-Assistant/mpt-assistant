@@ -1,16 +1,11 @@
 import server from "../../index";
 import DB from "../../../DB";
 
-import { GroupList, TGroupList } from "../../definitions/groups";
+import { TGroupList } from "../../definitions/groups";
 
 server.route<{ Reply: TGroupList }>({
 	method: ["GET", "POST"],
 	url: "/groups.list",
-	schema: {
-		response: {
-			200: GroupList,
-		},
-	},
 	handler: async function (request, reply) {
 		const groups = (await DB.api.models.group.aggregate([
 			{

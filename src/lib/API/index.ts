@@ -36,18 +36,32 @@ server.get("/ping", (_req, reply) => {
 	reply.send("pong");
 });
 
-server.setNotFoundHandler(() => {
-	throw new APIError(1);
+server.setNotFoundHandler((req) => {
+	throw new APIError(1, req);
 });
 
 server.setErrorHandler((err, req, reply) => {
+	if (err.validation) {
+		if (err.validation.some((x) => x.keyword === "required")) {
+			reply.status(200).send({
+				error: new APIError(5, req, {
+					required_params: err.validation
+						.filter((x) => x.keyword === "required")
+						.map((x) => x.params.missingProperty),
+				}).toJSON(),
+			});
+		} else {
+			reply.status(200).send({ error: new APIError(0, req).toJSON() });
+		}
+	}
+
 	if (err instanceof APIError) {
 		reply.status(200).send({ error: err.toJSON() });
 	} else {
 		if (reply.statusCode === 429) {
-			reply.status(200).send({ error: new APIError(4).toJSON() });
+			reply.status(200).send({ error: new APIError(4, req).toJSON() });
 		} else {
-			reply.status(200).send({ error: new APIError(0).toJSON() });
+			reply.status(200).send({ error: new APIError(0, req).toJSON() });
 		}
 	}
 });
