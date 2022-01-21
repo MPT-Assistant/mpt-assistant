@@ -33,7 +33,7 @@ server.route<{ Querystring: TScheduleGetQueryParams; Reply: TSchedule }>({
 			week = utils.cache.mpt.week === "Числитель" ? "Знаменатель" : "Числитель";
 		}
 
-		const groupName = request.query.name;
+		const groupName = request.query.group;
 
 		const group = await DB.api.models.group.findOne({
 			name: new RegExp(`^${groupName}$`, "i"),

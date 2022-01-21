@@ -29,7 +29,7 @@ const Schedule = Type.Object({
 });
 
 const ScheduleGetQueryParams = Type.Object({
-	name: Type.String(),
+	group: Type.String(),
 	date: Type.Optional(Type.Number()),
 });
 
