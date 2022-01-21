@@ -5,7 +5,7 @@ import { TGroupList } from "../../definitions/groups";
 
 server.route<{ Reply: TGroupList }>({
 	method: ["GET", "POST"],
-	url: "/groups.list",
+	url: "/groups.getList",
 	handler: async function (request, reply) {
 		const groups = (await DB.api.models.group.aggregate([
 			{

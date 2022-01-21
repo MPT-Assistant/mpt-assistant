@@ -1,5 +1,5 @@
 import "./groups/get";
-import "./groups/list";
+import "./groups/getList";
 
 import "./schedule/get";
 import "./schedule/getWeek";
