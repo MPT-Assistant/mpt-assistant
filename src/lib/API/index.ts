@@ -36,22 +36,27 @@ server.get("/ping", (_req, reply) => {
 	reply.send("pong");
 });
 
-server.setNotFoundHandler((req) => {
-	throw new APIError(1, req);
+server.setNotFoundHandler((request) => {
+	throw new APIError({ code: 1, request });
 });
 
-server.setErrorHandler((err, req, reply) => {
+server.setErrorHandler((err, request, reply) => {
 	if (err.validation) {
 		if (err.validation.some((x) => x.keyword === "required")) {
 			reply.status(200).send({
-				error: new APIError(5, req, {
-					required_params: err.validation
-						.filter((x) => x.keyword === "required")
-						.map((x) => x.params.missingProperty),
+				error: new APIError({
+					code: 5,
+					request,
+					additional: {
+						required_params: err.validation
+							.filter((x) => x.keyword === "required")
+							.map((x) => x.params.missingProperty),
+					},
 				}).toJSON(),
 			});
 		} else {
-			reply.status(200).send({ error: new APIError(0, req).toJSON() });
+			const error = new APIError({ code: 0, request });
+			reply.status(200).send({ error: error.toJSON() });
 		}
 	}
 
@@ -59,9 +64,11 @@ server.setErrorHandler((err, req, reply) => {
 		reply.status(200).send({ error: err.toJSON() });
 	} else {
 		if (reply.statusCode === 429) {
-			reply.status(200).send({ error: new APIError(4, req).toJSON() });
+			const error = new APIError({ code: 4, request });
+			reply.status(200).send({ error: error.toJSON() });
 		} else {
-			reply.status(200).send({ error: new APIError(0, req).toJSON() });
+			const error = new APIError({ code: 0, request });
+			reply.status(200).send({ error: error.toJSON() });
 		}
 	}
 });

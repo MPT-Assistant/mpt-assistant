@@ -21,7 +21,7 @@ server.route<{ Querystring: TScheduleGetQueryParams; Reply: TSchedule }>({
 	handler: async function (request, reply) {
 		const selectedDate = moment(request.query.date);
 		if (!selectedDate.isValid()) {
-			throw new APIError(3, request);
+			throw new APIError({ code: 3, request });
 		}
 
 		let week: MPT.Week;
@@ -40,7 +40,7 @@ server.route<{ Querystring: TScheduleGetQueryParams; Reply: TSchedule }>({
 		});
 
 		if (!group) {
-			throw new APIError(2, request);
+			throw new APIError({ code: 2, request });
 		}
 
 		const schedule = await utils.mpt.getGroupSchedule(group, selectedDate);

@@ -32,11 +32,15 @@ class APIError<
 	}>;
 	public readonly additional: Additional;
 
-	constructor(
-		code: Code,
-		request: FastifyRequest,
-		additional: Additional = {} as Additional,
-	) {
+	constructor({
+		code,
+		request,
+		additional = {} as Additional,
+	}: {
+		code: Code;
+		request: FastifyRequest;
+		additional?: Additional;
+	}) {
 		this.code = code;
 		this.message = ERRORS[code] as unknown as Message;
 		this.request = request as FastifyRequest<{
