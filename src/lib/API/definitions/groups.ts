@@ -3,7 +3,7 @@ import { Static, Type } from "@sinclair/typebox";
 const Group = Type.Object({
 	name: Type.String(),
 	specialty: Type.String(),
-});
+}); 
 const GroupList = Type.Array(Group);
 
 const GroupsGetQueryParams = Type.Object({

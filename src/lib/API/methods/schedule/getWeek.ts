@@ -23,7 +23,7 @@ server.route<{ Querystring: TScheduleGetWeekQueryParams; Reply: TWeek }>({
 	handler: async function (request, reply) {
 		const selectedDate = moment(request.query.date);
 		if (!selectedDate.isValid()) {
-			throw new APIError(3);
+			throw new APIError(3, request);
 		}
 
 		let week: MPT.Week;
