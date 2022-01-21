@@ -201,7 +201,7 @@ class UtilsTelegram {
 			},
 		};
 
-		for await (const chat of DB.vk.models.chat.find(chatQuery)) {
+		for await (const chat of DB.telegram.models.chat.find(chatQuery)) {
 			chat.reportedReplacements.push(replacement.hash);
 			chat.markModified("reportedReplacements");
 
