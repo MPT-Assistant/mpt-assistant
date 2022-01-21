@@ -3,7 +3,6 @@ import DB from "../../../DB";
 import APIError from "../../Error";
 
 import {
-	Group,
 	GroupsGetQueryParams,
 	TGroup,
 	TGroupsGetQueryParams,
@@ -14,9 +13,6 @@ server.route<{ Querystring: TGroupsGetQueryParams; Reply: TGroup }>({
 	url: "/groups.get",
 	schema: {
 		querystring: GroupsGetQueryParams,
-		response: {
-			200: Group,
-		},
 	},
 	handler: async function (request, reply) {
 		const groupName = request.query.name;

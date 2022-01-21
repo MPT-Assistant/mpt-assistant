@@ -5,7 +5,6 @@ import utils from "../../../utils";
 import APIError from "../../Error";
 
 import {
-	Week,
 	ScheduleGetWeekQueryParams,
 	TWeek,
 	TScheduleGetWeekQueryParams,
@@ -16,9 +15,6 @@ server.route<{ Querystring: TScheduleGetWeekQueryParams; Reply: TWeek }>({
 	url: "/schedule.getWeek",
 	schema: {
 		querystring: ScheduleGetWeekQueryParams,
-		response: {
-			200: Week,
-		},
 	},
 	handler: async function (request, reply) {
 		const selectedDate = moment(request.query.date);
