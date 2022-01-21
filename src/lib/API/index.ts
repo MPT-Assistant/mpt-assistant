@@ -36,6 +36,14 @@ server.get("/ping", (_req, reply) => {
 	reply.send("pong");
 });
 
+server.setReplySerializer((payload) => {
+	if (Object.prototype.hasOwnProperty.call(payload, "error")) {
+		return JSON.stringify(payload);
+	} else {
+		return JSON.stringify({ response: payload });
+	}
+});
+
 server.setNotFoundHandler((request) => {
 	throw new APIError({ code: 1, request });
 });
