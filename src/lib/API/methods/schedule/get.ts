@@ -21,7 +21,7 @@ server.route<{ Querystring: TScheduleGetQueryParams; Reply: TSchedule }>({
 	handler: async function (request, reply) {
 		const selectedDate = moment(request.query.date);
 		if (!selectedDate.isValid()) {
-			throw new APIError(3, request);
+			throw new APIError({ code: 3, request });
 		}
 
 		let week: MPT.Week;
@@ -33,14 +33,14 @@ server.route<{ Querystring: TScheduleGetQueryParams; Reply: TSchedule }>({
 			week = utils.cache.mpt.week === "Числитель" ? "Знаменатель" : "Числитель";
 		}
 
-		const groupName = request.query.name;
+		const groupName = request.query.group;
 
 		const group = await DB.api.models.group.findOne({
 			name: new RegExp(`^${groupName}$`, "i"),
 		});
 
 		if (!group) {
-			throw new APIError(2, request);
+			throw new APIError({ code: 2, request });
 		}
 
 		const schedule = await utils.mpt.getGroupSchedule(group, selectedDate);

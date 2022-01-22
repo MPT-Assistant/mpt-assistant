@@ -20,7 +20,7 @@ interface IAdditionalErrorParams {
 
 class APIError<
 	Code extends TAPIErrorCode,
-	Message = typeof ERRORS[Code],
+	Message extends typeof ERRORS[Code] | string = typeof ERRORS[Code],
 	Additional extends IAdditionalErrorParams = IAdditionalErrorParams,
 > {
 	public readonly code: Code;
@@ -32,13 +32,19 @@ class APIError<
 	}>;
 	public readonly additional: Additional;
 
-	constructor(
-		code: Code,
-		request: FastifyRequest,
-		additional: Additional = {} as Additional,
-	) {
+	constructor({
+		code,
+		request,
+		additional = {} as Additional,
+		message = ERRORS[code] as unknown as Message,
+	}: {
+		code: Code;
+		request: FastifyRequest;
+		additional?: Additional;
+		message?: Message;
+	}) {
 		this.code = code;
-		this.message = ERRORS[code] as unknown as Message;
+		this.message = message;
 		this.request = request as FastifyRequest<{
 			Querystring: {
 				[prop: string]: string;

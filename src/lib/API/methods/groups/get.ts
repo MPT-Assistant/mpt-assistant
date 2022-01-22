@@ -27,7 +27,7 @@ server.route<{ Querystring: TGroupsGetQueryParams; Reply: TGroup }>({
 				specialty: group.specialty,
 			});
 		} else {
-			throw new APIError(2, request);
+			throw new APIError({ code: 2, request });
 		}
 	},
 });
