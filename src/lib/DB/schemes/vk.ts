@@ -9,10 +9,6 @@ const userSchema = createSchema(
 		inform: Type.boolean({ required: true }),
 		regDate: Type.date({ required: true }),
 		reportedReplacements: Type.array({ required: true }).of(Type.string({})),
-		schedule: Type.object().of({
-			date: Type.date({ required: true }),
-			image: Type.string({ required: true }),
-		}),
 	},
 	{ versionKey: false },
 );
@@ -24,11 +20,6 @@ const chatSchema = createSchema(
 		inform: Type.boolean({ required: true }),
 		reportedReplacements: Type.array({ required: true }).of(Type.string({})),
 		officeSchedule: Type.object().of({
-			date: Type.date({ required: true }),
-			image: Type.string({ required: true }),
-			user: Type.number({ required: true }),
-		}),
-		schedule: Type.object().of({
 			date: Type.date({ required: true }),
 			image: Type.string({ required: true }),
 			user: Type.number({ required: true }),
