@@ -19,7 +19,7 @@ server.route<{ Querystring: TScheduleGetQueryParams; Reply: TSchedule }>({
 		querystring: ScheduleGetQueryParams,
 	},
 	handler: async function (request, reply) {
-		const selectedDate = moment(request.query.date);
+		const selectedDate = moment(request.query.date, "DD.MM.YYYY");
 		if (!selectedDate.isValid()) {
 			throw new APIError({ code: 3, request });
 		}
@@ -48,7 +48,7 @@ server.route<{ Querystring: TScheduleGetQueryParams; Reply: TSchedule }>({
 		const response: TSchedule = {
 			week: {
 				week,
-				date: selectedDate.valueOf(),
+				date: selectedDate.format("DD.MM.YYYY"),
 				isNumerator: week === "Числитель",
 				isDenominator: week === "Знаменатель",
 			},

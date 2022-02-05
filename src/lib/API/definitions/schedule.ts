@@ -2,14 +2,14 @@ import { Static, Type } from "@sinclair/typebox";
 import { Group } from "./groups";
 
 const Week = Type.Object({
-	date: Type.Number(),
+	date: Type.String(),
 	week: Type.String(),
 	isNumerator: Type.Boolean(),
 	isDenominator: Type.Boolean(),
 });
 
 const ScheduleGetWeekQueryParams = Type.Object({
-	date: Type.Optional(Type.Number()),
+	date: Type.Optional(Type.String()),
 });
 
 const ScheduleLesson = Type.Object({
@@ -30,7 +30,7 @@ const Schedule = Type.Object({
 
 const ScheduleGetQueryParams = Type.Object({
 	group: Type.String(),
-	date: Type.Optional(Type.Number()),
+	date: Type.Optional(Type.String()),
 });
 
 const ScheduleListDay = Type.Object({
