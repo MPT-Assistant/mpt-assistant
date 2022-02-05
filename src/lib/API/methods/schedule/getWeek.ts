@@ -17,7 +17,10 @@ server.route<{ Querystring: TScheduleGetWeekQueryParams; Reply: TWeek }>({
 		querystring: ScheduleGetWeekQueryParams,
 	},
 	handler: async function (request, reply) {
-		const selectedDate = moment(request.query.date, "DD.MM.YYYY");
+		const selectedDate = moment(
+			request.query.date,
+			request.query.date && "DD.MM.YYYY",
+		);
 		if (!selectedDate.isValid()) {
 			throw new APIError({ code: 3, request });
 		}
