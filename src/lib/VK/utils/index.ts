@@ -33,6 +33,10 @@ class UtilsVK {
 				reportedReplacements: [],
 			});
 			await newUserData.save();
+			utils.events.emit(
+				"text_log",
+				`Зарегистрирован новый пользователь @${id} (${VK_USER_DATA.first_name})`,
+			);
 			return newUserData;
 		}
 		return userData;
@@ -52,6 +56,7 @@ class UtilsVK {
 				reportedReplacements: [],
 			});
 			await newChatData.save();
+			utils.events.emit("text_log", `Зарегистрирован новый чат #${id}`);
 			return newChatData;
 		}
 		return chatData;
