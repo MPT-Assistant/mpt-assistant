@@ -3,8 +3,8 @@ import { Static, Type } from "@sinclair/typebox";
 const Replacement = Type.Object({
 	date: Type.String(),
 	group: Type.String(),
-	detected: Type.String(),
-	addToSite: Type.String(),
+	detected: Type.Number(),
+	addToSite: Type.Number(),
 	lessonNum: Type.Number(),
 	oldLessonName: Type.String(),
 	oldLessonTeacher: Type.String(),

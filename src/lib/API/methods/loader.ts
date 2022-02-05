@@ -5,3 +5,5 @@ import "./groups/getSpecialties";
 import "./schedule/get";
 import "./schedule/getList";
 import "./schedule/getWeek";
+
+import "./replacements/getCurrent";
