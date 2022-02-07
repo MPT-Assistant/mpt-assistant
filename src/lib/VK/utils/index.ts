@@ -35,7 +35,7 @@ class UtilsVK {
 			await newUserData.save();
 			utils.events.emit(
 				"text_log",
-				`Зарегистрирован новый пользователь @${id} (${VK_USER_DATA.first_name})`,
+				`Зарегистрирован новый пользователь @id${id} (${VK_USER_DATA.first_name})`,
 			);
 			return newUserData;
 		}
