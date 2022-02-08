@@ -310,6 +310,7 @@ class UtilsDiscord {
 	): Promise<void> {
 		const replacementDate = moment(replacement.date).format("DD.MM.YYYY");
 		const message = `Обнаружена новая замена на ${replacementDate}
+Группа: ${replacement.group}
 Пара: ${replacement.lessonNum}
 Заменяемая пара: ${replacement.oldLessonName}
 Преподаватель: ${replacement.oldLessonTeacher}

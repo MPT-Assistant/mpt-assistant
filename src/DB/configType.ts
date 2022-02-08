@@ -9,6 +9,7 @@ export default interface IConfig {
 	};
 	vk: {
 		group: Partial<VKOptions> & { token: string; pollingGroupId: number };
+		logs: number;
 	};
 	discord: {
 		id: string;

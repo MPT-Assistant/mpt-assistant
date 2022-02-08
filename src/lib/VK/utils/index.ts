@@ -33,6 +33,10 @@ class UtilsVK {
 				reportedReplacements: [],
 			});
 			await newUserData.save();
+			utils.events.emit(
+				"text_log",
+				`Зарегистрирован новый пользователь @id${id} (${VK_USER_DATA.first_name})`,
+			);
 			return newUserData;
 		}
 		return userData;
@@ -52,6 +56,7 @@ class UtilsVK {
 				reportedReplacements: [],
 			});
 			await newChatData.save();
+			utils.events.emit("text_log", `Зарегистрирован новый чат #${id}`);
 			return newChatData;
 		}
 		return chatData;
@@ -137,6 +142,7 @@ class UtilsVK {
 	): Promise<void> {
 		const replacementDate = moment(replacement.date).format("DD.MM.YYYY");
 		const message = `Обнаружена новая замена на ${replacementDate}
+Группа: ${replacement.group}
 Пара: ${replacement.lessonNum}
 Заменяемая пара: ${replacement.oldLessonName}
 Преподаватель: ${replacement.oldLessonTeacher}

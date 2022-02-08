@@ -380,12 +380,16 @@ ${
 
 	public async updateReplacementsList(): Promise<void> {
 		const replacements = await parser.getReplacements();
+		const groupList = (await DB.api.models.group.distinct("name")) as string[];
 		const insertedDocuments = [];
 
 		for (const dayReplacements of replacements) {
 			const date = dayReplacements.date;
 			for (const groupReplacements of dayReplacements.groups) {
-				const groupName = groupReplacements.group;
+				const groupRegExp = new RegExp(groupReplacements.group, "i");
+				const groupName =
+					groupList.find((x) => groupRegExp.test(x)) || groupReplacements.group;
+
 				for (const replacement of groupReplacements.replacements) {
 					const hash = this.createReplacementHash({
 						date,
