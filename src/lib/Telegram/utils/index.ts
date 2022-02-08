@@ -1,5 +1,6 @@
 import { ExtractDoc } from "ts-mongoose";
 import moment from "moment";
+import raUtils from "rus-anonym-utils";
 
 import DB from "../../DB";
 import utils from "../../utils";
@@ -8,8 +9,11 @@ import telegram from "../index";
 import TextCommand from "./TextCommand";
 import CallbackCommand from "./CallbackCommand";
 
-import { InlineKeyboard } from "puregram";
-import { TelegramInlineKeyboardButton } from "puregram/lib/telegram-interfaces";
+import { InlineKeyboard, InlineQueryContext } from "puregram";
+import {
+	TelegramInlineKeyboardButton,
+	TelegramInlineQueryResultArticle,
+} from "puregram/lib/telegram-interfaces";
 
 class UtilsTelegram {
 	public textCommands: TextCommand[] = [];
@@ -120,6 +124,89 @@ class UtilsTelegram {
 				}),
 			],
 		];
+	}
+
+	public async generateInlineQueryResult(ctx: InlineQueryContext): Promise<{
+		results: TelegramInlineQueryResultArticle[];
+		isGroupIsSet: boolean;
+	}> {
+		const response: TelegramInlineQueryResultArticle[] = [];
+
+		response.push({
+			type: "article",
+			id: "week",
+			input_message_content: {
+				message_text: `${moment().format("DD.MM.YYYY")} ${
+					utils.cache.mpt.isNumerator ? "числитель" : "знаменатель"
+				}`,
+			},
+			title: "Неделя",
+			description: "Показывает текущую неделю",
+		});
+
+		const userData = await this.getUserData(ctx.from.id);
+		const group = await DB.api.models.group.findOne({
+			name: userData.group,
+		});
+
+		if (group) {
+			const selectedDate = moment();
+			const schedule = await utils.mpt.getGroupSchedule(group, selectedDate);
+
+			response.push({
+				type: "article",
+				id: "schedule",
+				input_message_content: {
+					message_text: schedule.toString(),
+				},
+				title: "Расписание",
+				description: "Выводит расписание на текущий день",
+			});
+
+			if (schedule.replacements.length !== 0) {
+				const { replacements } = schedule;
+
+				let responseReplacementsText = "";
+				for (let i = 0; i < replacements.length; ++i) {
+					const replacement = replacements[i];
+					responseReplacementsText += `Замена #${Number(i) + 1}:
+Пара: ${replacement.lessonNum}
+Заменяемая пара: ${replacement.oldLessonName}
+Преподаватель: ${replacement.oldLessonTeacher}
+Новая пара: ${replacement.newLessonName}
+Преподаватель на новой паре: ${replacement.newLessonTeacher}
+Добавлена на сайт: ${moment(replacement.addToSite).format(
+						"HH:mm:ss | DD.MM.YYYY",
+					)}
+Обнаружена ботом: ${moment(replacement.detected).format(
+						"HH:mm:ss | DD.MM.YYYY",
+					)}\n\n`;
+				}
+
+				response.push({
+					type: "article",
+					id: "replacements",
+					input_message_content: {
+						message_text: `На выбранный день ${selectedDate.format(
+							"DD.MM.YYYY",
+						)} для группы ${group.name} ${raUtils.string.declOfNum(
+							replacements.length,
+							["найдена", "найдено", "найдено"],
+						)} ${replacements.length} ${raUtils.string.declOfNum(
+							replacements.length,
+							["замена", "замены", "замен"],
+						)}:\n\n${responseReplacementsText}`,
+					},
+					title: "Замены",
+					description: "Выводит замены на текущий день",
+				});
+			}
+		}
+
+		return {
+			results: response,
+			isGroupIsSet: !!group,
+		};
 	}
 
 	public async onNewReplacement(
