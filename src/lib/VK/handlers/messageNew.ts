@@ -57,6 +57,15 @@ export default async function messageNewHandler(
 			await context.state.chat.save();
 		}
 	} else if (!context.isChat) {
+		if (
+			context.messagePayload.command &&
+			context.messagePayload.command === "start"
+		) {
+			await context.reply(`Привет! 
+Для начала нужно установить группу. 
+Напиши «Установить группу *твоя группа*»`);
+			return;
+		}
 		await context.reply({
 			message: "Такой команды не существует\nСписок команд:",
 			attachment: `article-188434642_189203_12d88f37969ae1c641`,
