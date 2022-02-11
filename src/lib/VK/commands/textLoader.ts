@@ -4,6 +4,7 @@ import "./text/rest/week";
 import "./text/rest/help";
 import "./text/rest/nick";
 import "./text/rest/mailing";
+import "./text/rest/stats";
 
 import "./text/mpt/setGroup";
 import "./text/mpt/regChat";
