@@ -9,12 +9,6 @@ import CallbackCommand from "../../../utils/CallbackCommand";
 new CallbackCommand({
 	trigger: "lessons",
 	handler: async (interaction) => {
-		if (utils.cache.mpt.isScheduleNotAvailable) {
-			return await interaction.editReply({
-				content: `Расписание будет доступно, когда оно появится на сайте`,
-				embeds: [],
-			});
-		}
 		const groupName =
 			interaction.state.user.group ||
 			(interaction.state.channel ? interaction.state.channel.group : "") ||

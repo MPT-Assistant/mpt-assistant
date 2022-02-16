@@ -58,7 +58,7 @@ export default async function messageNewHandler(
 		}
 	} else if (!context.isChat) {
 		if (
-			context.messagePayload.command &&
+			context.messagePayload?.command &&
 			context.messagePayload.command === "start"
 		) {
 			await context.reply(`Привет! 
