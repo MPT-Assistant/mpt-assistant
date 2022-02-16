@@ -10,11 +10,6 @@ new TextCommand({
 	name: "расписание",
 	description: "Позволяет просмотреть расписание для своей группы",
 	handler: async (interaction) => {
-		if (utils.cache.mpt.isScheduleNotAvailable) {
-			return await interaction.editReply(
-				`Расписание будет доступно, когда оно появится на сайте`,
-			);
-		}
 		const groupName =
 			interaction.state.user.group ||
 			(interaction.state.channel ? interaction.state.channel.group : "") ||

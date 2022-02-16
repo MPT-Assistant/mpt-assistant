@@ -28,7 +28,6 @@ import "./lib/API/methods/loader";
 		DB.telegram.connection.asPromise(),
 		DB.discord.connection.asPromise(),
 	]);
-
 	console.log("DB connected");
 
 	await utils.cache.load();

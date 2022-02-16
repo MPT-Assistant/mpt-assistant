@@ -10,12 +10,6 @@ import CallbackCommand from "../../../utils/CallbackCommand";
 new CallbackCommand({
 	event: "lessons",
 	handler: async (context) => {
-		if (utils.cache.mpt.isScheduleNotAvailable) {
-			return await context.answerCallbackQuery({
-				show_alert: true,
-				text: `Расписание будет доступно, когда оно появится на сайте`,
-			});
-		}
 		const selectedDate = utils.rest.parseSelectedDate(
 			context.queryPayload.date,
 		);

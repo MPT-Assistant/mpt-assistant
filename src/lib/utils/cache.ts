@@ -24,8 +24,6 @@ class UtilsCacheMPT {
 
 	public lastUpdate: Date = new Date();
 
-	public isScheduleNotAvailable = true;
-
 	public get isNumerator(): boolean {
 		return this.week === "Числитель";
 	}
