@@ -27,7 +27,7 @@ export default async function messageEventHandler(
 				: undefined,
 		editParentMessage: async (params) => {
 			if (params.message) {
-				params.message = `@id${event.senderId} (${event.state.user.nickname}), ${params.message}`;
+				params.message = `@id${event.userId} (${event.state.user.nickname}), ${params.message}`;
 			}
 
 			try {

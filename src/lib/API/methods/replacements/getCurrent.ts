@@ -3,6 +3,7 @@ import moment from "moment";
 import server from "../../index";
 
 import DB from "../../../DB";
+import utils from "../../../utils";
 
 import { TReplacementList } from "../../definitions/replacements";
 
@@ -10,10 +11,15 @@ server.route<{ Reply: TReplacementList }>({
 	method: ["GET", "POST"],
 	url: "/replacements.getCurrent",
 	handler: async function (request, reply) {
+		const timetable = utils.mpt.getTimetable(Date.now());
+
 		const replacements = await DB.api.models.replacement.find({
 			date: {
 				$gte: moment().startOf("day").toDate(),
 			},
+			lessonNum: timetable.current
+				? { $gte: timetable.current.num }
+				: undefined,
 		});
 
 		if (!replacements) {

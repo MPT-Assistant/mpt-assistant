@@ -18,7 +18,10 @@ server.route<{ Querystring: TGroupsGetQueryParams; Reply: TGroup }>({
 		const groupName = request.query.name;
 
 		const group = await DB.api.models.group.findOne({
-			name: new RegExp(`^${groupName}$`, "i"),
+			name: new RegExp(
+				`^${groupName.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")}$`,
+				"i",
+			),
 		});
 
 		if (group) {

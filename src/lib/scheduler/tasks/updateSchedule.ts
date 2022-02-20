@@ -7,6 +7,14 @@ export default new Interval({
 	source: async () => {
 		return await utils.mpt.updateSchedule();
 	},
-	onError: console.log,
+	onDone: () => {
+		utils.events.emit("text_log", "Расписание обновлено");
+	},
+	onError: (err) => {
+		utils.events.emit(
+			"text_log",
+			`Ошибка при обновлении расписания (${err.message})`,
+		);
+	},
 	type: path.parse(__filename).name,
 });

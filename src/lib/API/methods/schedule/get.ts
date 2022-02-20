@@ -39,7 +39,10 @@ server.route<{ Querystring: TScheduleGetQueryParams; Reply: TSchedule }>({
 		const groupName = request.query.group;
 
 		const group = await DB.api.models.group.findOne({
-			name: new RegExp(`^${groupName}$`, "i"),
+			name: new RegExp(
+				`^${groupName.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")}$`,
+				"i",
+			),
 		});
 
 		if (!group) {
