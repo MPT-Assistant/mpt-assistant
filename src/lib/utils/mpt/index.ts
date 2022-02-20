@@ -64,7 +64,10 @@ class UtilsMPT {
 		groupName: string,
 	): Promise<ExtractDoc<typeof DB.api.schemes.groupSchema> | string[]> {
 		const selectedGroup = await DB.api.models.group.findOne({
-			name: new RegExp(`^${groupName}$`, "i"),
+			name: new RegExp(
+				`^${groupName.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")}$`,
+				"i",
+			),
 		});
 
 		if (!selectedGroup) {
