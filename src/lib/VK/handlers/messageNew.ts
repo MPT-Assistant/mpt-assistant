@@ -1,6 +1,7 @@
 import { MessageContext } from "vk-io";
 
 import DB from "../../DB";
+import CoreError from "../../utils/Error";
 
 import vkUtils from "../utils";
 
@@ -51,7 +52,20 @@ export default async function messageNewHandler(
 			}
 		};
 
-		await command.handler(context);
+		try {
+			await command.handler(context);
+		} catch (error) {
+			if (error instanceof Error) {
+				const err = new CoreError(0, error, context.toJSON());
+				await context.reply(err.toString());
+			} else {
+				const err = new CoreError(0, new Error("WTF?"), {
+					context: context.toJSON(),
+					error,
+				});
+				await context.reply(err.toString());
+			}
+		}
 		await context.state.user.save();
 		if (context.state.chat) {
 			await context.state.chat.save();
