@@ -140,45 +140,46 @@ class UtilsMPT {
 			},
 		});
 
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		const schedule = group.schedule.find(
 			(day) => day.num === selectedDate.day(),
-		)!;
+		);
 
-		const place = schedule.place;
+		const place = schedule ? schedule.place : "Не указано";
 		const week = this.getWeekLegend(selectedDate);
 		const { list: dayTimetable } = this.getTimetable(selectedDate);
 
 		const lessons: MPT.Schedule.ParsedLesson[] = [];
 
-		for (const lesson of schedule.lessons) {
-			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-			const timetable = dayTimetable.find(
-				(x) => x.type === "lesson" && x.num === lesson.num,
-			)!;
+		if (schedule) {
+			for (const lesson of schedule.lessons) {
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+				const timetable = dayTimetable.find(
+					(x) => x.type === "lesson" && x.num === lesson.num,
+				)!;
 
-			if (lesson.name.length === 1) {
-				lessons.push({
-					num: lesson.num,
-					name: lesson.name[0],
-					teacher: lesson.teacher[0],
-					timetable,
-				});
-			} else {
-				if (lesson.name[0] !== `-` && week === "Числитель") {
+				if (lesson.name.length === 1) {
 					lessons.push({
 						num: lesson.num,
 						name: lesson.name[0],
 						teacher: lesson.teacher[0],
 						timetable,
 					});
-				} else if (lesson.name[1] !== `-` && week === "Знаменатель") {
-					lessons.push({
-						num: lesson.num,
-						name: lesson.name[1] as string,
-						teacher: lesson.teacher[1] as string,
-						timetable,
-					});
+				} else {
+					if (lesson.name[0] !== `-` && week === "Числитель") {
+						lessons.push({
+							num: lesson.num,
+							name: lesson.name[0],
+							teacher: lesson.teacher[0],
+							timetable,
+						});
+					} else if (lesson.name[1] !== `-` && week === "Знаменатель") {
+						lessons.push({
+							num: lesson.num,
+							name: lesson.name[1] as string,
+							teacher: lesson.teacher[1] as string,
+							timetable,
+						});
+					}
 				}
 			}
 		}
@@ -237,7 +238,7 @@ class UtilsMPT {
 			return `расписание на ${selectedDate.format("DD.MM.YYYY")}:
 Группа: ${group.name}
 День: ${selectedDayName.join("")}
-Место: ${schedule.place}
+Место: ${place}
 Неделя: ${week}
 
 ${responseLessonsText}
