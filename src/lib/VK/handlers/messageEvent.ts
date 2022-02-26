@@ -3,6 +3,7 @@ import BotVK from "../utils/types";
 
 import VK from "../index";
 import vkUtils from "../utils";
+import CoreError from "../../utils/Error";
 
 export default async function messageEventHandler(
 	event: MessageEventContext<BotVK.GroupEventContextState>,
@@ -70,10 +71,22 @@ export default async function messageEventHandler(
 			event.state.chat.save();
 		}
 		return;
-	} catch (err) {
-		return await event.answer({
-			type: "show_snackbar",
-			text: "Ошиб очка",
-		});
+	} catch (error) {
+		if (error instanceof Error) {
+			const err = new CoreError(0, error, event.toJSON());
+			await event.answer({
+				type: "show_snackbar",
+				text: err.toString(),
+			});
+		} else {
+			const err = new CoreError(0, new Error("WTF?"), {
+				context: event.toJSON(),
+				error,
+			});
+			await event.answer({
+				type: "show_snackbar",
+				text: err.toString(),
+			});
+		}
 	}
 }
