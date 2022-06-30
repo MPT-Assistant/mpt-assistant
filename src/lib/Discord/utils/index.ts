@@ -224,84 +224,78 @@ class UtilsDiscord {
 
 	public generateKeyboard(cmd: "lessons" | "replacements"): MessageActionRow[] {
 		return [
-			new MessageActionRow({
-				components: [
-					new MessageButton({
-						label: "ПН",
-						customId: JSON.stringify({
-							cmd,
-							date: utils.rest.getNextSelectDay("понедельник"),
-						}),
-						style: "SECONDARY",
+			new MessageActionRow().setComponents([
+				new MessageButton({
+					label: "ЧТ",
+					customId: JSON.stringify({
+						cmd,
+						date: utils.rest.getNextSelectDay("четверг"),
 					}),
-					new MessageButton({
-						label: "ВТ",
-						customId: JSON.stringify({
-							cmd,
-							date: utils.rest.getNextSelectDay("вторник"),
-						}),
-						style: "SECONDARY",
+					style: "SECONDARY",
+				}),
+				new MessageButton({
+					label: "ПТ",
+					customId: JSON.stringify({
+						cmd,
+						date: utils.rest.getNextSelectDay("пятница"),
 					}),
-					new MessageButton({
-						label: "СР",
-						customId: JSON.stringify({
-							cmd,
-							date: utils.rest.getNextSelectDay("среда"),
-						}),
-						style: "SECONDARY",
+					style: "SECONDARY",
+				}),
+				new MessageButton({
+					label: "СБ",
+					customId: JSON.stringify({
+						cmd,
+						date: utils.rest.getNextSelectDay("суббота"),
 					}),
-				],
-			}),
-			new MessageActionRow({
-				components: [
-					new MessageButton({
-						label: "ЧТ",
-						customId: JSON.stringify({
-							cmd,
-							date: utils.rest.getNextSelectDay("четверг"),
-						}),
-						style: "SECONDARY",
+					style: "SECONDARY",
+				}),
+			]),
+			new MessageActionRow().setComponents([
+				new MessageButton({
+					label: "ЧТ",
+					customId: JSON.stringify({
+						cmd,
+						date: utils.rest.getNextSelectDay("четверг"),
 					}),
-					new MessageButton({
-						label: "ПТ",
-						customId: JSON.stringify({
-							cmd,
-							date: utils.rest.getNextSelectDay("пятница"),
-						}),
-						style: "SECONDARY",
+					style: "SECONDARY",
+				}),
+				new MessageButton({
+					label: "ПТ",
+					customId: JSON.stringify({
+						cmd,
+						date: utils.rest.getNextSelectDay("пятница"),
 					}),
-					new MessageButton({
-						label: "СБ",
-						customId: JSON.stringify({
-							cmd,
-							date: utils.rest.getNextSelectDay("суббота"),
-						}),
-						style: "SECONDARY",
+					style: "SECONDARY",
+				}),
+				new MessageButton({
+					label: "СБ",
+					customId: JSON.stringify({
+						cmd,
+						date: utils.rest.getNextSelectDay("суббота"),
 					}),
-				],
-			}),
-			new MessageActionRow({
-				components: [
-					new MessageButton({
-						label: "Вчера",
-						customId: JSON.stringify({
-							cmd,
-							date: moment().subtract(1, "day").format("DD.MM.YYYY"),
-							notDuplicate: 1,
-						}),
-						style: "DANGER",
+					style: "SECONDARY",
+				}),
+			]),
+			new MessageActionRow().setComponents([
+				new MessageButton({
+					label: "Вчера",
+					customId: JSON.stringify({
+						cmd,
+						date: moment().subtract(1, "day").format("DD.MM.YYYY"),
+						notDuplicate: 1,
 					}),
-					new MessageButton({
-						label: "Завтра",
-						customId: JSON.stringify({
-							cmd,
-							date: moment().add(1, "day").format("DD.MM.YYYY"),
-							notDuplicate: 2,
-						}),
-						style: "SUCCESS",
+					style: "DANGER",
+				}),
+				new MessageButton({
+					label: "Завтра",
+					customId: JSON.stringify({
+						cmd,
+						date: moment().add(1, "day").format("DD.MM.YYYY"),
+						notDuplicate: 2,
 					}),
-				],
-			}),
+					style: "SUCCESS",
+				}),
+			]),
 		];
 	}
 
@@ -324,31 +318,27 @@ class UtilsDiscord {
 		)}`;
 
 		const keyboard: MessageActionRow[] = [];
-		keyboard[0] = new MessageActionRow({
-			components: [
-				new MessageButton({
-					label: `Расписание ${replacementDate}`,
-					customId: JSON.stringify({
-						cmd: "lessons",
-						date: replacementDate,
-					}),
-					style: "SECONDARY",
+		keyboard[0] = new MessageActionRow().setComponents([
+			new MessageButton({
+				label: `Расписание ${replacementDate}`,
+				customId: JSON.stringify({
+					cmd: "lessons",
+					date: replacementDate,
 				}),
-			],
-		});
+				style: "SECONDARY",
+			}),
+		]);
 
-		keyboard[1] = new MessageActionRow({
-			components: [
-				new MessageButton({
-					label: `Замены ${replacementDate}`,
-					customId: JSON.stringify({
-						cmd: "replacements",
-						date: replacementDate,
-					}),
-					style: "SECONDARY",
+		keyboard[1] = new MessageActionRow().setComponents([
+			new MessageButton({
+				label: `Замены ${replacementDate}`,
+				customId: JSON.stringify({
+					cmd: "replacements",
+					date: replacementDate,
 				}),
-			],
-		});
+				style: "SECONDARY",
+			}),
+		]);
 
 		const userQuery = {
 			group: replacement.group,
@@ -358,19 +348,17 @@ class UtilsDiscord {
 			},
 		};
 
-		keyboard[2] = new MessageActionRow({
-			components: [
-				new MessageButton({
-					label: "Отключить уведомления",
-					customId: JSON.stringify({
-						cmd: "notify",
-						target: "user",
-						status: false,
-					}),
-					style: "DANGER",
+		keyboard[2] = new MessageActionRow().setComponents([
+			new MessageButton({
+				label: "Отключить уведомления",
+				customId: JSON.stringify({
+					cmd: "notify",
+					target: "user",
+					status: false,
 				}),
-			],
-		});
+				style: "DANGER",
+			}),
+		]);
 
 		for await (const user of DB.discord.models.user.find(userQuery)) {
 			user.reportedReplacements.push(replacement.hash);
@@ -396,19 +384,17 @@ class UtilsDiscord {
 			},
 		};
 
-		keyboard[2] = new MessageActionRow({
-			components: [
-				new MessageButton({
-					label: "Отключить уведомления",
-					customId: JSON.stringify({
-						cmd: "notify",
-						target: "channel",
-						status: false,
-					}),
-					style: "DANGER",
+		keyboard[2] = new MessageActionRow().setComponents([
+			new MessageButton({
+				label: "Отключить уведомления",
+				customId: JSON.stringify({
+					cmd: "notify",
+					target: "channel",
+					status: false,
 				}),
-			],
-		});
+				style: "DANGER",
+			}),
+		]);
 
 		for await (const channel of DB.discord.models.channel.find(channelQuery)) {
 			channel.reportedReplacements.push(replacement.hash);

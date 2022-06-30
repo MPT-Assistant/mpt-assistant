@@ -3,7 +3,7 @@ import { Group } from "./groups";
 
 const Week = Type.Object({
 	date: Type.String(),
-	week: Type.String(),
+	value: Type.String(),
 	isNumerator: Type.Boolean(),
 	isDenominator: Type.Boolean(),
 });

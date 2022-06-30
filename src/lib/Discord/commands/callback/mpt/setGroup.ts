@@ -23,19 +23,17 @@ ${group.map((name, index) => `${index + 1}. ${name}`).join("\n")}`;
 
 			for (let i = 0; i < 3; ++i) {
 				keyboard.push(
-					new MessageActionRow({
-						components: [
-							new MessageButton({
-								label: group[i],
-								customId: JSON.stringify({
-									cmd: "setGroup",
-									group: group[i],
-									target,
-								}),
-								style: styles[i],
+					new MessageActionRow().setComponents([
+						new MessageButton({
+							label: group[i],
+							customId: JSON.stringify({
+								cmd: "setGroup",
+								group: group[i],
+								target,
 							}),
-						],
-					}),
+							style: styles[i],
+						}),
+					]),
 				);
 			}
 

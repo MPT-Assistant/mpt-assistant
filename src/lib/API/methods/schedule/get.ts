@@ -53,7 +53,7 @@ server.route<{ Querystring: TScheduleGetQueryParams; Reply: TSchedule }>({
 
 		const response: TSchedule = {
 			week: {
-				week,
+				value: week,
 				date: selectedDate.format("DD.MM.YYYY"),
 				isNumerator: week === "Числитель",
 				isDenominator: week === "Знаменатель",

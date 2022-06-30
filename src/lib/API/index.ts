@@ -1,12 +1,12 @@
 import fastify from "fastify";
 
-import rateLimit from "fastify-rate-limit";
+import rateLimit from "@fastify/rate-limit";
 import httpsRedirect from "fastify-https-redirect";
-import formBody from "fastify-formbody";
-import multiPart from "fastify-multipart";
-import cors from "fastify-cors";
-import helmet from "fastify-helmet";
-import httpProxy from "fastify-http-proxy";
+import formBody from "@fastify/formbody";
+import multiPart from "@fastify/multipart";
+import cors from "@fastify/cors";
+import helmet from "@fastify/helmet";
+import httpProxy from "@fastify/http-proxy";
 
 import DB from "../DB";
 import APIError from "./Error";

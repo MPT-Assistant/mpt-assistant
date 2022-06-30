@@ -1,4 +1,6 @@
 import moment from "moment";
+import "moment-precise-range-plugin";
+
 import { ExtractDoc } from "ts-mongoose";
 import { SHA512 } from "crypto-js";
 import utils from "rus-anonym-utils";

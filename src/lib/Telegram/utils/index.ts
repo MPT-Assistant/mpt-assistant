@@ -13,7 +13,7 @@ import { InlineKeyboard, InlineQueryContext } from "puregram";
 import {
 	TelegramInlineKeyboardButton,
 	TelegramInlineQueryResultArticle,
-} from "puregram/lib/telegram-interfaces";
+} from "puregram/generated";
 
 class UtilsTelegram {
 	public textCommands: TextCommand[] = [];
