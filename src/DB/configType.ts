@@ -1,5 +1,6 @@
 import { VKOptions } from "vk-io/lib/types";
-import { TelegramOptions } from "./../../node_modules/puregram/lib/interfaces.d";
+import { TelegramOptions } from "puregram/interfaces";
+
 export default interface IConfig {
 	db: {
 		protocol: string;

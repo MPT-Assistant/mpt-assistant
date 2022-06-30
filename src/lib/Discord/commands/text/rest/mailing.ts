@@ -23,15 +23,13 @@ new TextCommand({
 			return interaction.editReply({
 				content: `Рассылка замен ${isEnable ? "включена" : "отключена"}`,
 				components: [
-					new MessageActionRow({
-						components: [
-							new MessageButton({
-								label: "Профиль",
-								customId: JSON.stringify({ cmd: "profile" }),
-								style: "SECONDARY",
-							}),
-						],
-					}),
+					new MessageActionRow().setComponents([
+						new MessageButton({
+							label: "Профиль",
+							customId: JSON.stringify({ cmd: "profile" }),
+							style: "SECONDARY",
+						}),
+					]),
 				],
 			});
 		} else {
@@ -52,8 +50,8 @@ new TextCommand({
 			.setName("кому")
 			.setDescription("Для кого")
 			.setRequired(true)
-			.setChoices([
-				["Себе", "user"],
-				["Каналу", "channel"],
-			]),
+			.setChoices(
+				{ name: "Себе", value: "user" },
+				{ name: "Каналу", value: "channel" },
+			),
 	);

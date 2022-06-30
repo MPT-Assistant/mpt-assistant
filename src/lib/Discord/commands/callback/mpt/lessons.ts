@@ -52,19 +52,17 @@ new CallbackCommand({
 
 		if (schedule.replacements.length !== 0) {
 			keyboard.push(
-				new MessageActionRow({
-					components: [
-						new MessageButton({
-							label: "Замены",
-							customId: JSON.stringify({
-								cmd: "replacements",
-								date: selectedDate.format("DD.MM.YYYY"),
-								notDuplicate: 3,
-							}),
-							style: "SECONDARY",
+				new MessageActionRow().setComponents([
+					new MessageButton({
+						label: "Замены",
+						customId: JSON.stringify({
+							cmd: "replacements",
+							date: selectedDate.format("DD.MM.YYYY"),
+							notDuplicate: 3,
 						}),
-					],
-				}),
+						style: "SECONDARY",
+					}),
+				]),
 			);
 		}
 
