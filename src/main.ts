@@ -41,6 +41,9 @@ import "./lib/API/methods/loader";
 	await Discord.client.login();
 	console.log("Discord polling started");
 
-	await server.listen(443, "0.0.0.0");
+	await server.listen({
+		port: 443,
+		host: "0.0.0.0",
+	});
 	console.log("Server listening on port 443");
 })();
