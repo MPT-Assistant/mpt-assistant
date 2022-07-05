@@ -9,10 +9,11 @@ abstract class DB {
 
 	constructor(dbName: string) {
 		this.connection = mongoose.createConnection(
-			`${config.db.protocol}://${config.db.login}:${config.db.password}@${config.db.address}/${dbName}`,
+			`${config.db.protocol}://${config.db.login}:${config.db.password}@${config.db.address}/`,
 			{
 				autoCreate: true,
 				autoIndex: true,
+				dbName,
 			},
 		);
 	}
