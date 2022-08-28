@@ -1,5 +1,6 @@
 import { VKOptions } from "vk-io/lib/types";
 import { TelegramOptions } from "puregram/interfaces";
+import { ServerOptions } from "https";
 
 export default interface IConfig {
 	db: {
@@ -17,8 +18,5 @@ export default interface IConfig {
 		token: string;
 	};
 	telegram: Partial<TelegramOptions> & { token: string };
-	server: {
-		key: string;
-		cert: string;
-	};
+	server: ServerOptions;
 }

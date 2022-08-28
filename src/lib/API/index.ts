@@ -12,10 +12,7 @@ import DB from "../DB";
 import APIError from "./Error";
 
 const server = fastify({
-	https: {
-		key: DB.config.server.key,
-		cert: DB.config.server.cert,
-	},
+	https: DB.config.server,
 });
 
 server.register(rateLimit, {

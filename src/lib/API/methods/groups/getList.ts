@@ -19,7 +19,17 @@ server.route<{ Querystring: TGroupsGetListQueryParams; Reply: TGroupList }>({
 		const pipeline: PipelineStage[] = [];
 
 		if (request.query.specialty) {
-			pipeline.push({ $match: { specialty: request.query.specialty } });
+			pipeline.push({
+				$match: {
+					specialty: new RegExp(
+						`^${request.query.specialty.replace(
+							/[-[\]{}()*+?.,\\^$|#\s]/g,
+							"\\$&",
+						)}`,
+						"i",
+					),
+				},
+			});
 		}
 
 		pipeline.push({
