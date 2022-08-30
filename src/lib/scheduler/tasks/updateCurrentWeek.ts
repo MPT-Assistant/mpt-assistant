@@ -1,5 +1,5 @@
 import path from "path";
-import { Interval } from "simple-scheduler-task";
+import { Interval } from "@rus-anonym/scheduler";
 import utils from "../../utils";
 
 export default new Interval({

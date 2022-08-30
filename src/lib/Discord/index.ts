@@ -1,4 +1,4 @@
-import { Client, Intents } from "discord.js";
+import { Client } from "discord.js";
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
 
@@ -8,7 +8,7 @@ import discordUtils from "./utils";
 
 import interactionCreateHandler from "./handlers/interactionCreate";
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+const client = new Client({ intents: ["GUILDS"] });
 client.token = DB.config.discord.token;
 
 client.on("interactionCreate", interactionCreateHandler);

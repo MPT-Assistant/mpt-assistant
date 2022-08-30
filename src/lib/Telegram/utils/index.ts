@@ -1,6 +1,6 @@
 import { ExtractDoc } from "ts-mongoose";
 import moment from "moment";
-import raUtils from "rus-anonym-utils";
+import raUtils from "@rus-anonym/utils";
 
 import DB from "../../DB";
 import utils from "../../utils";

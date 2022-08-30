@@ -1,5 +1,5 @@
 import moment from "moment";
-import rusAnonymUtils from "rus-anonym-utils";
+import rusAnonymUtils from "@rus-anonym/utils";
 import {
 	MessageButton,
 	MessageActionRow,

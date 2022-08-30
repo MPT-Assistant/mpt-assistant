@@ -6,7 +6,7 @@ import utils from "../utils";
 export default async function callbackQueryHandler(
 	context: InlineQueryContext,
 ): Promise<void> {
-	if (!context.from || context.from.isBot) {
+	if (!context.from || context.from.isBot()) {
 		return;
 	}
 

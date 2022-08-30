@@ -4,7 +4,7 @@ import BotTelegram from "../utils/types";
 export default async function callbackQueryHandler(
 	context: BotTelegram.ModernCallbackQueryContext,
 ): Promise<void> {
-	if (!context.from || context.from.isBot || !context.queryPayload.cmd) {
+	if (!context.from || context.from.isBot() || !context.queryPayload.cmd) {
 		return;
 	}
 

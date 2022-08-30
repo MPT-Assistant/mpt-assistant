@@ -11,8 +11,8 @@ export default async function messageNewHandler(
 		return reply(text, params);
 	};
 
-	if (!context.text || !context.from || context.from.isBot) {
-		if (context.isPM) {
+	if (!context.text || !context.from || context.from.isBot()) {
+		if (context.isPM()) {
 			await context.reply(
 				"такой команды не существует\nСписок команд: https://vk.com/@mpt_assistant-helps",
 			);
@@ -23,7 +23,7 @@ export default async function messageNewHandler(
 	let cmd: string;
 
 	if (
-		context.entities.length === 1 &&
+		context.entities?.length === 1 &&
 		context.entities[0].type === "bot_command"
 	) {
 		cmd = context.text.replace("@mpt_assistant_bot", "").substring(1);
@@ -40,7 +40,7 @@ export default async function messageNewHandler(
 			args: command.regexp.exec(cmd) as RegExpExecArray,
 			user: await telegramUtils.getUserData(context.from.id),
 			chat:
-				!context.isPM && context.chatId
+				!context.isPM() && context.chatId
 					? await telegramUtils.getChatData(context.chatId)
 					: undefined,
 		};
@@ -50,7 +50,7 @@ export default async function messageNewHandler(
 		if (context.state.chat) {
 			await context.state.chat.save();
 		}
-	} else if (context.isPM) {
+	} else if (context.isPM()) {
 		await context.reply(
 			"такой команды не существует\nСписок команд: https://vk.com/@mpt_assistant-helps",
 		);

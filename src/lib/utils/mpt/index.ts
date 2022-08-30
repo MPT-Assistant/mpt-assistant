@@ -1,9 +1,8 @@
 import moment from "moment";
-import "moment-precise-range-plugin";
 
 import { ExtractDoc } from "ts-mongoose";
 import { SHA512 } from "crypto-js";
-import utils from "rus-anonym-utils";
+import utils from "@rus-anonym/utils";
 
 import internalUtils from "..";
 import DB from "../../DB";
@@ -38,7 +37,11 @@ class UtilsMPT {
 				status = "await";
 			}
 
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			//@ts-ignore
 			const diffStart = moment.preciseDiff(date, start, true);
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			//@ts-ignore
 			const diffEnd = moment.preciseDiff(date, end, true);
 
 			list.push({
