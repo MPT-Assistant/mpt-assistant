@@ -11,3 +11,6 @@ package-lock.json
 
 # VS Code
 .vscode
+
+# DB Config
+./src/DB/config.ts
