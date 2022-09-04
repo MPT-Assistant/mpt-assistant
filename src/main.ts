@@ -1,1 +1,3 @@
-console.log("Hello, i'm MPT Assistant");
+import utils from "./utils";
+
+console.log(utils.mpt.getTimetable().next);

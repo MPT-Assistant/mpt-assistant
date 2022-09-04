@@ -11,5 +11,11 @@
         "@typescript-eslint/parser": "^5.36.1",
         "eslint": "^8.23.0",
         "typescript": "^4.8.2"
+    },
+    "dependencies": {
+        "@mpt-assistant/parser": "^1.1.2",
+        "@types/moment-precise-range-plugin": "^0.2.0",
+        "moment": "^2.29.4",
+        "moment-precise-range-plugin": "^1.3.0"
     }
 }
