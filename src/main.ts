@@ -1,3 +1,6 @@
-import utils from "./lib/utils";
+import DB from "./lib/DB";
 
-console.log(utils.mpt.getTimetable().next);
+void (async function main(): Promise<void> {
+    await DB.init();
+    console.log(await DB.vk.models.users.findOne());
+})();
