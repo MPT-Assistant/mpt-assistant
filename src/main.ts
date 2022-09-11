@@ -1,3 +1,3 @@
-import utils from "./utils";
+import utils from "./lib/utils";
 
 console.log(utils.mpt.getTimetable().next);

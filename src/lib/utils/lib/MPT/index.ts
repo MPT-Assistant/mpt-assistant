@@ -1,7 +1,7 @@
 import moment from "moment";
 import "moment-precise-range-plugin";
 
-import timetable from "../../../DB/timetable";
+import timetable from "../../../../DB/timetable";
 
 interface ITimetableItem {
     status: "await" | "process" | "finished";
@@ -49,15 +49,19 @@ class MPT {
             const start = moment(date);
             const end = moment(date);
 
-            start.set("hour", element.start.hour);
-            start.set("minute", element.start.minute);
-            start.set("second", 0);
-            start.set("millisecond", 0);
+            start.set({
+                hour: element.start.hour,
+                minute: element.start.minute,
+                second: 0,
+                millisecond: 0
+            });
 
-            end.set("hour", element.end.hour);
-            end.set("minute", element.end.minute);
-            end.set("second", 0);
-            end.set("millisecond", 0);
+            end.set({
+                hour: element.end.hour,
+                minute: element.end.minute,
+                second: 0,
+                millisecond: 0
+            });
 
             if (date > start && date < end) {
                 status = "process";
