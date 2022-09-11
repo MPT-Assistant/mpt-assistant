@@ -10,6 +10,7 @@ class VKDB extends DB {
     public readonly schemes = schemes;
     public readonly models = {
         users: this.connection.model("users", this.schemes.userSchema),
+        chats: this.connection.model("chats", this.schemes.chatSchema),
     };
 }
 

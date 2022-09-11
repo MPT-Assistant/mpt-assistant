@@ -9,4 +9,18 @@ interface IUser {
     reportedReplacements?: string[];
 }
 
-export { IUser };
+interface IChat {
+    id: number;
+    group?: string;
+    mailings: {
+        replacements: boolean;
+    };
+    officeSchedule?: {
+        date: Date;
+        image: string;
+        userId: number;
+    };
+    reportedReplacements?: string[];
+}
+
+export { IUser, IChat };
