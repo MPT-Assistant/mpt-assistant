@@ -26,7 +26,9 @@ const userSchema = new Schema<IUser>({
         required: true,
         default: Date.now 
     },
-    reportedReplacements: [Schema.Types.String],
+    reportedReplacements: {
+        type: [Schema.Types.String], default: undefined 
+    },
 });
 
 const chatMailingsSchema = new Schema<IChat["mailings"]>({
@@ -60,7 +62,9 @@ const chatSchema = new Schema<IChat>({
         required: true,
     },
     officeSchedule: chatOfficeScheduleSchema,
-    reportedReplacements: [Schema.Types.String],
+    reportedReplacements: {
+        type: [Schema.Types.String], default: undefined 
+    },
 });
 
 export default {
