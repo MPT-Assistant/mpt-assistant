@@ -8,3 +8,4 @@ import "./text/rest/nick";
 
 import "./text/mpt/week";
 import "./text/mpt/setGroup";
+import "./text/mpt/regChat";
