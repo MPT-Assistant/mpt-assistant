@@ -1,7 +1,11 @@
 import moment from "moment";
 import "moment-precise-range-plugin";
 
+import utils from "@rus-anonym/utils";
+
 import timetable from "../../../../DB/timetable";
+import DB from "../../../DB";
+import { IGroup } from "../../../DB/API/types";
 
 interface ITimetableItem {
     status: "await" | "process" | "finished";
@@ -86,6 +90,45 @@ class MPT {
         }
 
         return new Timetable(list);
+    }
+
+    public async findGroup(
+        groupName: string,
+    ): Promise<IGroup | string[]> {
+        const selectedGroup = await DB.api.models.groups.findOne({
+            name: new RegExp(
+                `^${utils.regular.escapeRegExp(groupName)}$`,
+                "i",
+            ),
+        });
+
+        if (!selectedGroup) {
+            const diff: { group: string; diff: number }[] = [];
+
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+            const groupsList = (await DB.api.models.groups.distinct("name")) as string[];
+            groupsList.map(group => {
+                diff.push({
+                    group: group,
+                    diff: utils.string.levenshtein(groupName, group, {
+                        replaceCase: 0,
+                    }),
+                });
+            });
+            diff.sort(function (a, b) {
+                if (a.diff > b.diff) {
+                    return 1;
+                }
+                if (a.diff < b.diff) {
+                    return -1;
+                }
+                return 0;
+            });
+
+            return diff.slice(0, 3).map((x) => x.group);
+        } else {
+            return selectedGroup;
+        }
     }
 }
 
