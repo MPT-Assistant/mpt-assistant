@@ -1,9 +1,13 @@
 import { Manager } from "@rus-anonym/commands-manager";
+import utils from "@rus-anonym/utils";
 import moment from "moment";
-import { Keyboard, getRandomId } from "vk-io";
+import {
+    Keyboard, KeyboardBuilder, getRandomId
+} from "vk-io";
 import DB from "../../lib/DB";
 import { IReplacement } from "../../lib/DB/API/types";
 import { IChat, IUser } from "../../lib/DB/VK/types";
+import internalUtils from "../../lib/utils";
 
 import VK from "./";
 import TextCommand, { TRegExpFunc, manager as textCommandsManager } from "./TextCommand";
@@ -47,6 +51,117 @@ class UtilsVK {
             return newChatData;
         }
         return chatData;
+    }
+
+    public generateKeyboard(
+        command: "lessons" | "replacements",
+    ): KeyboardBuilder {
+        const builder = Keyboard.builder().inline();
+
+        builder.callbackButton({
+            label: "ПН",
+            payload: {
+                cmd: command,
+                date: internalUtils.rest.getNextSelectDay("понедельник"),
+            },
+            color: Keyboard.SECONDARY_COLOR,
+        });
+        builder.callbackButton({
+            label: "ВТ",
+            payload: {
+                cmd: command,
+                date: internalUtils.rest.getNextSelectDay("вторник"),
+            },
+            color: Keyboard.SECONDARY_COLOR,
+        });
+        builder.callbackButton({
+            label: "СР",
+            payload: {
+                cmd: command,
+                date: internalUtils.rest.getNextSelectDay("среда"),
+            },
+            color: Keyboard.SECONDARY_COLOR,
+        });
+        builder.row();
+        builder.callbackButton({
+            label: "ЧТ",
+            payload: {
+                cmd: command,
+                date: internalUtils.rest.getNextSelectDay("четверг"),
+            },
+            color: Keyboard.SECONDARY_COLOR,
+        });
+        builder.callbackButton({
+            label: "ПТ",
+            payload: {
+                cmd: command,
+                date: internalUtils.rest.getNextSelectDay("пятница"),
+            },
+            color: Keyboard.SECONDARY_COLOR,
+        });
+        builder.callbackButton({
+            label: "СБ",
+            payload: {
+                cmd: command,
+                date: internalUtils.rest.getNextSelectDay("суббота"),
+            },
+            color: Keyboard.SECONDARY_COLOR,
+        });
+        builder.row();
+        builder.callbackButton({
+            label: "Вчера",
+            payload: {
+                cmd: command,
+                date: moment().subtract(1, "day").format("DD.MM.YYYY"),
+            },
+            color: Keyboard.NEGATIVE_COLOR,
+        });
+        builder.callbackButton({
+            label: "Завтра",
+            payload: {
+                cmd: command,
+                date: moment().add(1, "day").format("DD.MM.YYYY"),
+            },
+            color: Keyboard.POSITIVE_COLOR,
+        });
+
+        return builder;
+    }
+
+    public scheduleToString({
+        lessons, place, week, replacements, selectedDate, groupName
+    }: Awaited<ReturnType<typeof internalUtils["mpt"]["getGroupSchedule"]>> & {selectedDate: moment.Moment; groupName: string}): string {
+        const selectedDayName = selectedDate
+            .locale("ru")
+            .format("dddd")
+            .split("");
+        selectedDayName[0] = selectedDayName[0].toUpperCase();
+
+        let responseLessonsText = "";
+
+        for (const lesson of lessons) {
+            responseLessonsText += `${
+                lesson.timetable.start.format("HH:mm:ss") +
+					" - " +
+					lesson.timetable.end.format("HH:mm:ss")
+            }\n${lesson.num}. ${lesson.name} (${lesson.teacher})\n\n`;
+        }
+
+        return `расписание на ${selectedDate.format("DD.MM.YYYY")}:
+Группа: ${groupName}
+День: ${selectedDayName.join("")}
+Место: ${place}
+Неделя: ${week}
+
+${responseLessonsText}
+${
+    replacements.length !== 0
+        ? `\nВнимание:\nНа выбранный день есть ${utils.string.declOfNum(
+            replacements.length,
+            ["замена", "замены", "замены"],
+        )}.\nПросмотреть текущие замены можно командой "замены".`
+        : ""
+}`;
     }
 
     public async sendReplacement(
