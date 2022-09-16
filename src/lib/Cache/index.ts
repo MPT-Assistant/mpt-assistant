@@ -18,12 +18,16 @@ class Cache implements ICache {
     }
 
     public async update(): Promise<void> {
-        const week = await utils.parser.getCurrentWeek();
+        try {
+            const week = await utils.parser.getCurrentWeek();
 
-        this._cache.week = week;
-        this._cache.lastUpdate = new Date();
+            this._cache.week = week;
+            this._cache.lastUpdate = new Date();
         
-        await this.save();
+            await this.save();
+        } catch (error) {
+            //
+        }
     }
     
     public get week(): ICache["week"] {

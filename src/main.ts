@@ -1,12 +1,14 @@
 import DB from "./lib/DB";
 import Cache from "./lib/Cache";
-import utils from "./lib/utils";
 
 import "./lib/tasks";
 
 void (async function main(): Promise<void> {
     await DB.init();
+    console.log("DB connected");
     await Cache.load();
-    await utils.mpt.updateReplacementsList();
-    console.log("Done");
+    console.log("Cache loaded");
+    await Cache.update();
+    console.log("Cache updated");
+    console.log("MPT Assistant successfully started");
 })();
