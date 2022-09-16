@@ -1,6 +1,6 @@
 import { Schema } from "mongoose";
 
-import { IUser, IChat } from "./types";
+import { IChat, IUser } from "./types";
 
 const userMailingsSchema = new Schema<IUser["mailings"]>({
     replacements: {
