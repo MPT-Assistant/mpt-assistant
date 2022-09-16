@@ -5,7 +5,10 @@ import utils from "@rus-anonym/utils";
 
 import timetable from "../../../../DB/timetable";
 import DB from "../../../DB";
-import { IGroup } from "../../../DB/API/types";
+import {
+    ICache, IGroup, IReplacement, ISpecialty 
+} from "../../../DB/API/types";
+import Cache from "../../../Cache";
 
 interface ITimetableItem {
     status: "await" | "process" | "finished";
@@ -15,6 +18,13 @@ interface ITimetableItem {
     end: moment.Moment;
     diffStart: moment.PreciseRangeValueObject;
     diffEnd: moment.PreciseRangeValueObject;
+}
+
+interface ILesson {
+    num: number;
+    name: string;
+    teacher: string;
+    timetable: ITimetableItem;
 }
 
 class Timetable {
@@ -126,6 +136,147 @@ class MPT {
             return selectedGroup;
         }
     }
+
+    public async getExtendGroupInfo(groupName: string): Promise<{
+		group: IGroup;
+		specialty: ISpecialty;
+	}> {
+        const group = await DB.api.models.groups.findOne({ name: groupName, });
+
+        if (!group) {
+            throw new Error(`Group not found: ${groupName}`);
+        }
+
+        const specialty = await DB.api.models.specialties.findOne({ code: group.specialty, });
+
+        if (!specialty) {
+            throw new Error(`Specialty not found: ${group.specialty}`);
+        }
+
+        return {
+            group, specialty 
+        };
+    }
+
+    public async getGroupSchedule(
+        group: IGroup,
+        selectedDate: moment.Moment = moment(),
+    ): Promise<{
+		place: string;
+		week: ICache["week"];
+		lessons: ILesson[];
+		replacements: IReplacement[];
+		timetable: ITimetableItem[];
+	}> {
+        const replacements = await DB.api.models.replacements.find({
+            group: group.name,
+            date: {
+                $gte: selectedDate.startOf("day").toDate(),
+                $lte: selectedDate.endOf("day").toDate(),
+            },
+        });
+
+        const schedule = group.schedule.find(
+            (day) => day.num === selectedDate.day(),
+        );
+
+        const place = schedule ? schedule.place : "Не указано";
+        const week = this.getWeekLegend(selectedDate);
+        const { list: timetableList } = this.getTimetable(selectedDate);
+
+        const lessons: ILesson[] = [];
+
+        if (schedule) {
+            for (const lesson of schedule.lessons) {
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                const timetable = timetableList.find(
+                    (x) => x.type === "lesson" && x.num === lesson.num,
+                )!;
+
+                if (lesson.name.length === 1) {
+                    lessons.push({
+                        num: lesson.num,
+                        name: lesson.name[0],
+                        teacher: lesson.teacher[0],
+                        timetable,
+                    });
+                } else {
+                    if (lesson.name[0] !== "-" && week === "Числитель") {
+                        lessons.push({
+                            num: lesson.num,
+                            name: lesson.name[0],
+                            teacher: lesson.teacher[0],
+                            timetable,
+                        });
+                    } else if (lesson.name[1] !== "-" && week === "Знаменатель") {
+                        lessons.push({
+                            num: lesson.num,
+                            name: lesson.name[1] as string,
+                            teacher: lesson.teacher[1] as string,
+                            timetable,
+                        });
+                    }
+                }
+            }
+        }
+
+        if (replacements.length !== 0) {
+            for (const replacement of replacements) {
+                const currentLesson = lessons.find(
+                    (lesson) => lesson.num === replacement.lessonNum,
+                );
+
+                if (!currentLesson) {
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    const timetable = timetableList.find(
+                        (x) => x.type === "lesson" && x.num === replacement.lessonNum,
+                    )!;
+                    lessons.push({
+                        num: replacement.lessonNum,
+                        name: replacement.newLessonName,
+                        teacher: replacement.newLessonTeacher,
+                        timetable,
+                    });
+                } else {
+                    currentLesson.name = replacement.newLessonName;
+                    currentLesson.teacher = replacement.newLessonTeacher;
+                }
+            }
+
+            lessons.sort((firstLesson, secondLesson) => {
+                if (firstLesson.num > secondLesson.num) {
+                    return 1;
+                } else if (firstLesson.num < secondLesson.num) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            });
+        }
+
+        return {
+            place,
+            week,
+            lessons,
+            replacements,
+            timetable: timetableList,
+        };
+    }
+
+    public getWeekLegend(selectedDate: moment.Moment): ICache["week"] {
+        const lastUpdateWeek = moment(Cache.lastUpdate).week();
+        const selectedWeek = selectedDate.week();
+        if (lastUpdateWeek % 2 === selectedWeek % 2) {
+            return Cache.week === "Числитель"
+                ? "Числитель"
+                : "Знаменатель";
+        } else {
+            return Cache.week === "Числитель"
+                ? "Знаменатель"
+                : "Числитель";
+        }
+    }
+
 }
 
 export default MPT;
