@@ -1,5 +1,5 @@
 import utils from "@rus-anonym/utils";
-import TextCommand from "../../TextCommand";
+import TextCommand from "../../../TextCommand";
 
 new TextCommand({
     trigger: "/ping",
