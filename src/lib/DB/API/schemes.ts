@@ -122,6 +122,6 @@ const replacementSchema = new Schema<IReplacement>({
     },
 });
 
-export {
+export default {
     cacheSchema, groupSchema, specialtySchema, replacementSchema
 };

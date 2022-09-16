@@ -1,13 +1,11 @@
 import mongoose from "mongoose";
 
-import config from "../../DB/config";
+import IConfig from "../../DB/IConfig";
 
 abstract class Database {
     public readonly connection: mongoose.Connection;
 
-    constructor(dbName: string) {
-        const options = config.db.mongo;
-
+    constructor(dbName: string, options: IConfig["db"]["mongo"]) {
         this.connection = mongoose.createConnection(
             `${options.protocol}://${options.login}:${options.password}@${options.address}/`,
             {
