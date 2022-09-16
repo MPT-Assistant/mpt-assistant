@@ -164,6 +164,39 @@ ${
 }`;
     }
 
+    public replacementsToString({
+        replacements, groupName, selectedDate
+    }: {replacements: IReplacement[]; groupName: string; selectedDate: moment.Moment}): string {
+        let responseReplacementsText = "";
+        for (let i = 0; i < replacements.length; ++i) {
+            const replacement = replacements[i];
+            responseReplacementsText += `Замена #${Number(i) + 1}:
+Пара: ${replacement.lessonNum}
+Заменяемая пара: ${replacement.oldLessonName}
+Преподаватель: ${replacement.oldLessonTeacher}
+Новая пара: ${replacement.newLessonName}
+Преподаватель на новой паре: ${replacement.newLessonTeacher}
+Добавлена на сайт: ${moment(replacement.addToSite).format(
+        "HH:mm:ss | DD.MM.YYYY",
+    )}
+Обнаружена ботом: ${moment(replacement.detected).format(
+        "HH:mm:ss | DD.MM.YYYY",
+    )}\n\n`;
+        }
+
+        return `на выбранный день ${selectedDate.format(
+            "DD.MM.YYYY",
+        )} для группы ${groupName} ${utils.string.declOfNum(replacements.length, [
+            "найдена",
+            "найдено",
+            "найдено",
+        ])} ${replacements.length} ${utils.string.declOfNum(replacements.length, [
+            "замена",
+            "замены",
+            "замен",
+        ])}:\n\n${responseReplacementsText}`;
+    }
+
     public async sendReplacement(
         replacement: IReplacement,
     ): Promise<void> {
