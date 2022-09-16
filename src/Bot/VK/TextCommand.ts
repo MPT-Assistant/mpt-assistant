@@ -11,13 +11,13 @@ interface ITextCommandState {
     chat?: IChat;
 }
 
-type TRegExpFunc = (ctx: MessageContext<ITextCommandState>, bot: VK) => Promise<unknown>;
+type TRegExpCommandFunc = (ctx: MessageContext<ITextCommandState>, bot: VK) => Promise<unknown>;
 
-class TextCommand extends Command<TRegExpFunc> {
+class TextCommand extends Command<TRegExpCommandFunc> {
     private _regex: RegExp;
 
     constructor(
-        params: ICommandParams<TRegExpFunc> & {
+        params: ICommandParams<TRegExpCommandFunc> & {
             trigger: RegExp | string | string[];
         }
     ) {
@@ -48,10 +48,10 @@ class TextCommand extends Command<TRegExpFunc> {
     }
 }
 
-const manager = new Manager<TextCommand, TRegExpFunc>();
+const manager = new Manager<TextCommand, TRegExpCommandFunc>();
 
 export { manager };
 
-export type { TRegExpFunc, ITextCommandState };
+export type { TRegExpCommandFunc, ITextCommandState };
 
 export default TextCommand;

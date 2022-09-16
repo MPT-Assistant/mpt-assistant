@@ -10,11 +10,11 @@ import { IChat, IUser } from "../../lib/DB/VK/types";
 import internalUtils from "../../lib/utils";
 
 import VK from "./";
-import TextCommand, { TRegExpFunc, manager as textCommandsManager } from "./TextCommand";
+import TextCommand, { TRegExpCommandFunc, manager as textCommandsManager } from "./TextCommand";
 
 class UtilsVK {
     private readonly _bot: VK;
-    public readonly textCommands: Manager<TextCommand, TRegExpFunc>;
+    public readonly textCommands: Manager<TextCommand, TRegExpCommandFunc>;
 
     constructor(bot: VK) {
         this._bot = bot;

@@ -1,4 +1,6 @@
-import { MessageContext, Updates } from "vk-io";
+import {
+    MessageContext, MessageEventContext, Updates
+} from "vk-io";
 
 import VK from "./";
 import { ITextCommandState } from "./TextCommand";
@@ -59,8 +61,13 @@ class HandlersVK {
         }
     }
 
+    public messageEvent(event: MessageEventContext): void {
+        console.log(event);
+    }
+
     public bind(updates: Updates): void {
         updates.on("message_new", this.messageNew.bind(this));
+        updates.on("message_event", this.messageEvent.bind(this));
     }
 }
 
