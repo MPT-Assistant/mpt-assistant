@@ -28,7 +28,7 @@ const userSchema = new Schema<IUser>({
     reportedReplacements: {
         type: [Schema.Types.String], default: undefined
     },
-});
+}, { versionKey: false });
 
 const chatMailingsSchema = new Schema<IChat["mailings"]>({ replacements: {
     type: Schema.Types.Boolean,
@@ -63,7 +63,7 @@ const chatSchema = new Schema<IChat>({
     reportedReplacements: {
         type: [Schema.Types.String], default: undefined
     },
-});
+}, { versionKey: false });
 
 export default {
     userSchema,

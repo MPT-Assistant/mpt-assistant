@@ -13,7 +13,7 @@ const cacheSchema = new Schema<ICache>({
         type: Schema.Types.Date,
         required: true
     }
-});
+}, { versionKey: false });
 
 const lessonSchema = new Schema<IScheduleLesson>({
     num: {
@@ -63,7 +63,7 @@ const groupSchema = new Schema<IGroup>({
         type: [dayScheduleSchema],
         required: true
     }
-});
+}, { versionKey: false });
 
 const specialtySchema = new Schema<ISpecialty>({
     name: {
@@ -79,7 +79,7 @@ const specialtySchema = new Schema<ISpecialty>({
         type: Schema.Types.String,
         required: true
     }
-});
+}, { versionKey: false });
 
 const replacementSchema = new Schema<IReplacement>({
     group: {
@@ -124,7 +124,7 @@ const replacementSchema = new Schema<IReplacement>({
         type: Schema.Types.Date,
         required: true
     },
-});
+}, { versionKey: false });
 
 export default {
     cacheSchema, groupSchema, specialtySchema, replacementSchema
