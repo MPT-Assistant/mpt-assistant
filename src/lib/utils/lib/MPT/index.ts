@@ -263,7 +263,22 @@ class MPT {
         };
     }
 
-    public getWeekLegend(selectedDate: moment.Moment): ICache["week"] {
+    public async getGroupReplacements(
+        groupName: string,
+        selectedDate: moment.Moment = moment(),
+    ): Promise<IReplacement[]> {
+        const replacements = await DB.api.models.replacements.find({
+            group: groupName,
+            date: {
+                $gte: selectedDate.startOf("day").toDate(),
+                $lte: selectedDate.endOf("day").toDate(),
+            },
+        });
+
+        return replacements;
+    }
+
+    public getWeekLegend(selectedDate: moment.Moment = moment()): ICache["week"] {
         const lastUpdateWeek = moment(Cache.lastUpdate).week();
         const selectedWeek = selectedDate.week();
         if (lastUpdateWeek % 2 === selectedWeek % 2) {
