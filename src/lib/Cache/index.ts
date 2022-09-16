@@ -1,6 +1,8 @@
 import DB from "../DB";
 import { ICache } from "../DB/API/types";
 
+import utils from "../utils";
+
 class Cache implements ICache {
     private _cache!: ICache;
 
@@ -13,6 +15,15 @@ class Cache implements ICache {
 
     public async save(): Promise<void> {
         await DB.api.models.cache.updateOne({}, this._cache, { upsert: true });
+    }
+
+    public async update(): Promise<void> {
+        const week = await utils.parser.getCurrentWeek();
+
+        this._cache.week = week;
+        this._cache.lastUpdate = new Date();
+        
+        await this.save();
     }
     
     public get week(): ICache["week"] {

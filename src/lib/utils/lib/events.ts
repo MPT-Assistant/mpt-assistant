@@ -1,7 +1,7 @@
 import EventEmitter from "eventemitter3";
 import { IReplacement } from "../../DB/API/types";
 
-interface IEvents {
+export interface IEvents {
     on(
         event: "new_replacement",
         listener: (replacement: IReplacement) => void
@@ -9,6 +9,10 @@ interface IEvents {
     emit(event: "new_replacement", replacement: IReplacement): boolean;
 }
 
-const emitter: IEvents & EventEmitter = new EventEmitter();
+class Emitter extends EventEmitter {
+    public emitReplacement(replacement: IReplacement): void {
+        this.emit("new_replacement", replacement);
+    }
+}
 
-export default emitter;
+export default Emitter;

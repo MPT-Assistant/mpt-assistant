@@ -1,10 +1,12 @@
 import path from "node:path";
 import { Interval } from "@rus-anonym/scheduler";
 
+import Cache from "../../Cache";
+
 export default new Interval({
-    cron: "*/5 * * * *",
+    cron: "0 */12 * * *",
     source: async (): Promise<void> => {
-        return await Promise.resolve();
+        return await Cache.update();
     },
     type: path.parse(__filename).name,
 });
