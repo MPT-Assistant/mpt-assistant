@@ -95,12 +95,10 @@ class MPT {
     public async findGroup(
         groupName: string,
     ): Promise<IGroup | string[]> {
-        const selectedGroup = await DB.api.models.groups.findOne({
-            name: new RegExp(
-                `^${utils.regular.escapeRegExp(groupName)}$`,
-                "i",
-            ),
-        });
+        const selectedGroup = await DB.api.models.groups.findOne({ name: new RegExp(
+            `^${utils.regular.escapeRegExp(groupName)}$`,
+            "i",
+        ), });
 
         if (!selectedGroup) {
             const diff: { group: string; diff: number }[] = [];
@@ -110,9 +108,7 @@ class MPT {
             groupsList.map(group => {
                 diff.push({
                     group: group,
-                    diff: utils.string.levenshtein(groupName, group, {
-                        replaceCase: 0,
-                    }),
+                    diff: utils.string.levenshtein(groupName, group, { replaceCase: 0, }),
                 });
             });
             diff.sort(function (a, b) {

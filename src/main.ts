@@ -1,7 +1,8 @@
 import DB from "./lib/DB";
-import utils from "./lib/utils";
+import Cache from "./lib/Cache";
 
 void (async function main(): Promise<void> {
     await DB.init();
-    console.log(await utils.mpt.findGroup("би50-3-19"));
+    await Cache.load();
+    console.log(Cache.week);
 })();
