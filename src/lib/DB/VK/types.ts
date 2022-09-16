@@ -1,4 +1,7 @@
-interface IUser {
+import { Document } from "mongoose";
+
+
+interface IUser extends Document {
     id: number;
     nickname?: string;
     group?: string;
@@ -9,7 +12,7 @@ interface IUser {
     reportedReplacements?: string[];
 }
 
-interface IChat {
+interface IChat extends Document {
     id: number;
     group?: string;
     mailings: {

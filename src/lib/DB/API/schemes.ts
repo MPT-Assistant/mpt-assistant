@@ -7,11 +7,11 @@ import {
 const cacheSchema = new Schema<ICache>({
     week: {
         type: Schema.Types.String,
-        required: true 
+        required: true
     },
     lastUpdate: {
         type: Schema.Types.Date,
-        required: true 
+        required: true
     }
 });
 
@@ -32,7 +32,7 @@ const lessonSchema = new Schema<IScheduleLesson>({
         maxlength: 2,
         required: true
     }
-}); 
+});
 
 const dayScheduleSchema = new Schema<IScheduleDay>({
     num: {
@@ -52,11 +52,12 @@ const dayScheduleSchema = new Schema<IScheduleDay>({
 const groupSchema = new Schema<IGroup>({
     name: {
         type: Schema.Types.String,
-        required: true 
+        required: true,
+        unique: true,
     },
     specialty: {
         type: Schema.Types.String,
-        required: true 
+        required: true
     },
     schedule: {
         type: [dayScheduleSchema],
@@ -67,7 +68,8 @@ const groupSchema = new Schema<IGroup>({
 const specialtySchema = new Schema<ISpecialty>({
     name: {
         type: Schema.Types.String,
-        required: true
+        required: true,
+        unique: true
     },
     code: {
         type: Schema.Types.String,
@@ -86,7 +88,9 @@ const replacementSchema = new Schema<IReplacement>({
     },
     hash: {
         type: Schema.Types.String,
-        required: true
+        required: true,
+        unique: true,
+        dropDups: true
     },
     newLessonName: {
         type: Schema.Types.String,

@@ -7,5 +7,5 @@ interface IGroup {
 }
 
 export {
-    IGroup, IScheduleDay, IScheduleLesson 
+    IGroup, IScheduleDay, IScheduleLesson
 };

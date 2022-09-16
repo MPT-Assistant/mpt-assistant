@@ -1,21 +1,24 @@
-import {
-    ContextDefaultState, MessageContext, VK 
-} from "vk-io";
+import { VK } from "vk-io";
 import { VKOptions } from "vk-io/lib/types";
 
 import Bot from "../Bot";
 
+import HandlersVK from "./handlers";
+import UtilsVK from "./utils";
+
 class VKBot extends Bot {
     public readonly instance: VK;
+
+    public readonly utils: UtilsVK;
+    public readonly handlers: HandlersVK;
 
     constructor(options: Partial<VKOptions> & { token: string }) {
         super();
         this.instance = new VK(options);
-        this.instance.updates.on("message_new", this._onMessageNew.bind(this));
-    }
+        this.utils = new UtilsVK(this);
+        this.handlers = new HandlersVK(this);
 
-    private _onMessageNew(ctx: MessageContext<ContextDefaultState>): void {
-        console.log(ctx);
+        this.handlers.bind(this.instance.updates);
     }
 
     public start(): Promise<void> {

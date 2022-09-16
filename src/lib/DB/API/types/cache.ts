@@ -5,4 +5,4 @@ interface ICache {
     lastUpdate: Date;
 }
 
-export { ICache }; 
+export { ICache };

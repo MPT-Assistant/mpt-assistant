@@ -23,13 +23,13 @@ class Cache implements ICache {
 
             this._cache.week = week;
             this._cache.lastUpdate = new Date();
-        
+
             await this.save();
         } catch (error) {
             //
         }
     }
-    
+
     public get week(): ICache["week"] {
         return this._cache.week;
     }

@@ -7,7 +7,7 @@ import utils from "@rus-anonym/utils";
 import timetable from "../../../DB/timetable";
 import DB from "../../DB";
 import {
-    ICache, ISpecialty as IDataBaseSpecialty, IGroup, IReplacement 
+    ICache, ISpecialty as IDataBaseSpecialty, IGroup, IReplacement
 } from "../../DB/API/types";
 import Cache from "../../Cache";
 import internal from "../";
@@ -37,7 +37,7 @@ class Timetable {
         this.list = list;
     }
 
-    public get current(): ITimetableItem | null { 
+    public get current(): ITimetableItem | null {
         const now = Date.now();
         const current = this.list.find((item) => {
             return item.start.isSameOrBefore(now) && item.end.isSameOrAfter(now);
@@ -45,7 +45,7 @@ class Timetable {
         return current || null;
     }
 
-    public get next(): ITimetableItem | null { 
+    public get next(): ITimetableItem | null {
         const now = Date.now();
         const next = this.list.find((item) => {
             return item.start.isAfter(now);
@@ -157,7 +157,7 @@ class MPT {
         }
 
         return {
-            group, specialty 
+            group, specialty
         };
     }
 

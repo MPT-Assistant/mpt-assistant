@@ -2,18 +2,17 @@ import { Schema } from "mongoose";
 
 import { IChat, IUser } from "./types";
 
-const userMailingsSchema = new Schema<IUser["mailings"]>({
-    replacements: {
-        type: Schema.Types.Boolean,
-        required: true,
-        default: true,
-    }
-});
+const userMailingsSchema = new Schema<IUser["mailings"]>({ replacements: {
+    type: Schema.Types.Boolean,
+    required: true,
+    default: true,
+} });
 
 const userSchema = new Schema<IUser>({
     id: {
         type: Schema.Types.Number,
-        required: true 
+        required: true,
+        unique: true,
     },
     group: Schema.Types.String,
     nickname: Schema.Types.String,
@@ -24,37 +23,36 @@ const userSchema = new Schema<IUser>({
     regDate: {
         type: Schema.Types.Date,
         required: true,
-        default: Date.now 
+        default: Date.now
     },
     reportedReplacements: {
-        type: [Schema.Types.String], default: undefined 
+        type: [Schema.Types.String], default: undefined
     },
 });
 
-const chatMailingsSchema = new Schema<IChat["mailings"]>({
-    replacements: {
-        type: Schema.Types.Boolean,
-        required: true,
-        default: true,
-    }
-});
+const chatMailingsSchema = new Schema<IChat["mailings"]>({ replacements: {
+    type: Schema.Types.Boolean,
+    required: true,
+    default: true,
+} });
 
 const chatOfficeScheduleSchema = new Schema<IChat["officeSchedule"]>({
     date: {
-        type: Schema.Types.Date, required: true 
+        type: Schema.Types.Date, required: true
     },
     image: {
-        type: Schema.Types.String, required: true 
+        type: Schema.Types.String, required: true
     },
     userId: {
-        type: Schema.Types.Number, required: true 
+        type: Schema.Types.Number, required: true
     },
 });
 
 const chatSchema = new Schema<IChat>({
     id: {
         type: Schema.Types.Number,
-        required: true 
+        required: true,
+        unique: true
     },
     group: Schema.Types.String,
     mailings: {
@@ -63,7 +61,7 @@ const chatSchema = new Schema<IChat>({
     },
     officeSchedule: chatOfficeScheduleSchema,
     reportedReplacements: {
-        type: [Schema.Types.String], default: undefined 
+        type: [Schema.Types.String], default: undefined
     },
 });
 
