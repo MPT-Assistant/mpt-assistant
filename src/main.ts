@@ -1,5 +1,6 @@
 import DB from "./lib/DB";
 import Cache from "./lib/Cache";
+import Bots from "./Bot";
 
 import "./lib/tasks";
 
@@ -10,5 +11,7 @@ void (async function main(): Promise<void> {
     console.log("Cache loaded");
     await Cache.update();
     console.log("Cache updated");
+    await Bots.start();
+    console.log("VK polling started");
     console.log("MPT Assistant successfully started");
 })();

@@ -1,14 +1,13 @@
 import IConfig from "./IConfig";
 
 const config: IConfig = {
-    db: {
-        mongo: {
-            protocol: "",
-            address: "",
-            login: "",
-            password: "",
-        },
-    },
+    vk: { token: "" },
+    db: { mongo: {
+        protocol: "",
+        address: "",
+        login: "",
+        password: "",
+    }, },
 };
 
 export default config;
