@@ -5,7 +5,7 @@ interface IReplacement {
     addToSite: Date;
     lessonNum: number;
     oldLessonName: string;
-    oldLessongTeacher: string;
+    oldLessonTeacher: string;
     newLessonName: string;
     newLessonTeacher: string;
     hash: string;

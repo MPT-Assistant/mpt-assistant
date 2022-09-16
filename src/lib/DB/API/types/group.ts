@@ -1,9 +1,11 @@
-import { IScheduleDay } from "@mpt-assistant/parser/dist/types/mpt";
+import { IScheduleDay, IScheduleLesson } from "@mpt-assistant/parser/dist/types/mpt";
 
 interface IGroup {
     name: string;
     specialty: string;
-    schedule: IScheduleDay;
+    schedule: IScheduleDay[];
 }
 
-export { IGroup };
+export {
+    IGroup, IScheduleDay, IScheduleLesson 
+};
