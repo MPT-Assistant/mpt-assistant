@@ -3,7 +3,17 @@ import { ICache } from "../DB/API/types";
 
 import utils from "../utils";
 
-class Cache implements ICache {
+class Week extends String {
+    public get isNumerator(): boolean {
+        return this.toLowerCase() === "числитель";
+    }
+
+    public get isDenominator(): boolean {
+        return this.toLowerCase() === "знаменатель";
+    }
+}
+
+class Cache {
     private _cache!: ICache;
 
     public async load(): Promise<void> {
@@ -30,8 +40,8 @@ class Cache implements ICache {
         }
     }
 
-    public get week(): ICache["week"] {
-        return this._cache.week;
+    public get week(): Week {
+        return new Week(this._cache.week);
     }
 
     public get lastUpdate(): ICache["lastUpdate"] {

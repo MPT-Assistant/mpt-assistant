@@ -285,11 +285,11 @@ class MPT {
         const lastUpdateWeek = moment(Cache.lastUpdate).week();
         const selectedWeek = selectedDate.week();
         if (lastUpdateWeek % 2 === selectedWeek % 2) {
-            return Cache.week === "Числитель"
+            return Cache.week.isNumerator
                 ? "Числитель"
                 : "Знаменатель";
         } else {
-            return Cache.week === "Числитель"
+            return Cache.week.isNumerator
                 ? "Знаменатель"
                 : "Числитель";
         }

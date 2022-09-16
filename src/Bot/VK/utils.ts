@@ -1,3 +1,4 @@
+import { Manager } from "@rus-anonym/commands-manager";
 import moment from "moment";
 import { Keyboard, getRandomId } from "vk-io";
 import DB from "../../lib/DB";
@@ -5,9 +6,16 @@ import { IReplacement } from "../../lib/DB/API/types";
 import { IChat, IUser } from "../../lib/DB/VK/types";
 
 import VK from "./";
+import RegExpCommand, { TRegExpFunc, manager as textCommandsManager } from "./RegExpCommand";
 
 class UtilsVK {
-    constructor(private readonly _bot: VK) {}
+    private readonly _bot: VK;
+    public readonly textCommands: Manager<RegExpCommand, TRegExpFunc>;
+
+    constructor(bot: VK) {
+        this._bot = bot;
+        this.textCommands = textCommandsManager;
+    }
 
     public async getUserData(
         id: number,

@@ -8,9 +8,11 @@ class HandlersVK {
     public async messageNew(ctx: MessageContext): Promise<void> {
         const { text } = ctx;
 
-        if (text === "group") {
-            const user = await this._bot.utils.getUserData(ctx.senderId);
-            await ctx.reply(user.group || "no group");
+        if (text) {
+            const command = this._bot.utils.textCommands.find(text);
+            if (command) {
+                await command.execute(ctx);
+            }
         }
     }
 

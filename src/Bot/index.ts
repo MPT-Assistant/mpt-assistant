@@ -2,6 +2,7 @@ import DB from "../lib/DB";
 import { IReplacement } from "../lib/DB/API/types";
 
 import VK from "./VK";
+import "./VK/commands/textLoader";
 
 class BotsManager {
     public readonly vk: VK;
