@@ -3,8 +3,14 @@ import {
 } from "@rus-anonym/commands-manager";
 import { MessageContext } from "vk-io";
 import utils from "@rus-anonym/utils";
+import { IChat, IUser } from "../../lib/DB/VK/types";
 
-type TRegExpFunc = (ctx: MessageContext) => Promise<void>;
+interface ITextCommandState {
+    user: IUser;
+    chat?: IChat;
+}
+
+type TRegExpFunc = (ctx: MessageContext<ITextCommandState>) => Promise<unknown>;
 
 class TextCommand extends Command<TRegExpFunc> {
     private _regex: RegExp;
@@ -45,6 +51,6 @@ const manager = new Manager<TextCommand, TRegExpFunc>();
 
 export { manager };
 
-export type { TRegExpFunc };
+export type { TRegExpFunc, ITextCommandState };
 
 export default TextCommand;

@@ -6,7 +6,9 @@ const userMailingsSchema = new Schema<IUser["mailings"]>({ replacements: {
     type: Schema.Types.Boolean,
     required: true,
     default: true,
-} });
+} }, {
+    _id: false, versionKey: false
+});
 
 const userSchema = new Schema<IUser>({
     id: {
@@ -15,7 +17,9 @@ const userSchema = new Schema<IUser>({
         unique: true,
     },
     group: Schema.Types.String,
-    nickname: Schema.Types.String,
+    nickname: {
+        type: Schema.Types.String, required: true
+    },
     mailings: {
         type: userMailingsSchema,
         required: true,
@@ -34,7 +38,9 @@ const chatMailingsSchema = new Schema<IChat["mailings"]>({ replacements: {
     type: Schema.Types.Boolean,
     required: true,
     default: true,
-} });
+}, }, {
+    _id: false, versionKey: false
+});
 
 const chatOfficeScheduleSchema = new Schema<IChat["officeSchedule"]>({
     date: {
@@ -46,6 +52,8 @@ const chatOfficeScheduleSchema = new Schema<IChat["officeSchedule"]>({
     userId: {
         type: Schema.Types.Number, required: true
     },
+}, {
+    _id: false, versionKey: false
 });
 
 const chatSchema = new Schema<IChat>({
