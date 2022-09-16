@@ -2,10 +2,10 @@ import moment from "moment";
 
 import Cache from "../../../../../lib/Cache";
 import DB from "../../../../../lib/DB";
-import RegExpCommand from "../../../RegExpCommand";
+import TextCommand from "../../../TextCommand";
 
-new RegExpCommand({
-    trigger: /^stats/i,
+new TextCommand({
+    trigger: "/stats",
     func: async (context): Promise<void> => {
         const [vkUsers, vkChats, groups, specialties, replacements] =
             await Promise.all([

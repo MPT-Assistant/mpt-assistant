@@ -1,9 +1,9 @@
 
 import Cache from "../../../../../lib/Cache";
-import RegExpCommand from "../../../RegExpCommand";
+import TextCommand from "../../../TextCommand";
 
-new RegExpCommand({
-    trigger: /^(чз|неделя)/i,
+new TextCommand({
+    trigger: ["чз", "неделя"],
     func: async (context): Promise<void> => {
         let response = `сейчас ${
             Cache.week.isNumerator ? "числитель" : "знаменатель"

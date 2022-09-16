@@ -1,8 +1,8 @@
 import utils from "@rus-anonym/utils";
-import RegExpCommand from "../../RegExpCommand";
+import TextCommand from "../../TextCommand";
 
-new RegExpCommand({
-    trigger: /^ping/i,
+new TextCommand({
+    trigger: "/ping",
     func: async (ctx): Promise<void> => {
         await ctx.reply("pong", { attachment: utils.array.random([
             "audio675114166_456239880",

@@ -6,11 +6,11 @@ import { IReplacement } from "../../lib/DB/API/types";
 import { IChat, IUser } from "../../lib/DB/VK/types";
 
 import VK from "./";
-import RegExpCommand, { TRegExpFunc, manager as textCommandsManager } from "./RegExpCommand";
+import TextCommand, { TRegExpFunc, manager as textCommandsManager } from "./TextCommand";
 
 class UtilsVK {
     private readonly _bot: VK;
-    public readonly textCommands: Manager<RegExpCommand, TRegExpFunc>;
+    public readonly textCommands: Manager<TextCommand, TRegExpFunc>;
 
     constructor(bot: VK) {
         this._bot = bot;
