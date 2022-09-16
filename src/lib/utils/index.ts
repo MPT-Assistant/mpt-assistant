@@ -1,6 +1,6 @@
 import { Parser } from "@mpt-assistant/parser";
 
-import MPT from "./lib/MPT";
+import MPT from "./lib/mpt";
 import RestUtils from "./lib/rest";
 
 class Utils {

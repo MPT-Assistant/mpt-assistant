@@ -3,12 +3,12 @@ import "moment-precise-range-plugin";
 
 import utils from "@rus-anonym/utils";
 
-import timetable from "../../../../DB/timetable";
-import DB from "../../../DB";
+import timetable from "../../../DB/timetable";
+import DB from "../../DB";
 import {
     ICache, IGroup, IReplacement, ISpecialty 
-} from "../../../DB/API/types";
-import Cache from "../../../Cache";
+} from "../../DB/API/types";
+import Cache from "../../Cache";
 
 interface ITimetableItem {
     status: "await" | "process" | "finished";
