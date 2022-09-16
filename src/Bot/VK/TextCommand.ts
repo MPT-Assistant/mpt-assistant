@@ -4,13 +4,14 @@ import {
 import { MessageContext } from "vk-io";
 import utils from "@rus-anonym/utils";
 import { IChat, IUser } from "../../lib/DB/VK/types";
+import VK from ".";
 
 interface ITextCommandState {
     user: IUser;
     chat?: IChat;
 }
 
-type TRegExpFunc = (ctx: MessageContext<ITextCommandState>) => Promise<unknown>;
+type TRegExpFunc = (ctx: MessageContext<ITextCommandState>, bot: VK) => Promise<unknown>;
 
 class TextCommand extends Command<TRegExpFunc> {
     private _regex: RegExp;

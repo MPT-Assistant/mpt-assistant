@@ -37,7 +37,11 @@ class HandlersVK {
             };
 
 
-            await command.execute(ctx as MessageContext<ITextCommandState>);
+            await command.execute(ctx as MessageContext<ITextCommandState>, this._bot);
+            await state.user.save();
+            if (state.chat) {
+                await state.chat.save();
+            }
         } else if  (!ctx.isChat) {
             if (
                 (ctx.messagePayload as { command?: string }).command &&
