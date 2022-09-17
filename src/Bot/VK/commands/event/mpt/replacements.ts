@@ -1,19 +1,19 @@
 import moment from "moment";
-import { Keyboard, MessageEventContext } from "vk-io";
+import {  MessageEventContext } from "vk-io";
 import DB from "../../../../../lib/DB";
 import utils from "../../../../../lib/utils";
 import EventCommand from "../../../EventCommand";
 
-const isLessonsCommand = (
+const isReplacementsCommand = (
     payload: MessageEventContext["eventPayload"]
-): payload is { date: string; cmd: "lessons" } => {
+): payload is { date: string; cmd: "replacements" } => {
     return typeof payload === "object";
 };
 
 new EventCommand({
-    trigger: "lessons",
+    trigger: "replacements",
     func: async (event, { utils: vkUtils }): Promise<unknown> => {
-        if (!isLessonsCommand(event.eventPayload)) {
+        if (!isReplacementsCommand(event.eventPayload)) {
             return;
         }
 
@@ -53,35 +53,25 @@ new EventCommand({
             });
         }
 
-        const keyboard = vkUtils.generateKeyboard("lessons");
-        const schedule = await utils.mpt.getGroupSchedule(group, selectedDate);
+        const replacements = await utils.mpt.getGroupReplacements(
+            groupName,
+            selectedDate,
+        );
 
-        if (schedule.lessons.length === 0) {
-            return await event.state.editParentMessage({
-                message: `на ${selectedDate.format(
-                    "DD.MM.YYYY"
-                )} пар у группы ${groupName} не найдено`,
-                keyboard,
-            });
-        }
-
-        if (schedule.replacements.length !== 0) {
-            keyboard.row();
-            keyboard.callbackButton({
-                label: "Замены",
-                payload: {
-                    cmd: "replacements",
-                    date: selectedDate.format("DD.MM.YYYY"),
-                },
-                color: Keyboard.PRIMARY_COLOR,
+        if (replacements.length === 0) {
+            return await event.answer({
+                type: "show_snackbar",
+                text: `На ${selectedDate.format(
+                    "DD.MM.YYYY",
+                )} замен у группы ${groupName} не найдено`,
             });
         }
 
         await event.state.editParentMessage({
-            message: vkUtils.scheduleToString({
-                ...schedule, selectedDate, groupName
+            message: vkUtils.replacementsToString({
+                replacements, groupName, selectedDate
             }),
-            keyboard,
+            keyboard: vkUtils.generateKeyboard("replacements"),
         });
 
         return;
