@@ -1,16 +1,22 @@
 import {
     Command, ICommandParams, Manager
 } from "@rus-anonym/commands-manager";
-import { MessageEventContext } from "vk-io";
+import { MessageEventContext, Params } from "vk-io";
 import { IChat, IUser } from "../../lib/DB/VK/types";
 import VK from ".";
 
 interface IEventCommandState {
     user: IUser;
     chat?: IChat;
+    editParentMessage(
+        params: Partial<Params.MessagesEditParams>
+    ): Promise<unknown>;
 }
 
-type TCallbackCommandFunc = (ctx: MessageEventContext<IEventCommandState>, bot: VK) => Promise<unknown>;
+type TCallbackCommandFunc = (
+    ctx: MessageEventContext<IEventCommandState>,
+    bot: VK
+) => Promise<unknown>;
 
 class EventCommand extends Command<TCallbackCommandFunc> {
     private _event: string;

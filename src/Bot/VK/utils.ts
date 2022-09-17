@@ -1,4 +1,3 @@
-import { Manager } from "@rus-anonym/commands-manager";
 import utils from "@rus-anonym/utils";
 import moment from "moment";
 import {
@@ -10,23 +9,24 @@ import { IChat, IUser } from "../../lib/DB/VK/types";
 import internalUtils from "../../lib/utils";
 
 import VK from "./";
-import TextCommand, { TRegExpCommandFunc, manager as textCommandsManager } from "./TextCommand";
+import { manager as textCommandsManager } from "./TextCommand";
+import { manager as eventCommandsManager } from "./EventCommand";
 
 class UtilsVK {
     private readonly _bot: VK;
-    public readonly textCommands: Manager<TextCommand, TRegExpCommandFunc>;
+    public readonly textCommands: typeof textCommandsManager;
+    public readonly eventCommands: typeof eventCommandsManager;
 
     constructor(bot: VK) {
         this._bot = bot;
         this.textCommands = textCommandsManager;
+        this.eventCommands = eventCommandsManager;
     }
 
-    public async getUserData(
-        id: number,
-    ): Promise<IUser> {
+    public async getUserData(id: number): Promise<IUser> {
         const userData = await DB.vk.models.users.findOne({ id });
         if (userData === null) {
-            const response = await this._bot.instance.api.users.get({ user_id: id.toString() });
+            const response = await this._bot.instance.api.users.get({ user_id: id.toString(), });
             const userInfo = response[0] as { first_name: string };
             const newUser = await DB.vk.models.users.create({
                 id,
@@ -39,9 +39,7 @@ class UtilsVK {
         return userData;
     }
 
-    public async getChatData(
-        id: number,
-    ): Promise<IChat> {
+    public async getChatData(id: number): Promise<IChat> {
         const chatData = await DB.vk.models.chats.findOne({ id });
         if (!chatData) {
             const newChatData = await DB.vk.models.chats.create({
@@ -54,7 +52,7 @@ class UtilsVK {
     }
 
     public generateKeyboard(
-        command: "lessons" | "replacements",
+        command: "lessons" | "replacements"
     ): KeyboardBuilder {
         const builder = Keyboard.builder().inline();
 
@@ -129,8 +127,16 @@ class UtilsVK {
     }
 
     public scheduleToString({
-        lessons, place, week, replacements, selectedDate, groupName
-    }: Awaited<ReturnType<typeof internalUtils["mpt"]["getGroupSchedule"]>> & {selectedDate: moment.Moment; groupName: string}): string {
+        lessons,
+        place,
+        week,
+        replacements,
+        selectedDate,
+        groupName,
+    }: Awaited<ReturnType<typeof internalUtils["mpt"]["getGroupSchedule"]>> & {
+        selectedDate: moment.Moment;
+        groupName: string;
+    }): string {
         const selectedDayName = selectedDate
             .locale("ru")
             .format("dddd")
@@ -142,8 +148,8 @@ class UtilsVK {
         for (const lesson of lessons) {
             responseLessonsText += `${
                 lesson.timetable.start.format("HH:mm:ss") +
-					" - " +
-					lesson.timetable.end.format("HH:mm:ss")
+                " - " +
+                lesson.timetable.end.format("HH:mm:ss")
             }\n${lesson.num}. ${lesson.name} (${lesson.teacher})\n\n`;
         }
 
@@ -158,15 +164,21 @@ ${
     replacements.length !== 0
         ? `\nВнимание:\nНа выбранный день есть ${utils.string.declOfNum(
             replacements.length,
-            ["замена", "замены", "замены"],
+            ["замена", "замены", "замены"]
         )}.\nПросмотреть текущие замены можно командой "замены".`
         : ""
 }`;
     }
 
     public replacementsToString({
-        replacements, groupName, selectedDate
-    }: {replacements: IReplacement[]; groupName: string; selectedDate: moment.Moment}): string {
+        replacements,
+        groupName,
+        selectedDate,
+    }: {
+        replacements: IReplacement[];
+        groupName: string;
+        selectedDate: moment.Moment;
+    }): string {
         let responseReplacementsText = "";
         for (let i = 0; i < replacements.length; ++i) {
             const replacement = replacements[i];
@@ -177,29 +189,25 @@ ${
 Новая пара: ${replacement.newLessonName}
 Преподаватель на новой паре: ${replacement.newLessonTeacher}
 Добавлена на сайт: ${moment(replacement.addToSite).format(
-        "HH:mm:ss | DD.MM.YYYY",
+        "HH:mm:ss | DD.MM.YYYY"
     )}
 Обнаружена ботом: ${moment(replacement.detected).format(
-        "HH:mm:ss | DD.MM.YYYY",
+        "HH:mm:ss | DD.MM.YYYY"
     )}\n\n`;
         }
 
         return `на выбранный день ${selectedDate.format(
-            "DD.MM.YYYY",
-        )} для группы ${groupName} ${utils.string.declOfNum(replacements.length, [
-            "найдена",
-            "найдено",
-            "найдено",
-        ])} ${replacements.length} ${utils.string.declOfNum(replacements.length, [
-            "замена",
-            "замены",
-            "замен",
-        ])}:\n\n${responseReplacementsText}`;
+            "DD.MM.YYYY"
+        )} для группы ${groupName} ${utils.string.declOfNum(
+            replacements.length,
+            ["найдена", "найдено", "найдено"]
+        )} ${replacements.length} ${utils.string.declOfNum(
+            replacements.length,
+            ["замена", "замены", "замен"]
+        )}:\n\n${responseReplacementsText}`;
     }
 
-    public async sendReplacement(
-        replacement: IReplacement,
-    ): Promise<void> {
+    public async sendReplacement(replacement: IReplacement): Promise<void> {
         const replacementDate = moment(replacement.date).format("DD.MM.YYYY");
         const message = `Обнаружена новая замена на ${replacementDate}
 Группа: ${replacement.group}
@@ -209,28 +217,28 @@ ${
 Новая пара: ${replacement.newLessonName}
 Преподаватель на новой паре: ${replacement.newLessonTeacher}
 Добавлена на сайт: ${moment(replacement.addToSite).format(
-        "HH:mm:ss | DD.MM.YYYY",
+        "HH:mm:ss | DD.MM.YYYY"
     )}
 Обнаружена ботом: ${moment(replacement.detected).format(
-        "HH:mm:ss | DD.MM.YYYY",
+        "HH:mm:ss | DD.MM.YYYY"
     )}`;
 
         const keyboard = Keyboard.builder().inline();
         keyboard.textButton({
             label: `Расписание ${replacementDate}`,
-            payload: { cmd: `Расписание ${replacementDate}`, },
+            payload: { cmd: `Расписание ${replacementDate}` },
             color: Keyboard.SECONDARY_COLOR,
         });
         keyboard.row();
         keyboard.textButton({
             label: `Замены ${replacementDate}`,
-            payload: { cmd: `Замены ${replacementDate}`, },
+            payload: { cmd: `Замены ${replacementDate}` },
             color: Keyboard.SECONDARY_COLOR,
         });
         keyboard.row();
         keyboard.textButton({
             label: "Отключить рассылку",
-            payload: { cmd: "Изменения отключить", },
+            payload: { cmd: "Изменения отключить" },
             color: Keyboard.NEGATIVE_COLOR,
         });
 
