@@ -2,16 +2,16 @@ import { Keyboard, MessageEventContext } from "vk-io";
 import DB from "../../../../../lib/DB";
 import EventCommand from "../../../EventCommand";
 
-const isRegChatCommand = (
+const isSetGroupCommand = (
     payload: MessageEventContext["eventPayload"]
-): payload is { group: string; cmd: "regChat" } => {
+): payload is { group: string; cmd: "setGroup" } => {
     return typeof payload === "object";
 };
 
 new EventCommand({
-    trigger: "regChat",
+    trigger: "setGroup",
     func: async (event): Promise<unknown> => {
-        if (!event.state.chat || !isRegChatCommand(event.eventPayload)) {
+        if (!event.state.chat || !isSetGroupCommand(event.eventPayload)) {
             return;
         }
 
@@ -23,17 +23,23 @@ new EventCommand({
                 text: `Группы ${event.eventPayload.group} не найдено`,
             });
         } else {
-            event.state.chat.group = selectedGroup.name;
+            event.state.user.group = selectedGroup.name;
+
+            const keyboard = Keyboard.builder()
+                .inline()
+                .callbackButton({
+                    label: "Профиль",
+                    payload: { cmd: "profile", },
+                });
 
             return await Promise.all([
+                event.state.editParentMessage({
+                    message: `Вы установили себе группу ${selectedGroup.name}\nОтделение: ${selectedGroup.specialty}`,
+                    keyboard,
+                }),
                 event.answer({
                     type: "show_snackbar",
-                    text: `Вы установили чату группу ${selectedGroup.name}.\n(${selectedGroup.specialty})`,
-                }),
-                event.state.editParentMessage({
-                    conversation_message_id: event.conversationMessageId,
-                    keyboard: Keyboard.builder(),
-                    message: `установил группу для чата по умолчанию\nГруппа: ${selectedGroup.name}\nОтделение: ${selectedGroup.specialty}`,
+                    text: `Вы установили себе группу ${selectedGroup.name}.\n(${selectedGroup.specialty})`,
                 }),
             ]);
         }
