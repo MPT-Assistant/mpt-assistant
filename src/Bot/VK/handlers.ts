@@ -145,7 +145,13 @@ class HandlersVK {
             },
         };
 
-        console.log(event.eventPayload);
+        event.state = state;
+
+        await command.execute(event as MessageEventContext<IEventCommandState>, this._bot);
+        await state.user.save();
+        if (state.chat) {
+            await state.chat.save();
+        }
     }
 
     public bind(updates: Updates): void {
