@@ -117,6 +117,7 @@ class HandlersVK {
                         peer_id: event.peerId,
                         conversation_message_id: event.conversationMessageId,
                         disable_mentions: true,
+                        keep_forward_messages: true
                     });
                 } catch (error) {
                     if (error instanceof APIError) {
