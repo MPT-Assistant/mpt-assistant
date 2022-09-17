@@ -1,7 +1,9 @@
 import IConfig from "./IConfig";
 
 const config: IConfig = {
-    vk: { token: "" },
+    vk: {
+        token: "", pollingGroupId: 1
+    },
     db: { mongo: {
         protocol: "",
         address: "",

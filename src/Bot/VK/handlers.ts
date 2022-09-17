@@ -5,10 +5,16 @@ import {
     Updates,
     getRandomId,
 } from "vk-io";
+import DB from "../../lib/DB";
 
 import VK from "./";
 import { IEventCommandState } from "./EventCommand";
 import { ITextCommandState } from "./TextCommand";
+
+const mentionRegExp = new RegExp(
+    `([club${DB.config.vk.pollingGroupId}|[@a-z_A-ZА-Яа-я0-9]+])`,
+    "gi",
+);
 
 class HandlersVK {
     constructor(private readonly _bot: VK) {}
@@ -17,11 +23,31 @@ class HandlersVK {
         if (
             ctx.isOutbox ||
             ctx.isGroup ||
-            !ctx.text ||
             ctx.senderId !== 675114166
         ) {
             return;
         }
+
+        if (ctx.isDM && !ctx.text) {
+            await ctx.reply({
+                message: "Такой команды не существует\nСписок команд:",
+                attachment: "article-188434642_189203_12d88f37969ae1c641",
+            });
+            return;
+        } else if (!ctx.text) {
+            return;
+        }
+
+        ctx.text = ctx.text.replace(mentionRegExp, "");
+
+        const hasMessagePayload = (payload: unknown): payload is {cmd?: string} => {
+            return ctx.hasMessagePayload;
+        };
+
+        if (hasMessagePayload(ctx.messagePayload) && ctx.messagePayload.cmd) {
+            ctx.text = ctx.messagePayload.cmd;
+        }
+
         const command = this._bot.utils.textCommands.find(ctx.text);
 
         if (command) {
@@ -66,6 +92,7 @@ class HandlersVK {
             }
         } else if (!ctx.isChat) {
             if (
+                hasMessagePayload(ctx.messagePayload) &&
                 (ctx.messagePayload as { command?: string }).command &&
                 (ctx.messagePayload as { command: string }).command === "start"
             ) {
