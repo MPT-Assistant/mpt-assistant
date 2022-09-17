@@ -13,18 +13,14 @@ import { ITextCommandState } from "./TextCommand";
 
 const mentionRegExp = new RegExp(
     `([club${DB.config.vk.pollingGroupId}|[@a-z_A-ZА-Яа-я0-9]+])`,
-    "gi",
+    "gi"
 );
 
 class HandlersVK {
     constructor(private readonly _bot: VK) {}
 
     public async messageNew(ctx: MessageContext): Promise<void> {
-        if (
-            ctx.isOutbox ||
-            ctx.isGroup ||
-            ctx.senderId !== 675114166
-        ) {
+        if (ctx.isOutbox || ctx.isGroup) {
             return;
         }
 
@@ -40,7 +36,9 @@ class HandlersVK {
 
         ctx.text = ctx.text.replace(mentionRegExp, "");
 
-        const hasMessagePayload = (payload: unknown): payload is {cmd?: string} => {
+        const hasMessagePayload = (
+            payload: unknown
+        ): payload is { cmd?: string } => {
             return ctx.hasMessagePayload;
         };
 
@@ -144,7 +142,7 @@ class HandlersVK {
                         peer_id: event.peerId,
                         conversation_message_id: event.conversationMessageId,
                         disable_mentions: true,
-                        keep_forward_messages: true
+                        keep_forward_messages: true,
                     });
                 } catch (error) {
                     if (error instanceof APIError) {
@@ -175,7 +173,10 @@ class HandlersVK {
 
         event.state = state;
 
-        await command.execute(event as MessageEventContext<IEventCommandState>, this._bot);
+        await command.execute(
+            event as MessageEventContext<IEventCommandState>,
+            this._bot
+        );
         await state.user.save();
         if (state.chat) {
             await state.chat.save();

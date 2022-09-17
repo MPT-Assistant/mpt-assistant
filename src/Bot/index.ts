@@ -4,6 +4,7 @@ import { IReplacement } from "../lib/DB/API/types";
 import VK from "./VK";
 import "./VK/commands/textLoader";
 import "./VK/commands/eventLoader";
+import utils from "../lib/utils";
 
 class BotsManager {
     public readonly vk: VK;
@@ -17,6 +18,9 @@ class BotsManager {
     }
 
     public start(): Promise<void> {
+        utils.events.on("new_replacement", (replacement) => {
+            void this.sendReplacement(replacement);
+        });
         return this.vk.start();
     }
 }
