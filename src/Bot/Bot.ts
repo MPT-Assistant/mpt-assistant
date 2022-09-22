@@ -1,5 +1,5 @@
 abstract class Bot {
-    public abstract start(): Promise<void>;
+    public abstract start(): Promise<unknown>;
 }
 
 export default Bot;
