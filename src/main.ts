@@ -12,6 +12,6 @@ void (async function main(): Promise<void> {
     await Cache.update();
     console.log("Cache updated");
     await Bots.start();
-    console.log("VK polling started");
+    console.log("Bots polling started");
     console.log("MPT Assistant successfully started");
 })();
