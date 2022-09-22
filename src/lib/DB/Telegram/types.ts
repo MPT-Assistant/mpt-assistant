@@ -3,7 +3,6 @@ import { Document } from "mongoose";
 
 interface IUser extends Document {
     id: number;
-    nickname: string;
     group?: string;
     mailings: {
         replacements: boolean;

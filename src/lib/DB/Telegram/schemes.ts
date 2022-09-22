@@ -17,9 +17,6 @@ const userSchema = new Schema<IUser>({
         unique: true,
     },
     group: Schema.Types.String,
-    nickname: {
-        type: Schema.Types.String, required: true
-    },
     mailings: {
         type: userMailingsSchema,
         required: true,
