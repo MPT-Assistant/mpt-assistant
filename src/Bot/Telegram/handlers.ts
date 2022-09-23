@@ -1,0 +1,69 @@
+import { MessageContext } from "puregram";
+import { Updates } from "puregram/lib/updates";
+
+import TelegramBot from ".";
+import { ITextCommandState } from "./TextCommand";
+
+class HandlersTelegram {
+    constructor(private readonly _bot: TelegramBot) {}
+
+    public async message(ctx: MessageContext): Promise<void> {
+        const reply = ctx.reply.bind(ctx);
+
+        ctx.reply = (text, params): ReturnType<typeof reply> => {
+            text = `${ctx.from?.username || ""}, ${text}`;
+            return reply(text, params);
+        };
+
+        if (!ctx.hasText() || !ctx.hasFrom() || ctx.from.isBot()) {
+            if (ctx.isPM()) {
+                await ctx.reply(
+                    "такой команды не существует\nСписок команд: https://vk.com/@mpt_assistant-helps"
+                );
+            }
+            return;
+        }
+
+        let cmd: string;
+
+        if (ctx.hasEntities("bot_command")) {
+            cmd = ctx.text.replace("@mpt_assistant_bot", "").substring(1);
+        } else {
+            cmd = ctx.text.startsWith("/") ? ctx.text.substring(1) : ctx.text;
+        }
+
+        const command = this._bot.utils.textCommands.find(cmd);
+
+        if (command) {
+            const state = {
+                user: await this._bot.utils.getUserData(ctx.from.id),
+                chat:
+                    !ctx.isPM() && ctx.isGroup()
+                        ? await this._bot.utils.getChatData(ctx.chatId)
+                        : undefined,
+            };
+
+            await command.execute(
+                {
+                    ...ctx,
+                    state,
+                } as MessageContext & { state: ITextCommandState },
+                this._bot
+            );
+            await state.user.save();
+            if (state.chat) {
+                await state.chat.save();
+            }
+        } else if (ctx.isPM()) {
+            await ctx.reply(
+                "такой команды не существует\nСписок команд: https://vk.com/@mpt_assistant-helps"
+            );
+        }
+    }
+
+    public bind(updates: Updates): void {
+        updates.on("message", this.message.bind(this));
+    }
+}
+
+export default HandlersTelegram;
