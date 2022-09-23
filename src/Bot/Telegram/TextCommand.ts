@@ -5,14 +5,17 @@ import { MessageContext } from "puregram";
 import utils from "@rus-anonym/utils";
 import { IChat, IUser } from "../../lib/DB/Telegram/types";
 import TelegramBot from ".";
+import { Require } from "puregram/types";
 
 interface ITextCommandState {
     user: IUser;
     chat?: IChat;
 }
 
+type TTextCommandContext = MessageContext & { state: ITextCommandState } & Require<MessageContext, "from" | "senderId">;
+
 type TRegExpCommandFunc = (
-    ctx: MessageContext & { state: ITextCommandState },
+    ctx: TTextCommandContext,
     bot: TelegramBot
 ) => Promise<unknown>;
 
@@ -55,6 +58,8 @@ const manager = new Manager<TextCommand, TRegExpCommandFunc>();
 
 export { manager };
 
-export type { TRegExpCommandFunc, ITextCommandState };
+export type {
+    TTextCommandContext, TRegExpCommandFunc, ITextCommandState
+};
 
 export default TextCommand;

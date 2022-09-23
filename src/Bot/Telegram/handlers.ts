@@ -2,7 +2,7 @@ import { MessageContext } from "puregram";
 import { Updates } from "puregram/lib/updates";
 
 import TelegramBot from ".";
-import { ITextCommandState } from "./TextCommand";
+import {  TTextCommandContext } from "./TextCommand";
 
 class HandlersTelegram {
     constructor(private readonly _bot: TelegramBot) {}
@@ -11,7 +11,11 @@ class HandlersTelegram {
         const reply = ctx.reply.bind(ctx);
 
         ctx.reply = (text, params): ReturnType<typeof reply> => {
-            text = `${ctx.from?.username || ""}, ${text}`;
+            if (!ctx.isPM()) {
+                text = `${ctx.from?.username || ""}, ${text}`;
+            } else {
+                text = text[0].toUpperCase() + text.slice(1);
+            }
             return reply(text, params);
         };
 
@@ -21,6 +25,10 @@ class HandlersTelegram {
                     "такой команды не существует\nСписок команд: https://vk.com/@mpt_assistant-helps"
                 );
             }
+            return;
+        }
+
+        if (!ctx.isPM() && !ctx.text.includes("@mpt_assistant_bot")) {
             return;
         }
 
@@ -43,11 +51,10 @@ class HandlersTelegram {
                         : undefined,
             };
 
+            (ctx as TTextCommandContext).state = state;
+
             await command.execute(
-                {
-                    ...ctx,
-                    state,
-                } as MessageContext & { state: ITextCommandState },
+                ctx as TTextCommandContext,
                 this._bot
             );
             await state.user.save();
