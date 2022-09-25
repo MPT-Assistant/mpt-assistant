@@ -16,6 +16,7 @@
     },
     "dependencies": {
         "@mpt-assistant/parser": "^1.1.2",
+        "@puregram/prompt": "^1.2.0",
         "@rus-anonym/commands-manager": "^1.1.0",
         "@rus-anonym/scheduler": "^1.0.0",
         "@rus-anonym/utils": "^0.1.0",

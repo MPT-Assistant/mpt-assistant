@@ -1,5 +1,5 @@
 import moment from "moment";
-import {  MessageEventContext } from "vk-io";
+import { MessageEventContext } from "vk-io";
 import DB from "../../../../../lib/DB";
 import utils from "../../../../../lib/utils";
 import EventCommand from "../../../EventCommand";

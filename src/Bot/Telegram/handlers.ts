@@ -2,7 +2,7 @@ import { MessageContext } from "puregram";
 import { Updates } from "puregram/lib/updates";
 
 import TelegramBot from ".";
-import {  TTextCommandContext } from "./TextCommand";
+import { TTextCommandContext } from "./TextCommand";
 
 class HandlersTelegram {
     constructor(private readonly _bot: TelegramBot) {}
@@ -69,6 +69,8 @@ class HandlersTelegram {
     }
 
     public bind(updates: Updates): void {
+        updates.use(this._bot.utils.promptManager.middleware);
+
         updates.on("message", this.message.bind(this));
     }
 }

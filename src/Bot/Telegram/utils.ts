@@ -1,4 +1,5 @@
 import Telegram from ".";
+import { PromptManager } from "@puregram/prompt";
 
 import { manager as textCommandsManager } from "./TextCommand";
 import { manager as callbackCommandsManager } from "./CallbackCommand";
@@ -7,12 +8,14 @@ import DB from "../../lib/DB";
 
 class TelegramUtils {
     private readonly _bot: Telegram;
+    public readonly promptManager: PromptManager;
     public readonly textCommands: typeof textCommandsManager;
     public readonly callbackCommands: typeof callbackCommandsManager;
 
     constructor(bot: Telegram) {
         this._bot = bot;
 
+        this.promptManager = new PromptManager();
         this.textCommands = textCommandsManager;
         this.callbackCommands = callbackCommandsManager;
     }

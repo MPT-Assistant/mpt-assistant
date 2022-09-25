@@ -25,7 +25,7 @@ class TextCommand extends Command<TRegExpCommandFunc> {
 
         if (typeof params.trigger === "string") {
             params.trigger = new RegExp(
-                `^${utils.regular.escapeRegExp(params.trigger)}`,
+                `^${utils.regular.escapeRegExp(params.trigger)}$`,
                 "i"
             );
         }
@@ -34,7 +34,7 @@ class TextCommand extends Command<TRegExpCommandFunc> {
             params.trigger = new RegExp(
                 `^(${params.trigger
                     .map(utils.regular.escapeRegExp.bind(utils.regular))
-                    .join("|")})`,
+                    .join("|")})$`,
                 "i"
             );
         }
