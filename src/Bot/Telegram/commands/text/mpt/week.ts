@@ -4,6 +4,7 @@ import TextCommand from "../../../TextCommand";
 
 new TextCommand({
     trigger: ["чз", "неделя", "week"],
+    cmdTrigger: "week",
     description: "Текущая неделя",
     func: async (context): Promise<void> => {
         let response = `сейчас ${

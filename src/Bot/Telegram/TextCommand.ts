@@ -7,6 +7,7 @@ import { IChat, IUser } from "../../lib/DB/Telegram/types";
 import TelegramBot from ".";
 import { Require } from "puregram/types";
 import { PromptContext } from "@puregram/prompt";
+import { TelegramBotCommand } from "puregram/generated";
 
 interface ITextCommandState {
     user: IUser;
@@ -21,8 +22,9 @@ type TRegExpCommandFunc = (
 ) => Promise<unknown>;
 
 class TextCommand extends Command<TRegExpCommandFunc> {
-    private _regex: RegExp;
+    private _regexp: RegExp;
 
+    public readonly trigger?: string;
     public readonly description?: string;
     public readonly isPrivateCommand: boolean;
     public readonly isChatCommand: boolean;
@@ -30,12 +32,14 @@ class TextCommand extends Command<TRegExpCommandFunc> {
     constructor(
         params: ICommandParams<TRegExpCommandFunc> & {
             trigger: RegExp | string | string[];
+            cmdTrigger?: string;
             description?: string;
             isPrivateCommand?: boolean;
             isChatCommand?: boolean;
         }
     ) {
         super(params);
+        this.trigger = params.cmdTrigger;
         this.description = params.description;
         this.isPrivateCommand = params.isPrivateCommand ?? true;
         this.isChatCommand = params.isChatCommand ?? true;
@@ -56,16 +60,50 @@ class TextCommand extends Command<TRegExpCommandFunc> {
             );
         }
 
-        this._regex = params.trigger;
+        this._regexp = params.trigger;
         manager.add(this);
     }
 
     public check(value: string): boolean {
-        return this._regex.test(value);
+        return this._regexp.test(value);
     }
 }
 
-const manager = new Manager<TextCommand, TRegExpCommandFunc>();
+class TextCommandManager extends Manager<TextCommand, TRegExpCommandFunc> {
+    public getUserCommands(): TelegramBotCommand[] {
+        const userCommands = this.list.filter(x => x.isPrivateCommand);
+        const response: TelegramBotCommand[] = [];
+
+        for (const command of userCommands) {
+            if (command.trigger && command.description) {
+                response.push({
+                    command: command.trigger,
+                    description: command.description,
+                });
+            }
+        }
+
+        return response;
+    }
+
+    public getChatCommands(): TelegramBotCommand[] {
+        const userCommands = this.list.filter(x => x.isChatCommand);
+        const response: TelegramBotCommand[] = [];
+
+        for (const command of userCommands) {
+            if (command.trigger && command.description) {
+                response.push({
+                    command: command.trigger,
+                    description: command.description,
+                });
+            }
+        }
+
+        return response;
+    }
+}
+
+const manager = new TextCommandManager();
 
 export { manager };
 

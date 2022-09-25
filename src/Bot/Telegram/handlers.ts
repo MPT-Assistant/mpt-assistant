@@ -8,6 +8,22 @@ class HandlersTelegram {
     constructor(private readonly _bot: TelegramBot) {}
 
     public async message(ctx: MessageContext): Promise<void> {
+        if (ctx.isPM()) {
+            void this._bot.instance.api.setMyCommands({
+                commands: this._bot.utils.textCommands.getUserCommands(),
+                scope: {
+                    type: "chat", chat_id: ctx.chat.id
+                }
+            });
+        } else {
+            void this._bot.instance.api.setMyCommands({
+                commands: this._bot.utils.textCommands.getChatCommands(),
+                scope: {
+                    type: "chat", chat_id: ctx.chat.id
+                }
+            });
+        }
+
         const reply = ctx.reply.bind(ctx);
 
         ctx.reply = (text, params): ReturnType<typeof reply> => {
@@ -53,10 +69,7 @@ class HandlersTelegram {
 
             (ctx as TTextCommandContext).state = state;
 
-            await command.execute(
-                ctx as TTextCommandContext,
-                this._bot
-            );
+            await command.execute(ctx as TTextCommandContext, this._bot);
             await state.user.save();
             if (state.chat) {
                 await state.chat.save();

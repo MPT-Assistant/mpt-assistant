@@ -3,7 +3,9 @@ import utils from "../../../../../lib/utils";
 import TextCommand from "../../../TextCommand";
 
 new TextCommand({
-    trigger: ["профиль", "проф", "profile"],
+    trigger: ["профиль", "проф", "profile", "settings"],
+    isChatCommand: false,
+    cmdTrigger: "profile",
     description: "Ваш профиль",
     func: async (context): Promise<unknown> => {
         if (!context.state.user.group) {
