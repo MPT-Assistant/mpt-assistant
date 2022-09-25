@@ -4,6 +4,7 @@ import TextCommand from "../../../TextCommand";
 
 new TextCommand({
     trigger: ["профиль", "проф", "profile"],
+    description: "Ваш профиль",
     func: async (context): Promise<unknown> => {
         if (!context.state.user.group) {
             return context.reply(

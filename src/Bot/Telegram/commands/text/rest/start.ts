@@ -6,6 +6,7 @@ import TextCommand from "../../../TextCommand";
 
 new TextCommand({
     trigger: "start",
+    isPrivateCommand: false,
     isChatCommand: false,
     func: async (context): Promise<unknown> => {
         if (!context.isPM()) {

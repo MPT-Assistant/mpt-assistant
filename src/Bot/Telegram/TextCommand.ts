@@ -23,17 +23,20 @@ type TRegExpCommandFunc = (
 class TextCommand extends Command<TRegExpCommandFunc> {
     private _regex: RegExp;
 
+    public readonly description?: string;
     public readonly isPrivateCommand: boolean;
     public readonly isChatCommand: boolean;
 
     constructor(
         params: ICommandParams<TRegExpCommandFunc> & {
             trigger: RegExp | string | string[];
+            description?: string;
             isPrivateCommand?: boolean;
             isChatCommand?: boolean;
         }
     ) {
         super(params);
+        this.description = params.description;
         this.isPrivateCommand = params.isPrivateCommand ?? true;
         this.isChatCommand = params.isChatCommand ?? true;
 
