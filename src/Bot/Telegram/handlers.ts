@@ -32,7 +32,7 @@ class HandlersTelegram {
             } else {
                 text = text[0].toUpperCase() + text.slice(1);
             }
-            return reply(text, params);
+            return reply(text, { ...params });
         };
 
         if (!ctx.hasText() || !ctx.hasFrom() || ctx.from.isBot()) {
@@ -62,7 +62,7 @@ class HandlersTelegram {
             const state = {
                 user: await this._bot.utils.getUserData(ctx.from.id),
                 chat:
-                    !ctx.isPM() && ctx.isGroup()
+                    !ctx.isPM()
                         ? await this._bot.utils.getChatData(ctx.chatId)
                         : undefined,
             };
