@@ -5,3 +5,4 @@ import "./text/rest/help";
 import "./text/rest/replacements";
 
 import "./text/mpt/week";
+import "./text/mpt/lessons";

@@ -44,10 +44,6 @@ class HandlersTelegram {
             return;
         }
 
-        if (!ctx.isPM() && !ctx.text.includes("@mpt_assistant_bot")) {
-            return;
-        }
-
         let cmd: string;
 
         if (ctx.hasEntities("bot_command")) {
