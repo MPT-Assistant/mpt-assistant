@@ -6,13 +6,14 @@ import utils from "@rus-anonym/utils";
 import { IChat, IUser } from "../../lib/DB/Telegram/types";
 import TelegramBot from ".";
 import { Require } from "puregram/types";
+import { PromptContext } from "@puregram/prompt";
 
 interface ITextCommandState {
     user: IUser;
     chat?: IChat;
 }
 
-type TTextCommandContext = MessageContext & { state: ITextCommandState } & Require<MessageContext, "from" | "senderId">;
+type TTextCommandContext = MessageContext & PromptContext & { state: ITextCommandState } & Require<MessageContext, "from" | "senderId">;
 
 type TRegExpCommandFunc = (
     ctx: TTextCommandContext,
