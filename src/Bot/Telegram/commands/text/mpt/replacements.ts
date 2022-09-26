@@ -4,9 +4,9 @@ import utils from "../../../../../lib/utils";
 import { InlineKeyboard } from "puregram";
 
 new TextCommand({
-    trigger: /^(?:расписание|рп|какие пары|schedule)(?:\s(.+))?$/i,
-    cmdTrigger: "schedule",
-    description: "Расписание",
+    trigger: /^(?:замены на|замены|replacements)(?:\s(.+))?$/i,
+    cmdTrigger: "replacements",
+    description: "Замены",
     func: async (context, { utils: tgUtils }): Promise<unknown> => {
         const groupName = context.state.user.group || context.state.chat?.group;
 
@@ -25,11 +25,11 @@ new TextCommand({
 
         if (!groupData) {
             return await context.reply(
-                "такой группы не найдено, попробуйте снова установить группу",
+                "Такой группы не найдено, попробуйте снова установить группу",
             );
         }
 
-        const args = context.text?.match(/^(?:расписание|рп|какие пары|schedule)(?:\s(.+))?$/i);
+        const args = context.text?.match(/^(?:замены на|замены|replacements)(?:\s(.+))?$/i);
 
         const selectedDate = utils.rest.parseSelectedDate(args ? args[1] : undefined);
         const keyboard = tgUtils.generateKeyboard("lessons");
@@ -37,35 +37,27 @@ new TextCommand({
         if (selectedDate.day() === 0) {
             return await context.reply(
                 `${selectedDate.format("DD.MM.YYYY")} воскресенье.`,
-                { reply_markup: InlineKeyboard.keyboard(keyboard) },
+                { keyboard },
             );
         }
 
-        const schedule = await utils.mpt.getGroupSchedule(groupData, selectedDate);
+        const replacements = await utils.mpt.getGroupReplacements(
+            groupData.name,
+            selectedDate,
+        );
 
-        if (schedule.lessons.length === 0) {
+
+        if (replacements.length === 0) {
             return await context.reply(
-                `на ${selectedDate.format("DD.MM.YYYY")} пар у группы ${
+                `на ${selectedDate.format("DD.MM.YYYY")} замен у группы ${
                     groupData.name
                 } не найдено`,
-                { reply_markup: InlineKeyboard.keyboard(keyboard) },
+                { reply_markup: InlineKeyboard.keyboard(keyboard), },
             );
+        } else {
+            return await context.reply(tgUtils.replacementsToString({
+                replacements, groupName, selectedDate
+            }),{ reply_markup: InlineKeyboard.keyboard(keyboard), });
         }
-
-        if (schedule.replacements.length !== 0) {
-            keyboard.push([
-                InlineKeyboard.textButton({
-                    text: "Замены",
-                    payload: {
-                        cmd: "replacements",
-                        date: selectedDate.format("DD.MM.YYYY"),
-                    },
-                }),
-            ]);
-        }
-
-        return await context.reply(tgUtils.scheduleToString({
-            ...schedule, groupName: groupData.name, selectedDate
-        }), { reply_markup: InlineKeyboard.keyboard(keyboard), });
     },
 });
