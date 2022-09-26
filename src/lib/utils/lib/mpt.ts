@@ -141,9 +141,9 @@ class MPT {
     }
 
     public async getExtendGroupInfo(groupName: string): Promise<{
-		group: IGroup;
-		specialty: IDataBaseSpecialty;
-	}> {
+        group: IGroup;
+        specialty: IDataBaseSpecialty;
+    }> {
         const group = await DB.api.models.groups.findOne({ name: groupName, });
 
         if (!group) {
@@ -165,12 +165,12 @@ class MPT {
         group: IGroup,
         selectedDate: moment.Moment = moment(),
     ): Promise<{
-		place: string;
-		week: ICache["week"];
-		lessons: ILesson[];
-		replacements: IReplacement[];
-		timetable: ITimetableItem[];
-	}> {
+        place: string;
+        week: ICache["week"];
+        lessons: ILesson[];
+        replacements: IReplacement[];
+        timetable: ITimetableItem[];
+    }> {
         const replacements = await DB.api.models.replacements.find({
             group: group.name,
             date: {
@@ -362,7 +362,7 @@ class MPT {
             for (const groupReplacements of dayReplacements.groups) {
                 const groupRegExp = new RegExp(groupReplacements.group, "i");
                 const groupName =
-					groupList.find((x) => groupRegExp.test(x)) || groupReplacements.group;
+                    groupList.find((x) => groupRegExp.test(x)) || groupReplacements.group;
 
                 for (const replacement of groupReplacements.replacements) {
                     const hash = this._createReplacementHash({
@@ -415,14 +415,14 @@ class MPT {
         newLessonName,
         newLessonTeacher,
     }: {
-		date: moment.MomentInput;
-		group: string;
-		lessonNum: number;
-		oldLessonName: string;
-		oldLessonTeacher: string;
-		newLessonName: string;
-		newLessonTeacher: string;
-	}): string {
+        date: moment.MomentInput;
+        group: string;
+        lessonNum: number;
+        oldLessonName: string;
+        oldLessonTeacher: string;
+        newLessonName: string;
+        newLessonTeacher: string;
+    }): string {
         const props = [
             moment(date).format("DD.MM.YYYY"),
             group,

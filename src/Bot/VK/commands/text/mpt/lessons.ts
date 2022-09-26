@@ -7,9 +7,7 @@ import utils from "../../../../../lib/utils";
 new TextCommand({
     trigger: /^(?:расписание|рп|какие пары)(?:\s(.+))?$/i,
     func: async (context, { utils: vkUtils }): Promise<unknown> => {
-        const groupName =
-			context.state.user.group ||
-			context.state.chat?.group;
+        const groupName = context.state.user.group || context.state.chat?.group;
 
         if (!groupName || groupName === "") {
             return await context.reply(

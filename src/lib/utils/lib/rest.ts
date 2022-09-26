@@ -55,13 +55,13 @@ class RestUtils {
 
     public getNextSelectDay(
         day:
-			| "понедельник"
-			| "вторник"
-			| "среда"
-			| "четверг"
-			| "пятница"
-			| "суббота"
-			| "воскресенье",
+            | "понедельник"
+            | "вторник"
+            | "среда"
+            | "четверг"
+            | "пятница"
+            | "суббота"
+            | "воскресенье",
     ): string {
         const selectedDay = this._dayTemplates.findIndex((x) => x.test(day));
         const currentDate = new Date();

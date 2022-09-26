@@ -16,8 +16,8 @@ abstract class Database {
         );
     }
 
-	public abstract readonly schemes: Record<string, unknown>;
-	public abstract readonly models: Record<string, unknown>;
+    public abstract readonly schemes: Record<string, unknown>;
+    public abstract readonly models: Record<string, unknown>;
 }
 
 export default Database;

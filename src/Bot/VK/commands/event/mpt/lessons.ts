@@ -33,9 +33,7 @@ new EventCommand({
             });
         }
 
-        const groupName =
-			event.state.user.group ||
-			event.state.chat?.group;
+        const groupName = event.state.user.group || event.state.chat?.group;
 
         if (!groupName || groupName === "") {
             return await event.answer({
