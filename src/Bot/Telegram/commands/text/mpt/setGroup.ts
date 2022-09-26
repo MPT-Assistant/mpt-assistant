@@ -5,16 +5,12 @@ import utils from "../../../../../lib/utils";
 import TextCommand from "../../../TextCommand";
 
 new TextCommand({
-    trigger: /^(?:regchat|привязать)(?:\s(.*))?$/i,
-    cmdTrigger: "regchat",
-    description: "Привязать чат к группе",
-    isPrivateCommand: false,
+    trigger: /^(?:установить группу|уг|setGroup)(?:\s(.*))?$/i,
+    cmdTrigger: "setgroup",
+    description: "Установить группу по умолчанию",
+    isChatCommand: false,
     func: async (context): Promise<unknown> => {
-        if (!context.state.chat) {
-            return await context.reply("команда доступна только в беседах");
-        }
-
-        let args = context.text?.match(/^(?:regchat|привязать)(?:\s(.*))?$/i);
+        let args = context.text?.match(/^(?:установить группу|уг|setGroup)(?:\s(.*))?$/i);
 
         if (!args || !args[1]) {
             let groupAnswer: PromptAnswer | undefined;
@@ -49,10 +45,24 @@ ${group.map((name, index) => `${index + 1}. ${name}`).join("\n")}`;
                 { reply_markup: keyboard },
             );
         } else {
-            context.state.chat.group = group.name;
+            context.state.user.group = group.name;
             return await context.reply(
-                `Вы установили для беседы группу по умолчанию ${group.name}
+                `Вы установили себе группу ${group.name}
 Отделение: ${group.specialty}`,
+                { reply_markup: InlineKeyboard.keyboard([
+                    InlineKeyboard.textButton({
+                        text: "Профиль",
+                        payload: { cmd: "profile", },
+                    }),
+                    InlineKeyboard.textButton({
+                        text: "Расписание",
+                        payload: { cmd: "lessons", },
+                    }),
+                    InlineKeyboard.textButton({
+                        text: "Замены",
+                        payload: { cmd: "replacements", },
+                    }),
+                ]), }
             );
         }
     },

@@ -8,4 +8,4 @@ import "./text/mpt/week";
 import "./text/mpt/lessons";
 import "./text/mpt/replacements";
 import "./text/mpt/regChat";
-
+import "./text/mpt/setGroup";
