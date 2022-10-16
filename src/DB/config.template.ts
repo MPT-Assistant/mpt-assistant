@@ -11,6 +11,7 @@ const config: IConfig = {
         login: "",
         password: "",
     }, },
+    server: { port: 80 }
 };
 
 export default config;

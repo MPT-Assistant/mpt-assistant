@@ -12,6 +12,9 @@ interface IConfig {
             password: string;
         };
     };
+    server: {
+        port: number;
+    };
 }
 
 export default IConfig;
