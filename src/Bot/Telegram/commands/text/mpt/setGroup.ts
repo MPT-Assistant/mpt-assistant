@@ -33,7 +33,7 @@ ${group.map((name, index) => `${index + 1}. ${name}`).join("\n")}`;
                     return InlineKeyboard.textButton({
                         text: name,
                         payload: {
-                            cmd: "regChat",
+                            cmd: "setGroup",
                             group: name,
                         },
                     });
