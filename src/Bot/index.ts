@@ -7,6 +7,7 @@ import "./VK/commands/eventLoader";
 
 import Telegram from "./Telegram";
 import "./Telegram/commands/textLoader";
+import "./Telegram/commands/callbackLoader";
 
 import utils from "../lib/utils";
 
