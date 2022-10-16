@@ -32,7 +32,7 @@ new TextCommand({
         const args = context.text?.match(/^(?:замены на|замены|replacements)(?:\s(.+))?$/i);
 
         const selectedDate = utils.rest.parseSelectedDate(args ? args[1] : undefined);
-        const keyboard = tgUtils.generateKeyboard("lessons");
+        const keyboard = tgUtils.generateKeyboard("replacements");
 
         if (selectedDate.day() === 0) {
             return await context.reply(
