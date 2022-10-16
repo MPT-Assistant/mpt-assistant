@@ -26,6 +26,7 @@
         "@rus-anonym/commands-manager": "^1.1.0",
         "@rus-anonym/scheduler": "^1.0.1",
         "@rus-anonym/utils": "^0.1.0",
+        "@sinclair/typebox": "^0.24.46",
         "crypto-js": "^4.1.1",
         "eventemitter3": "^4.0.7",
         "fastify": "^4.8.1",
