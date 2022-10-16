@@ -99,7 +99,7 @@ class HandlersTelegram {
         const state = {
             user: await this._bot.utils.getUserData(ctx.from.id),
             chat:
-                !ctx.message?.isPM && ctx.message?.chatId
+                !ctx.message?.isPM() && ctx.message?.chatId
                     ? await this._bot.utils.getChatData(ctx.message?.chatId)
                     : undefined,
         };
