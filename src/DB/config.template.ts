@@ -1,37 +1,21 @@
-import fs from "fs";
-import IConfig from "./configType";
+import IConfig from "./IConfig";
 
 const config: IConfig = {
-	db: {
-		protocol: "",
-		address: "",
-		login: "",
-		password: "",
-	},
-	vk: {
-		group: {
-			pollingGroupId: 0,
-			token: "",
-		},
-		logs: 0,
-	},
-	discord: {
-		id: "",
-		token: "",
-	},
-	telegram: {
-		token: "",
-	},
-	server: {
-		key: fs
-			.readFileSync(`/etc/letsencrypt/live/${process.env.CERT_DIR}/privkey.pem`)
-			.toString(),
-		cert: fs
-			.readFileSync(
-				`/etc/letsencrypt/live/${process.env.CERT_DIR}/fullchain.pem`,
-			)
-			.toString(),
-	},
+    vk: {
+        token: "", pollingGroupId: 1
+    },
+    telegram: { token: "" },
+    db: { mongo: {
+        protocol: "",
+        address: "",
+        login: "",
+        password: "",
+    }, },
+    server: {
+        port: 80,
+        cert: "./cert.pem",
+        key: "./key.pem",
+    }
 };
 
 export default config;

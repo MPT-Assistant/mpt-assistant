@@ -1,19 +1,23 @@
-import API from "./API";
-import VK from "./VK";
-import Telegram from "./Telegram";
-import Discord from "./Discord";
-
 import config from "../../DB/config";
-import timetable from "../../DB/timetable";
 
-class DBManager {
-	public readonly api = new API("API");
-	public readonly vk = new VK("vk");
-	public readonly telegram = new Telegram("telegram");
-	public readonly discord = new Discord("discord");
+import VKDB from "./VK";
+import TelegramDB from "./Telegram";
+import APIDB from "./API";
 
-	public readonly timetable = timetable;
-	public readonly config = config;
+class DB {
+    public readonly config = Object.freeze(config);
+
+    public readonly vk = new VKDB(this.config.db.mongo);
+    public readonly telegram = new TelegramDB(this.config.db.mongo);
+    public readonly api = new APIDB(this.config.db.mongo);
+
+    public async init(): Promise<void> {
+        await Promise.all([
+            this.vk.connection.asPromise(),
+            this.telegram.connection.asPromise(),
+            this.api.connection.asPromise(),
+        ]);
+    }
 }
 
-export default new DBManager();
+export default new DB();

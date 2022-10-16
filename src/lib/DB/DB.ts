@@ -1,25 +1,23 @@
 import mongoose from "mongoose";
 
-import config from "../../DB/config";
+import IConfig from "../../DB/IConfig";
 
-mongoose.Schema.Types.String.checkRequired((v) => typeof v === "string");
+abstract class Database {
+    public readonly connection: mongoose.Connection;
 
-abstract class DB {
-	public readonly connection: mongoose.Connection;
+    constructor(dbName: string, options: IConfig["db"]["mongo"]) {
+        this.connection = mongoose.createConnection(
+            `${options.protocol}://${options.login}:${options.password}@${options.address}/`,
+            {
+                autoCreate: true,
+                autoIndex: true,
+                dbName,
+            },
+        );
+    }
 
-	constructor(dbName: string) {
-		this.connection = mongoose.createConnection(
-			`${config.db.protocol}://${config.db.login}:${config.db.password}@${config.db.address}/`,
-			{
-				autoCreate: true,
-				autoIndex: true,
-				dbName,
-			},
-		);
-	}
-
-	public abstract readonly schemes: Record<string, unknown>;
-	public abstract readonly models: Record<string, unknown>;
+    public abstract readonly schemes: Record<string, unknown>;
+    public abstract readonly models: Record<string, unknown>;
 }
 
-export default DB;
+export default Database;
