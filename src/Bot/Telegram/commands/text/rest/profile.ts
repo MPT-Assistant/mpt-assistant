@@ -30,7 +30,7 @@ ID: ${context.senderId}
                             isReplacementsInform ? "Отключить" : "Включить"
                         } уведомления`,
                         payload: {
-                            cmd: "notify",
+                            cmd: "mailing.replacements",
                             status: !isReplacementsInform,
                         },
                     }),

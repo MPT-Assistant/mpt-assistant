@@ -25,7 +25,7 @@ ID: ${ctx.senderId}
                             ctx.state.user.mailings.replacements ? "Отключить" : "Включить"
                         } уведомления`,
                         payload: {
-                            cmd: "notify",
+                            cmd: "mailing.replacements",
                             status: !ctx.state.user.mailings.replacements,
                         },
                     }),

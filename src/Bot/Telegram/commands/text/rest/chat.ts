@@ -32,7 +32,7 @@ new TextCommand({
                         isReplacementsInform ? "Отключить" : "Включить"
                     } уведомления`,
                     payload: {
-                        cmd: "notify",
+                        cmd: "mailing.replacements",
                         status: !isReplacementsInform,
                     },
                 }),
