@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import DB from "../lib/DB";
 import Fastify from "fastify";
 import {
     TypeBoxTypeProvider,
@@ -10,7 +12,10 @@ import multiPart from "@fastify/multipart";
 import cors from "@fastify/cors";
 import helmet from "@fastify/helmet";
 
-const server = Fastify().withTypeProvider<TypeBoxTypeProvider>();
+const server = Fastify({ https: DB.config.server.cert && DB.config.server.key ? {
+    key: fs.readFileSync(DB.config.server.key),
+    cert: fs.readFileSync(DB.config.server.cert),
+} : null, }).withTypeProvider<TypeBoxTypeProvider>();
 server.setValidatorCompiler(TypeBoxValidatorCompiler);
 
 void server.register(rateLimit, {

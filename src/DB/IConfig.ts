@@ -14,6 +14,8 @@ interface IConfig {
     };
     server: {
         port: number;
+        key?: string;
+        cert?: string;
     };
 }
 

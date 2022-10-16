@@ -11,7 +11,11 @@ const config: IConfig = {
         login: "",
         password: "",
     }, },
-    server: { port: 80 }
+    server: {
+        port: 80,
+        cert: "./cert.pem",
+        key: "./key.pem",
+    }
 };
 
 export default config;
