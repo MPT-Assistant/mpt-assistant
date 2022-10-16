@@ -1,7 +1,8 @@
-import { MessageContext } from "puregram";
+import { CallbackQueryContext, MessageContext } from "puregram";
 import { Updates } from "puregram/lib/updates";
 
 import TelegramBot from ".";
+import { TCallbackCommandContext } from "./CallbackCommand";
 import { TTextCommandContext } from "./TextCommand";
 
 class HandlersTelegram {
@@ -12,15 +13,17 @@ class HandlersTelegram {
             void this._bot.instance.api.setMyCommands({
                 commands: this._bot.utils.textCommands.getUserCommands(),
                 scope: {
-                    type: "chat", chat_id: ctx.chat.id
-                }
+                    type: "chat",
+                    chat_id: ctx.chat.id,
+                },
             });
         } else {
             void this._bot.instance.api.setMyCommands({
                 commands: this._bot.utils.textCommands.getChatCommands(),
                 scope: {
-                    type: "chat", chat_id: ctx.chat.id
-                }
+                    type: "chat",
+                    chat_id: ctx.chat.id,
+                },
             });
         }
 
@@ -57,10 +60,9 @@ class HandlersTelegram {
         if (command) {
             const state = {
                 user: await this._bot.utils.getUserData(ctx.from.id),
-                chat:
-                    !ctx.isPM()
-                        ? await this._bot.utils.getChatData(ctx.chatId)
-                        : undefined,
+                chat: !ctx.isPM()
+                    ? await this._bot.utils.getChatData(ctx.chatId)
+                    : undefined,
             };
 
             (ctx as TTextCommandContext).state = state;
@@ -77,10 +79,46 @@ class HandlersTelegram {
         }
     }
 
+    public async callbackQuery(
+        ctx: CallbackQueryContext & {
+            queryPayload?: { cmd?: string };
+        }
+    ): Promise<void> {
+        if (!ctx.from || ctx.from.isBot() || !ctx?.queryPayload?.cmd) {
+            return;
+        }
+
+        const command = this._bot.utils.callbackCommands.find(
+            ctx.queryPayload.cmd
+        );
+
+        if (!command) {
+            return;
+        }
+
+        const state = {
+            user: await this._bot.utils.getUserData(ctx.from.id),
+            chat:
+                !ctx.message?.isPM && ctx.message?.chatId
+                    ? await this._bot.utils.getChatData(ctx.message?.chatId)
+                    : undefined,
+        };
+
+        (ctx as TCallbackCommandContext).state = state;
+
+        await command.execute(ctx as TCallbackCommandContext, this._bot);
+        await ctx.answerCallbackQuery();
+        await state.user.save();
+        if (state.chat) {
+            await state.chat.save();
+        }
+    }
+
     public bind(updates: Updates): void {
         updates.use(this._bot.utils.promptManager.middleware);
 
         updates.on("message", this.message.bind(this));
+        updates.on("callback_query", this.callbackQuery.bind(this));
     }
 }
 

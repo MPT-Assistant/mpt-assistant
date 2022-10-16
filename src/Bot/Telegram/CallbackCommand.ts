@@ -10,16 +10,21 @@ interface ICallbackCommandState {
     chat?: IChat;
 }
 
-type TCallbackCommandFunc = (
-    ctx: CallbackQueryContext & { state: ICallbackCommandState },
+type TCallbackCommandContext = CallbackQueryContext & { state: ICallbackCommandState };
+
+type TCallbackCommandFunc<QueryPayload> = (
+    ctx: CallbackQueryContext & {
+        state: ICallbackCommandState;
+        queryPayload: QueryPayload;
+    },
     bot: TelegramBot
 ) => Promise<unknown>;
 
-class EventCommand extends Command<TCallbackCommandFunc> {
+class CallbackCommand<QueryPayload = unknown> extends Command<TCallbackCommandFunc<QueryPayload>> {
     private _event: string;
 
     constructor(
-        params: ICommandParams<TCallbackCommandFunc> & {
+        params: ICommandParams<TCallbackCommandFunc<QueryPayload>> & {
             trigger: string;
         }
     ) {
@@ -33,10 +38,12 @@ class EventCommand extends Command<TCallbackCommandFunc> {
     }
 }
 
-const manager = new Manager<EventCommand, TCallbackCommandFunc>();
+const manager = new Manager<CallbackCommand, TCallbackCommandFunc<unknown>>();
 
 export { manager };
 
-export type { TCallbackCommandFunc, ICallbackCommandState as IEventCommandState };
+export type {
+    TCallbackCommandFunc, TCallbackCommandContext, ICallbackCommandState
+};
 
-export default EventCommand;
+export default CallbackCommand;
