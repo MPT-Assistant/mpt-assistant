@@ -21,7 +21,10 @@ class BotsManager {
     }
 
     public async sendReplacement(replacement: IReplacement): Promise<void> {
-        await Promise.all([this.vk.utils.sendReplacement(replacement)]);
+        await Promise.all([
+            this.vk.utils.sendReplacement(replacement),
+            this.telegram.utils.sendReplacement(replacement)
+        ]);
     }
 
     public async start(): Promise<void> {
