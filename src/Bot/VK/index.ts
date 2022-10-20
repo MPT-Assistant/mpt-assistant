@@ -12,11 +12,16 @@ class VKBot extends Bot {
     public readonly utils: UtilsVK;
     public readonly handlers: HandlersVK;
 
-    constructor(options: Partial<VKOptions> & { token: string }) {
+    constructor(
+        options: Partial<VKOptions> & {
+            token: string;
+            pollingGroupId: number;
+        }
+    ) {
         super();
         this.instance = new VK(options);
         this.utils = new UtilsVK(this);
-        this.handlers = new HandlersVK(this);
+        this.handlers = new HandlersVK(this, options.pollingGroupId);
 
         this.handlers.bind(this.instance.updates);
     }

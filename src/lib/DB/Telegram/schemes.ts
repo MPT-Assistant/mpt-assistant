@@ -2,11 +2,13 @@ import { Schema } from "mongoose";
 
 import { IChat, IUser } from "./types";
 
-const userMailingsSchema = new Schema<IUser["mailings"]>({ replacements: {
-    type: Schema.Types.Boolean,
-    required: true,
-    default: true,
-} }, {
+const userMailingsSchema = new Schema<IUser["mailings"]>({
+    replacements: {
+        type: Schema.Types.Boolean,
+        required: true,
+        default: true,
+    }
+}, {
     _id: false, versionKey: false
 });
 
@@ -31,11 +33,13 @@ const userSchema = new Schema<IUser>({
     },
 }, { versionKey: false });
 
-const chatMailingsSchema = new Schema<IChat["mailings"]>({ replacements: {
-    type: Schema.Types.Boolean,
-    required: true,
-    default: true,
-}, }, {
+const chatMailingsSchema = new Schema<IChat["mailings"]>({
+    replacements: {
+        type: Schema.Types.Boolean,
+        required: true,
+        default: true,
+    },
+}, {
     _id: false, versionKey: false
 });
 

@@ -14,12 +14,14 @@ new CallbackCommand<{
                 `@${ctx.from?.username as string}, рассылка замен в чат ${
                     status ? "включена" : "отключена"
                 }`,
-                { reply_markup: InlineKeyboard.keyboard([
-                    InlineKeyboard.textButton({
-                        text: "Чат",
-                        payload: { cmd: "chat", },
-                    }),
-                ]), },
+                {
+                    reply_markup: InlineKeyboard.keyboard([
+                        InlineKeyboard.textButton({
+                            text: "Чат",
+                            payload: { cmd: "chat", },
+                        }),
+                    ]),
+                },
             );
         } else {
             ctx.state.user.mailings.replacements = status;
@@ -27,12 +29,14 @@ new CallbackCommand<{
                 `${ctx.from?.username as string}, рассылка замен ${
                     status ? "включена" : "отключена"
                 }`,
-                { reply_markup: InlineKeyboard.keyboard([
-                    InlineKeyboard.textButton({
-                        text: "Профиль",
-                        payload: { cmd: "profile", },
-                    }),
-                ]), },
+                {
+                    reply_markup: InlineKeyboard.keyboard([
+                        InlineKeyboard.textButton({
+                            text: "Профиль",
+                            payload: { cmd: "profile", },
+                        }),
+                    ]),
+                },
             );
         }
     },

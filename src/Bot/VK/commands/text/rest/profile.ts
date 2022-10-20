@@ -20,9 +20,11 @@ ID: ${context.senderId}
             label: `${
                 isReplacementsInform ? "Отключить" : "Включить"
             } уведомления`,
-            payload: { cmd: `изменения ${
-                isReplacementsInform ? "отключить" : "включить"
-            }`, },
+            payload: {
+                cmd: `изменения ${
+                    isReplacementsInform ? "отключить" : "включить"
+                }`,
+            },
             color: isReplacementsInform
                 ? Keyboard.NEGATIVE_COLOR
                 : Keyboard.POSITIVE_COLOR,

@@ -49,20 +49,22 @@ ${group.map((name, index) => `${index + 1}. ${name}`).join("\n")}`;
             return await context.reply(
                 `Вы установили себе группу ${group.name}
 Отделение: ${group.specialty}`,
-                { reply_markup: InlineKeyboard.keyboard([
-                    InlineKeyboard.textButton({
-                        text: "Профиль",
-                        payload: { cmd: "profile", },
-                    }),
-                    InlineKeyboard.textButton({
-                        text: "Расписание",
-                        payload: { cmd: "lessons", },
-                    }),
-                    InlineKeyboard.textButton({
-                        text: "Замены",
-                        payload: { cmd: "replacements", },
-                    }),
-                ]), }
+                {
+                    reply_markup: InlineKeyboard.keyboard([
+                        InlineKeyboard.textButton({
+                            text: "Профиль",
+                            payload: { cmd: "profile", },
+                        }),
+                        InlineKeyboard.textButton({
+                            text: "Расписание",
+                            payload: { cmd: "lessons", },
+                        }),
+                        InlineKeyboard.textButton({
+                            text: "Замены",
+                            payload: { cmd: "replacements", },
+                        }),
+                    ]),
+                }
             );
         }
     },

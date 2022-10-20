@@ -4,6 +4,7 @@ import Bots from "./Bot";
 import API from "./API";
 
 import "./lib/tasks";
+import "./API/loader";
 
 void (async function main(): Promise<void> {
     await DB.init();

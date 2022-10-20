@@ -6,16 +6,21 @@ import {
     TypeBoxValidatorCompiler,
 } from "@fastify/type-provider-typebox";
 
+import APIError from "./APIError";
+
 import rateLimit from "@fastify/rate-limit";
 import formBody from "@fastify/formbody";
 import multiPart from "@fastify/multipart";
 import cors from "@fastify/cors";
 import helmet from "@fastify/helmet";
+import httpProxy from "@fastify/http-proxy";
 
-const server = Fastify({ https: DB.config.server.cert && DB.config.server.key ? {
-    key: fs.readFileSync(DB.config.server.key),
-    cert: fs.readFileSync(DB.config.server.cert),
-} : null, }).withTypeProvider<TypeBoxTypeProvider>();
+const server = Fastify({
+    https: DB.config.server.cert && DB.config.server.key ? {
+        key: fs.readFileSync(DB.config.server.key),
+        cert: fs.readFileSync(DB.config.server.cert),
+    } : null,
+}).withTypeProvider<TypeBoxTypeProvider>();
 server.setValidatorCompiler(TypeBoxValidatorCompiler);
 
 void server.register(rateLimit, {
@@ -26,6 +31,10 @@ void server.register(formBody);
 void server.register(multiPart);
 void server.register(cors, { origin: "*" });
 void server.register(helmet);
+void server.register(httpProxy, {
+    upstream: "https://mpt.ru",
+    prefix: "/mpt"
+});
 
 server.setReplySerializer((payload) => {
     if (Object.prototype.hasOwnProperty.call(payload, "error")) {
@@ -35,8 +44,31 @@ server.setReplySerializer((payload) => {
     }
 });
 
-server.get("/ping", () => {
-    return "pong";
+server.setNotFoundHandler((request) => {
+    throw new APIError({ code: 1, request });
+});
+
+server.setErrorHandler((err, request, reply) => {
+    if (err.validation) {
+        return reply.status(200).send({
+            error: new APIError({
+                code: 5,
+                request,
+            }).toJSON(),
+        });
+    }
+
+    if (err instanceof APIError) {
+        return reply.status(200).send({ error: err.toJSON() as never });
+    } else {
+        if (reply.statusCode === 429) {
+            const error = new APIError({ code: 4, request });
+            return reply.status(200).send({ error: error.toJSON() });
+        } else {
+            const error = new APIError({ code: 0, request });
+            return reply.status(200).send({ error: error.toJSON() });
+        }
+    }
 });
 
 export default server;
