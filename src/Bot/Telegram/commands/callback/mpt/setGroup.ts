@@ -25,20 +25,22 @@ new CallbackCommand<{
             return await ctx.message?.editMessageText(
                 `${ctx.from?.username as string}, Вы установили себе группу ${selectedGroup.name}
 Отделение: ${selectedGroup.specialty}`,
-                { reply_markup: InlineKeyboard.keyboard([
-                    InlineKeyboard.textButton({
-                        text: "Профиль",
-                        payload: { cmd: "profile", },
-                    }),
-                    InlineKeyboard.textButton({
-                        text: "Расписание",
-                        payload: { cmd: "lessons", },
-                    }),
-                    InlineKeyboard.textButton({
-                        text: "Замены",
-                        payload: { cmd: "replacements", },
-                    }),
-                ]), },
+                {
+                    reply_markup: InlineKeyboard.keyboard([
+                        InlineKeyboard.textButton({
+                            text: "Профиль",
+                            payload: { cmd: "profile", },
+                        }),
+                        InlineKeyboard.textButton({
+                            text: "Расписание",
+                            payload: { cmd: "lessons", },
+                        }),
+                        InlineKeyboard.textButton({
+                            text: "Замены",
+                            payload: { cmd: "replacements", },
+                        }),
+                    ]),
+                },
             );
         }
     },

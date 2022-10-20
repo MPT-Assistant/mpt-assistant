@@ -25,8 +25,8 @@
         "object-curly-newline": [
             "error",
             {
-                "ObjectExpression": { "minProperties": 2 },
-                "ObjectPattern": { "multiline": true, "minProperties": 2 },
+                "ObjectExpression": { "consistent": true, "multiline": true },
+                "ObjectPattern": { "consistent": true, "multiline": true },
                 "ImportDeclaration": { "multiline": true, "minProperties": 3 },
                 "ExportDeclaration": { "multiline": true, "minProperties": 3 }
             }

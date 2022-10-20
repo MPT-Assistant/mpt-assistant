@@ -108,10 +108,12 @@ class MPT {
     public async findGroup(
         groupName: string,
     ): Promise<IGroup | string[]> {
-        const selectedGroup = await DB.api.models.groups.findOne({ name: new RegExp(
-            `^${utils.regular.escapeRegExp(groupName)}$`,
-            "i",
-        ), });
+        const selectedGroup = await DB.api.models.groups.findOne({
+            name: new RegExp(
+                `^${utils.regular.escapeRegExp(groupName)}$`,
+                "i",
+            ),
+        });
 
         if (!selectedGroup) {
             const diff: { group: string; diff: number }[] = [];

@@ -12,12 +12,14 @@ const config: IConfig = {
         }
     },
     telegram: { token: "" },
-    db: { mongo: {
-        protocol: "",
-        address: "",
-        login: "",
-        password: "",
-    }, },
+    db: {
+        mongo: {
+            protocol: "",
+            address: "",
+            login: "",
+            password: "",
+        },
+    },
     server: {
         port: 80,
         cert: "./cert.pem",
