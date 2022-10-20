@@ -45,33 +45,23 @@ server.setNotFoundHandler((request) => {
 
 server.setErrorHandler((err, request, reply) => {
     if (err.validation) {
-        if (err.validation.some((x) => x.keyword === "required")) {
-            void reply.status(200).send({
-                error: new APIError({
-                    code: 5,
-                    request,
-                    additional: {
-                        required_params: err.validation
-                            .filter((x) => x.keyword === "required")
-                            .map((x) => x.params.missingProperty),
-                    },
-                }).toJSON(),
-            });
-        } else {
-            const error = new APIError({ code: 0, request });
-            void reply.status(200).send({ error: error.toJSON() });
-        }
+        return reply.status(200).send({
+            error: new APIError({
+                code: 5,
+                request,
+            }).toJSON(),
+        });
     }
 
     if (err instanceof APIError) {
-        void reply.status(200).send({ error: err.toJSON() as never });
+        return reply.status(200).send({ error: err.toJSON() as never });
     } else {
         if (reply.statusCode === 429) {
             const error = new APIError({ code: 4, request });
-            void reply.status(200).send({ error: error.toJSON() });
+            return reply.status(200).send({ error: error.toJSON() });
         } else {
             const error = new APIError({ code: 0, request });
-            void reply.status(200).send({ error: error.toJSON() });
+            return reply.status(200).send({ error: error.toJSON() });
         }
     }
 });
