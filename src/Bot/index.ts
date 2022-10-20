@@ -16,7 +16,7 @@ class BotsManager {
     public readonly telegram: Telegram;
 
     constructor() {
-        this.vk = new VK(DB.config.vk);
+        this.vk = new VK(DB.config.vk.group);
         this.telegram = new Telegram(DB.config.telegram);
     }
 

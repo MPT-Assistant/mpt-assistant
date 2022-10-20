@@ -2,7 +2,14 @@ import IConfig from "./IConfig";
 
 const config: IConfig = {
     vk: {
-        token: "", pollingGroupId: 1
+        group: {
+            token: "",
+            pollingGroupId: 1
+        },
+        miniapp: {
+            secureKey: "",
+            serviceToken: ""
+        }
     },
     telegram: { token: "" },
     db: { mongo: {

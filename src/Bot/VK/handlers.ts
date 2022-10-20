@@ -5,19 +5,22 @@ import {
     Updates,
     getRandomId,
 } from "vk-io";
-import DB from "../../lib/DB";
 
-import VK from "./";
+import VKBot from "./";
 import { IEventCommandState } from "./EventCommand";
 import { ITextCommandState } from "./TextCommand";
 
-const mentionRegExp = new RegExp(
-    `([club${DB.config.vk.pollingGroupId}|[@a-z_A-ZА-Яа-я0-9]+])`,
-    "gi"
-);
-
 class HandlersVK {
-    constructor(private readonly _bot: VK) {}
+    private readonly _bot: VKBot;
+    private _mentionRegExp: RegExp;
+
+    constructor(bot: VKBot, groupId: number) {
+        this._bot = bot;
+        this._mentionRegExp = new RegExp(
+            `([club${groupId}|[@a-z_A-ZА-Яа-я0-9]+])`,
+            "gi"
+        );
+    }
 
     public async messageNew(ctx: MessageContext): Promise<void> {
         if (ctx.isOutbox || ctx.isGroup) {
@@ -34,7 +37,7 @@ class HandlersVK {
             return;
         }
 
-        ctx.text = ctx.text.replace(mentionRegExp, "");
+        ctx.text = ctx.text.replace(this._mentionRegExp, "");
 
         const hasMessagePayload = (
             payload: unknown
