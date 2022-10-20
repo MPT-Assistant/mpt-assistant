@@ -1,3 +1,4 @@
+import "./methods/schedule/get";
 import "./methods/schedule/getWeek";
 
 import "./methods/groups/get";
