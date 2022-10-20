@@ -22,8 +22,8 @@ const render = (schedule: Awaited<ReturnType<typeof utils.mpt.getGroupSchedule>>
             num: lesson.num,
         })),
         replacements: schedule.replacements.length ? schedule.replacements.map((replacement) => ({
-            detected: Math.floor(new Date(replacement.detected).getTime() / 1000),
-            addToSite: Math.floor(new Date(replacement.addToSite).getTime() / 1000),
+            detected: moment(replacement.detected).unix(),
+            addToSite: moment(replacement.addToSite).unix(),
             oldLessonName: replacement.oldLessonName,
             oldLessonTeacher: replacement.oldLessonTeacher,
             newLessonName: replacement.newLessonName,
