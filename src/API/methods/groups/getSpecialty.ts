@@ -24,15 +24,10 @@ server.route({
             throw new APIError({ code: 6, request });
         }
 
-        const groups = await DB.api.models.groups.distinct("name", {
-            specialty: specialty.code
-        });
-
         return await reply.send({
             code: specialty.code,
             name: specialty.name,
-            url: specialty.url,
-            groups
+            url: specialty.url
         });
     }
 });

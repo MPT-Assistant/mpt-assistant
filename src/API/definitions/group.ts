@@ -3,13 +3,12 @@ import { Type } from "@sinclair/typebox";
 const Specialty = Type.Object({
     name: Type.String(),
     code: Type.String(),
-    url: Type.String(),
-    groups: Type.Array(Type.String())
+    url: Type.String()
 });
 
 const Group = Type.Object({
     name: Type.String(),
-    specialty: Type.String(),
+    specialty: Specialty,
 });
 
 const GroupsGetQueryParams = Type.Object({
