@@ -5,11 +5,11 @@ const ScheduleGetQueryParams = Type.Object({
     date: Type.Optional(Type.String()),
 });
 
-const ScheduleGetWeekQueryParams = Type.Object({
+const ScheduleGetWeekLegendQueryParams = Type.Object({
     date: Type.Optional(Type.String()),
 });
 
-const Week = Type.Object({
+const WeekLegend = Type.Object({
     date: Type.String(),
     value: Type.String(),
     isNumerator: Type.Boolean(),
@@ -33,14 +33,14 @@ const Replacement = Type.Object({
 
 const Schedule = Type.Object({
     place: Type.String(),
-    week: Week,
+    week: WeekLegend,
     lessons: Type.Array(Lesson),
     replacements: Type.Optional(Type.Array(Replacement)),
 });
 
 export {
     ScheduleGetQueryParams,
-    ScheduleGetWeekQueryParams,
-    Week,
+    ScheduleGetWeekLegendQueryParams as ScheduleGetWeekQueryParams,
+    WeekLegend,
     Schedule
 };

@@ -4,15 +4,15 @@ import utils from "../../../lib/utils";
 
 import server from "../..";
 import APIError from "../../APIError";
-import { ScheduleGetWeekQueryParams, Week } from "../../definitions";
+import { ScheduleGetWeekQueryParams, WeekLegend } from "../../definitions";
 
 server.route({
     method: ["GET", "POST"],
-    url: "/schedule.getWeek",
+    url: "/schedule.getWeekLegend",
     schema: {
         querystring: ScheduleGetWeekQueryParams,
         response: {
-            200: Week
+            200: WeekLegend
         }
     },
     handler: async(request, reply) => {
