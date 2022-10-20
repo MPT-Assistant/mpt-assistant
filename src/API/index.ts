@@ -13,6 +13,7 @@ import formBody from "@fastify/formbody";
 import multiPart from "@fastify/multipart";
 import cors from "@fastify/cors";
 import helmet from "@fastify/helmet";
+import httpProxy from "@fastify/http-proxy";
 
 const server = Fastify({
     https: DB.config.server.cert && DB.config.server.key ? {
@@ -30,6 +31,10 @@ void server.register(formBody);
 void server.register(multiPart);
 void server.register(cors, { origin: "*" });
 void server.register(helmet);
+void server.register(httpProxy, {
+    upstream: "https://mpt.ru",
+    prefix: "/mpt"
+});
 
 server.setReplySerializer((payload) => {
     if (Object.prototype.hasOwnProperty.call(payload, "error")) {
