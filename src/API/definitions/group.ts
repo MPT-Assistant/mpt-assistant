@@ -3,7 +3,8 @@ import { Type } from "@sinclair/typebox";
 const Specialty = Type.Object({
     name: Type.String(),
     code: Type.String(),
-    url: Type.String()
+    url: Type.String(),
+    groups: Type.Array(Type.String())
 });
 
 const Group = Type.Object({
