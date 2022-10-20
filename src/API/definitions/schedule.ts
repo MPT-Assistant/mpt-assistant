@@ -5,6 +5,10 @@ const ScheduleGetQueryParams = Type.Object({
     date: Type.Optional(Type.String()),
 });
 
+const ScheduleGetWeekQueryParams = Type.Object({
+    group: Type.String(),
+});
+
 const ScheduleGetWeekLegendQueryParams = Type.Object({
     date: Type.Optional(Type.String()),
 });
@@ -38,9 +42,25 @@ const Schedule = Type.Object({
     replacements: Type.Optional(Type.Array(Replacement)),
 });
 
+const WeekDaySchedule = Type.Object({
+    num: Type.Number(),
+    place: Type.String(),
+    lessons: Type.Array(Lesson),
+});
+
+const WeekSchedule = Type.Array(WeekDaySchedule);
+
+const WeekScheduleResponse = Type.Object({
+    numerator: WeekSchedule,
+    denominator: WeekSchedule,
+});
+
 export {
     ScheduleGetQueryParams,
-    ScheduleGetWeekLegendQueryParams as ScheduleGetWeekQueryParams,
+    ScheduleGetWeekQueryParams,
+    ScheduleGetWeekLegendQueryParams,
     WeekLegend,
-    Schedule
+    Schedule,
+    WeekSchedule,
+    WeekScheduleResponse
 };

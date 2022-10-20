@@ -4,13 +4,13 @@ import utils from "../../../lib/utils";
 
 import server from "../..";
 import APIError from "../../APIError";
-import { ScheduleGetWeekQueryParams, WeekLegend } from "../../definitions";
+import { ScheduleGetWeekLegendQueryParams, WeekLegend } from "../../definitions";
 
 server.route({
     method: ["GET", "POST"],
     url: "/schedule.getWeekLegend",
     schema: {
-        querystring: ScheduleGetWeekQueryParams,
+        querystring: ScheduleGetWeekLegendQueryParams,
         response: {
             200: WeekLegend
         }

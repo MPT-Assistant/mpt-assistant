@@ -8,14 +8,13 @@ import APIError from "../../APIError";
 import { Schedule, ScheduleGetQueryParams } from "../../definitions";
 
 const render = (schedule: Awaited<ReturnType<typeof utils.mpt.getGroupSchedule>>, date: moment.Moment): Static<typeof Schedule> => {
-    const value = utils.mpt.getWeekLegend(date);
     return {
         place: schedule.place,
         week: {
-            value,
+            value: schedule.week,
             date: date.format("DD.MM.YYYY"),
-            isNumerator: value === "Числитель",
-            isDenominator: value === "Знаменатель",
+            isNumerator: schedule.week === "Числитель",
+            isDenominator: schedule.week === "Знаменатель",
         },
         lessons: schedule.lessons.map((lesson) => ({
             name: lesson.name,

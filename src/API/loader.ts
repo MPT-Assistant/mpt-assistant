@@ -1,4 +1,5 @@
 import "./methods/schedule/get";
+import "./methods/schedule/getWeek";
 import "./methods/schedule/getWeekLegend";
 
 import "./methods/groups/get";
