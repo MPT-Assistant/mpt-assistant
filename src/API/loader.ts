@@ -10,3 +10,4 @@ import "./methods/groups/getSpecialtiesList";
 import "./methods/replacements/getCurrent";
 
 import "./methods/app/getGroupsInfo";
+import "./methods/app/getUsersInfo";
