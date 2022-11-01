@@ -7,7 +7,8 @@ const ERRORS = {
     3: "Invalid date",
     4: "Rate limit exceeded, retry in 1 minute",
     5: "One of the required parameters is not transmitted",
-    6: "Specialty not found"
+    6: "Specialty not found",
+    7: "Sign is invalid"
 } as const;
 
 type TAPIErrorCode = keyof typeof ERRORS;

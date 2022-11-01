@@ -14,6 +14,7 @@ import multiPart from "@fastify/multipart";
 import cors from "@fastify/cors";
 import helmet from "@fastify/helmet";
 import httpProxy from "@fastify/http-proxy";
+import miniapp from "../lib/miniapp";
 
 const server = Fastify({
     https: DB.config.server.cert && DB.config.server.key ? {
@@ -46,6 +47,41 @@ server.setReplySerializer((payload) => {
 
 server.setNotFoundHandler((request) => {
     throw new APIError({ code: 1, request });
+});
+
+server.addHook<{Headers?: {sign?: string}}>("preValidation", (request) => {
+    const url = request.url.substring(1);
+    const [section, method] = url.split(".");
+
+    if (!section || !method) {
+        throw new APIError({
+            code: 1, request
+        });
+    }
+
+    if (section === "app") {
+        const rawSign = request.headers.sign;
+
+        if (typeof rawSign !== "string" || !miniapp.isValidSign(rawSign)) {
+            throw new APIError({
+                code: 7, request
+            });
+        }
+
+        const sign = miniapp.parseSign(rawSign, true);
+
+        if (Math.floor(Date.now() / 1000) - 15 * 60 > sign.vk_ts) {
+            throw new APIError({
+                code: 7, request,
+            });
+        }
+
+        request.body = {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-ignore
+            ...request.body, sign
+        };
+    }
 });
 
 server.setErrorHandler((err, request, reply) => {
