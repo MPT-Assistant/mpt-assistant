@@ -49,7 +49,7 @@ server.setNotFoundHandler((request) => {
     throw new APIError({ code: 1, request });
 });
 
-server.addHook<{Headers?: {sign?: string}}>("preValidation", (request) => {
+server.addHook<{Headers?: {sign?: string}}>("preValidation", (request, reply, done) => {
     const url = request.url.substring(1);
     const [section, method] = url.split(".");
 
@@ -82,6 +82,8 @@ server.addHook<{Headers?: {sign?: string}}>("preValidation", (request) => {
             ...request.body, sign
         };
     }
+
+    done();
 });
 
 server.setErrorHandler((err, request, reply) => {
