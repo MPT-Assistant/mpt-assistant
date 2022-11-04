@@ -49,7 +49,7 @@ server.setNotFoundHandler((request) => {
     throw new APIError({ code: 1, request });
 });
 
-server.addHook<{Headers?: {sign?: string}}>("preValidation", (request, reply, done) => {
+server.addHook<{Body?: {sign?: string}}>("preValidation", (request, reply, done) => {
     const url = request.url.substring(1);
     const [section, method] = url.split(".");
 
@@ -60,7 +60,7 @@ server.addHook<{Headers?: {sign?: string}}>("preValidation", (request, reply, do
     }
 
     if (section === "app") {
-        const rawSign = request.headers.sign;
+        const rawSign = request.body?.sign;
 
         if (typeof rawSign !== "string" || !miniapp.isValidSign(rawSign)) {
             throw new APIError({
