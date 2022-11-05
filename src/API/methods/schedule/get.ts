@@ -20,6 +20,8 @@ const render = (schedule: Awaited<ReturnType<typeof utils.mpt.getGroupSchedule>>
             name: lesson.name,
             teacher: lesson.teacher,
             num: lesson.num,
+            start: lesson.timetable.start.format("HH:mm:ss"),
+            end: lesson.timetable.end.format("HH:mm:ss"),
         })),
         replacements: schedule.replacements.length ? schedule.replacements.map((replacement) => ({
             detected: moment(replacement.detected).unix(),
