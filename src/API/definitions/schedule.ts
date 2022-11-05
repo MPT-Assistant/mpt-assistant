@@ -23,8 +23,16 @@ const WeekLegend = Type.Object({
 const Lesson = Type.Object({
     name: Type.String(),
     teacher: Type.String(),
-    num: Type.Number(),
+    num: Type.Number()
 });
+
+const ExtendedLesson = Type.Intersect([
+    Lesson,
+    Type.Object({
+        start: Type.String(),
+        end: Type.String(),
+    })
+]);
 
 const Replacement = Type.Object({
     detected: Type.Number(),
@@ -38,7 +46,7 @@ const Replacement = Type.Object({
 const Schedule = Type.Object({
     place: Type.String(),
     week: WeekLegend,
-    lessons: Type.Array(Lesson),
+    lessons: Type.Array(ExtendedLesson),
     replacements: Type.Optional(Type.Array(Replacement)),
 });
 
