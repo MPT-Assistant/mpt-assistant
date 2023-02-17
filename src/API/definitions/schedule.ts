@@ -41,6 +41,7 @@ const Replacement = Type.Object({
     oldLessonTeacher: Type.String(),
     newLessonName: Type.String(),
     newLessonTeacher: Type.String(),
+    num: Type.Number()
 });
 
 const Schedule = Type.Object({
