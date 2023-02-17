@@ -56,8 +56,8 @@ interface ICacheGroup {
 }
 
 class Miniapp {
-    private _cachedUsers: Omit<ICacheUser, "type">[] = [];
-    private _cachedGroups: Omit<ICacheGroup, "type">[] = [];
+    private _cachedUsers: Map<number, Omit<ICacheUser, "type" | "id">> = new Map();
+    private _cachedGroups: Map<number, Omit<ICacheGroup, "type" | "id">> = new Map();
 
     public readonly api = new API({
         token: config.vk.miniapp.serviceToken,
@@ -138,14 +138,20 @@ class Miniapp {
     }
 
     public async getUsersInfo(user_ids: number[]): Promise<ICacheUser[]> {
-        const cachedUsers = this._cachedUsers.filter((user) => user_ids.includes(user.id));
-        const uncachedUsers = user_ids.filter(id => cachedUsers.find(user => user.id === id) === undefined);
+        const cachedUsers = user_ids.filter(user_id => this._cachedUsers.has(user_id));
+        const uncachedUsers = user_ids.filter(id => cachedUsers.find(user_id => user_id === id) === undefined);
 
         const uncachedUsersInfo = await this._loadUsersInfo(uncachedUsers);
-        this._cachedUsers.push(...uncachedUsersInfo);
-        return [...cachedUsers, ...uncachedUsersInfo].map((user) => ({
+
+        for (let i = 0; i < uncachedUsersInfo.length; ++i) {
+            this._cachedUsers.set(uncachedUsersInfo[i].id, uncachedUsersInfo[i]);
+        }
+
+        return user_ids.map((user_id) => ({
+            id: user_id,
             type: "user",
-            ...user
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            ...(this._cachedUsers.get(user_id)!)
         }));
     }
 
@@ -169,14 +175,20 @@ class Miniapp {
 
     public async getGroupsInfo(group_ids: number[]): Promise<ICacheGroup[]> {
         group_ids = group_ids.map(Math.abs);
-        const cachedGroups = this._cachedGroups.filter((user) => group_ids.includes(user.id));
-        const uncachedGroups = group_ids.filter(id => cachedGroups.find(user => user.id === id) === undefined);
+        const cachedGroups = group_ids.filter(group_id => this._cachedGroups.has(group_id));
+        const uncachedGroups = group_ids.filter(id => cachedGroups.find(group_id => group_id === id) === undefined);
 
         const uncachedGroupsInfo = await this._loadGroupsInfo(uncachedGroups);
-        this._cachedGroups.push(...uncachedGroupsInfo);
-        return [...cachedGroups, ...uncachedGroupsInfo].map((group) => ({
+
+        for (let i = 0; i < uncachedGroupsInfo.length; ++i) {
+            this._cachedGroups.set(uncachedGroupsInfo[i].id, uncachedGroupsInfo[i]);
+        }
+
+        return group_ids.map((group_id) => ({
+            id: group_id,
             type: "group",
-            ...group
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            ...(this._cachedGroups.get(group_id)!)
         }));
     }
 
@@ -191,8 +203,8 @@ class Miniapp {
     }
 
     public resetCache(): void {
-        this._cachedGroups = [];
-        this._cachedUsers = [];
+        this._cachedGroups.clear();
+        this._cachedUsers.clear();
     }
 }
 
