@@ -30,6 +30,7 @@ const render = (schedule: Awaited<ReturnType<typeof utils.mpt.getGroupSchedule>>
             oldLessonTeacher: replacement.oldLessonTeacher,
             newLessonName: replacement.newLessonName,
             newLessonTeacher: replacement.newLessonTeacher,
+            num: replacement.lessonNum
         })) : undefined,
     };
 };
