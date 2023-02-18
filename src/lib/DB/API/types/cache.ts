@@ -1,4 +1,4 @@
-import { TWeek } from "@mpt-assistant/parser/dist/types/mpt";
+import { TWeek } from "@mpt-assistant/parser";
 
 interface ICache {
     week: TWeek;

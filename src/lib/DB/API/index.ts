@@ -15,6 +15,7 @@ class APIDB extends DB {
         groups: this.connection.model("group", this.schemes.groupSchema, "groups"),
         replacements: this.connection.model("replacement", this.schemes.replacementSchema, "replacements"),
         specialties: this.connection.model("specialty", this.schemes.specialtySchema, "specialties"),
+        teachers: this.connection.model("teacher", this.schemes.teacherSchema, "teachers")
     };
 }
 

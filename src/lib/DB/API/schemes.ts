@@ -1,7 +1,14 @@
 import { Schema } from "mongoose";
 
 import {
-    ICache, IGroup, IReplacement, IScheduleDay, IScheduleLesson, ISpecialty
+    ICache,
+    IGroup,
+    IReplacement,
+    IScheduleDay,
+    IScheduleLesson,
+    ISpecialty,
+    ITeacher,
+    ITeacherRatingItem
 } from "./types";
 
 const cacheSchema = new Schema<ICache>({
@@ -126,6 +133,48 @@ const replacementSchema = new Schema<IReplacement>({
     },
 }, { versionKey: false });
 
+const teacherRatingSchema = new Schema<ITeacherRatingItem>({
+    score: {
+        type: Schema.Types.Number,
+        required: true
+    },
+    source: {
+        type: Schema.Types.Mixed,
+        required: true
+    }
+});
+
+const teacherSchema = new Schema<ITeacher>({
+    name: {
+        type: Schema.Types.String,
+        required: true
+    },
+    surname: {
+        type: Schema.Types.String,
+        required: true
+    },
+    patronymic: {
+        type: Schema.Types.String,
+        required: true
+    },
+    link: {
+        type: Schema.Types.String,
+        required: true
+    },
+    photo: {
+        type: Schema.Types.String,
+        required: false
+    },
+    rating: {
+        type: [teacherRatingSchema],
+        required: true
+    }
+});
+
 export default {
-    cacheSchema, groupSchema, specialtySchema, replacementSchema
+    cacheSchema,
+    groupSchema,
+    specialtySchema,
+    replacementSchema,
+    teacherSchema
 };
