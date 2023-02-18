@@ -38,7 +38,7 @@ class CallbackCommand<QueryPayload = unknown> extends Command<TCallbackCommandFu
     }
 }
 
-const manager = new Manager<CallbackCommand, TCallbackCommandFunc<unknown>>();
+const manager = new Manager<CallbackCommand>();
 
 export { manager };
 

@@ -11,7 +11,8 @@ import {
 } from "../../DB/API/types";
 import Cache from "../../Cache";
 import internal from "../";
-import { ISpecialty } from "@mpt-assistant/parser/dist/types/specialties";
+import { ISpecialty } from "@mpt-assistant/parser";
+import { ITeacher as DatabaseITeacher } from "../../DB/API/types";
 
 interface ITimetableItem {
     status: "await" | "process" | "finished";
@@ -28,6 +29,10 @@ interface ILesson {
     name: string;
     teacher: string;
     timetable: ITimetableItem;
+}
+
+interface ITeacher extends DatabaseITeacher {
+    dosieId?: string;
 }
 
 class Timetable {
@@ -406,6 +411,45 @@ class MPT {
         if (response) {
             response.map(internal.events.emitReplacement.bind(internal.events));
         }
+    }
+
+    public async getTeacherByName(fio: string): Promise<ITeacher | undefined> {
+        const [name, patronymic, surname] = fio.split(".").map(x => x.trim());
+
+        const teacher = await DB.api.models.teachers.findOne({
+            surname,
+            name: {
+                $regex: new RegExp(`^${name}`)
+            },
+            patronymic: {
+                $regex: new RegExp(`^${patronymic}`)
+            }
+        }).lean();
+
+        if (teacher === null) {
+            return undefined;
+        }
+
+        const dosies = Cache.teacherDatabase;
+
+        for (let i = 0; i < dosies.length; ++i) {
+            const dosie = dosies[i];
+
+            if (
+                !dosie.name.includes(surname) ||
+                !dosie.name.includes(name) ||
+                !dosie.name.includes(patronymic)
+            ) {
+                continue;
+            }
+
+            return {
+                ...teacher,
+                dosieId: dosie.id
+            };
+        }
+
+        return teacher;
     }
 
     private _createReplacementHash({
