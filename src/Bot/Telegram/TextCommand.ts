@@ -69,7 +69,7 @@ class TextCommand extends Command<TRegExpCommandFunc> {
     }
 }
 
-class TextCommandManager extends Manager<TextCommand, TRegExpCommandFunc> {
+class TextCommandManager extends Manager<TextCommand> {
     public getUserCommands(): TelegramBotCommand[] {
         const userCommands = this.list.filter(x => x.isPrivateCommand);
         const response: TelegramBotCommand[] = [];
@@ -108,7 +108,9 @@ const manager = new TextCommandManager();
 export { manager };
 
 export type {
-    TTextCommandContext, TRegExpCommandFunc, ITextCommandState
+    TTextCommandContext,
+    TRegExpCommandFunc,
+    ITextCommandState
 };
 
 export default TextCommand;

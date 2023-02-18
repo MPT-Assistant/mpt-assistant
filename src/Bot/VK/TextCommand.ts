@@ -48,7 +48,7 @@ class TextCommand extends Command<TRegExpCommandFunc> {
     }
 }
 
-const manager = new Manager<TextCommand, TRegExpCommandFunc>();
+const manager = new Manager<TextCommand>();
 
 export { manager };
 

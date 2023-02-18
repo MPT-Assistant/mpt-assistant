@@ -36,7 +36,7 @@ class EventCommand extends Command<TCallbackCommandFunc> {
     }
 }
 
-const manager = new Manager<EventCommand, TCallbackCommandFunc>();
+const manager = new Manager<EventCommand>();
 
 export { manager };
 
