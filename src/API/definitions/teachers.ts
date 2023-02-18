@@ -4,6 +4,10 @@ const TeachersGetByNameQueryParams = Type.Object({
     name: Type.String()
 });
 
+const TeachersGetListQueryParams = Type.Object({
+    extended: Type.Boolean()
+});
+
 const Teacher = Type.Object({
     name: Type.String(),
     surname: Type.String(),
@@ -16,5 +20,6 @@ const Teacher = Type.Object({
 
 export {
     TeachersGetByNameQueryParams,
+    TeachersGetListQueryParams,
     Teacher
 };
