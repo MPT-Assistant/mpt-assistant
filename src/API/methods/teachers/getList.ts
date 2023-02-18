@@ -45,7 +45,7 @@ server.route({
                 dosieId: req.query.extended ? getDosieId(
                     teacher.surname, teacher.name, teacher.patronymic
                 ) : undefined,
-                rating: utils.array.number.average(teacher.rating.map(x => x.score))
+                rating: teacher.rating.length > 0 ? utils.array.number.average(teacher.rating.map(x => x.score)) : 4
             };
         });
     }

@@ -22,7 +22,7 @@ server.route({
             throw new APIError({ code: 8, request });
         }
 
-        const rating = raUtils.array.number.average(teacher.rating.map(x => x.score));
+        const rating = teacher.rating.length > 0 ? raUtils.array.number.average(teacher.rating.map(x => x.score)) : 4;
 
         return {
             ...teacher,
