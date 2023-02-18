@@ -142,7 +142,7 @@ const teacherRatingSchema = new Schema<ITeacherRatingItem>({
         type: Schema.Types.Mixed,
         required: true
     }
-});
+}, { versionKey: false });
 
 const teacherSchema = new Schema<ITeacher>({
     name: {
@@ -159,17 +159,17 @@ const teacherSchema = new Schema<ITeacher>({
     },
     link: {
         type: Schema.Types.String,
-        required: true
+        required: false
     },
     photo: {
         type: Schema.Types.String,
-        required: false
+        required: true
     },
     rating: {
         type: [teacherRatingSchema],
         required: true
     }
-});
+}, { versionKey: false });
 
 export default {
     cacheSchema,
