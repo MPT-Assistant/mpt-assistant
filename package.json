@@ -24,7 +24,7 @@
         "@fastify/type-provider-typebox": "^2.3.0",
         "@mpt-assistant/parser": "^1.2.4",
         "@puregram/prompt": "^1.2.0",
-        "@rus-anonym/commands-manager": "^1.1.0",
+        "@rus-anonym/commands-manager": "1.1.0",
         "@rus-anonym/scheduler": "^1.0.1",
         "@rus-anonym/utils": "^0.1.0",
         "@sinclair/typebox": "^0.24.46",

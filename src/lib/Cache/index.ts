@@ -1,7 +1,13 @@
+import axios from "axios";
 import DB from "../DB";
 import { ICache } from "../DB/API/types";
 
 import utils from "../utils";
+
+interface ITeacherDatabaseItem {
+    id: string;
+    name: string;
+}
 
 class Week extends String {
     public get isNumerator(): boolean {
@@ -15,6 +21,7 @@ class Week extends String {
 
 class Cache {
     private _cache!: ICache;
+    public teacherDatabase: ITeacherDatabaseItem[] = [];
 
     public async load(): Promise<void> {
         const cache = await DB.api.models.cache.findOne({});
@@ -38,6 +45,7 @@ class Cache {
         } catch (error) {
             //
         }
+        this.teacherDatabase = (await axios.get<ITeacherDatabaseItem[]>("https://data.seapps.ru/api/children/11506910")).data;
     }
 
     public get week(): Week {
