@@ -11,10 +11,8 @@ import {
 } from "../../DB/API/types";
 import Cache from "../../Cache";
 import internal from "../";
-import {
-    ISpecialty,
-    ITeacher as ParserITeacher
-} from "@mpt-assistant/parser";
+import { ISpecialty } from "@mpt-assistant/parser";
+import { ITeacher as DatabaseITeacher } from "../../DB/API/types";
 
 interface ITimetableItem {
     status: "await" | "process" | "finished";
@@ -33,7 +31,7 @@ interface ILesson {
     timetable: ITimetableItem;
 }
 
-interface ITeacher extends ParserITeacher {
+interface ITeacher extends DatabaseITeacher {
     dosieId?: string;
 }
 
