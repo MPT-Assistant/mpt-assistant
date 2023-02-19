@@ -39,10 +39,12 @@ server.route({
     handler: async (req) => {
         const list = await DB.api.models.teachers.find().lean();
 
+        const isExtended = req.query.extended === "true";
+
         return list.map(teacher => {
             return {
                 ...teacher,
-                dosieId: req.query.extended ? getDosieId(
+                dosieId: isExtended ? getDosieId(
                     teacher.surname, teacher.name, teacher.patronymic
                 ) : undefined,
                 rating: teacher.rating.length > 0 ? utils.array.number.average(teacher.rating.map(x => x.score)) : 4
