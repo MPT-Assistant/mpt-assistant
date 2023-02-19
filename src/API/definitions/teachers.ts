@@ -5,7 +5,12 @@ const TeachersGetByNameQueryParams = Type.Object({
 });
 
 const TeachersGetListQueryParams = Type.Object({
-    extended: Type.Boolean()
+    extended: Type.Optional(
+        Type.Union([
+            Type.Literal("true"),
+            Type.Literal("false")
+        ])
+    )
 });
 
 const Teacher = Type.Object({
