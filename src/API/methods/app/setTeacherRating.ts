@@ -1,5 +1,6 @@
 import server from "../..";
 
+import raUtils from "@rus-anonym/utils";
 import { Type } from "@sinclair/typebox";
 import { signBox } from "../../../lib/miniapp";
 
@@ -47,5 +48,7 @@ server.post("/app.setTeacherRating" ,{
         });
     }
 
-    return 1;
+    return {
+        rating: teacher.rating.length > 0 ? raUtils.array.number.average(teacher.rating.map(x => x.score)) : 4,
+    };
 });

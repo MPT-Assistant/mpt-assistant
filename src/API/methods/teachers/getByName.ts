@@ -26,7 +26,8 @@ server.route({
 
         return {
             ...teacher,
-            rating
+            rating,
+            _id: undefined
         };
     }
 });

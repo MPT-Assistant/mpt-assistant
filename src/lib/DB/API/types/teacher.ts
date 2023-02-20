@@ -12,6 +12,7 @@ interface ITeacherRatingItem {
 
 interface ITeacher extends ParserITeacher {
     rating: ITeacherRatingItem[];
+    vkId?: number;
 }
 
 export {
