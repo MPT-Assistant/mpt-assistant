@@ -32,75 +32,7 @@ server.post("/app.getTeacherRating" ,{
         x.source.id === request.body.sign.vk_user_id;
     });
 
-    return {[
-  {
-    $unwind:
-      {
-        path: "$schedule",
-      },
-  },
-  {
-    $match:
-      /**
-       * query: The query in MQL.
-       */
-      {
-        "schedule.num": 5,
-      },
-  },
-  {
-    $unwind:
-      /**
-       * path: Path to the array field.
-       * includeArrayIndex: Optional name for index.
-       * preserveNullAndEmptyArrays: Optional
-       *   toggle to unwind null and empty values.
-       */
-      {
-        path: "$schedule.lessons",
-      },
-  },
-  {
-    $project:
-      /**
-       * specifications: The fields to
-       *   include or exclude.
-       */
-      {
-        place: "$schedule.place",
-        group: "$name",
-        week: {
-          $indexOfArray: [
-            "$schedule.lessons.teacher",
-            "П.А. Елистратова",
-          ],
-        },
-        lesson: "$schedule.lessons.num",
-      },
-  },
-  {
-    $match:
-      /**
-       * query: The query in MQL.
-       */
-      {
-        week: 1,
-      },
-  },
-  {
-    $project:
-      /**
-       * specifications: The fields to
-       *   include or exclude.
-       */
-      {
-        _id: false,
-        group: true,
-        place: true,
-        lesson: true,
-      },
-  },
-]
+    return {
         score: score ? score.score : null,
         rating: teacher.rating.length > 0 ? raUtils.array.number.average(teacher.rating.map(x => x.score)) : 4,
     };
