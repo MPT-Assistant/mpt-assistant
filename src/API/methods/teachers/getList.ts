@@ -47,7 +47,8 @@ server.route({
                 dosieId: isExtended ? getDosieId(
                     teacher.surname, teacher.name, teacher.patronymic
                 ) : undefined,
-                rating: teacher.rating.length > 0 ? utils.array.number.average(teacher.rating.map(x => x.score)) : 4
+                rating: teacher.rating.length > 0 ? utils.array.number.average(teacher.rating.map(x => x.score)) : 4,
+                _id: undefined
             };
         });
     }

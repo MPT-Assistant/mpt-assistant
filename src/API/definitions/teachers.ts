@@ -20,6 +20,7 @@ const Teacher = Type.Object({
     photo: Type.String(),
     link: Type.Optional(Type.String()),
     dosieId: Type.Optional(Type.String()),
+    vkId: Type.Optional(Type.Number()),
     rating: Type.Number()
 });
 
