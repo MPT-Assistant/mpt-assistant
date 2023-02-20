@@ -22,7 +22,7 @@
         "@fastify/multipart": "^7.4.1",
         "@fastify/rate-limit": "^7.6.0",
         "@fastify/type-provider-typebox": "^2.4.0",
-        "@mpt-assistant/parser": "^1.2.5",
+        "@mpt-assistant/parser": "^1.2.7",
         "@puregram/prompt": "^1.2.0",
         "@rus-anonym/commands-manager": "^1.2.0",
         "@rus-anonym/scheduler": "^1.0.3",
